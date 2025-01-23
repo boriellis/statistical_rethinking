@@ -2,3 +2,53 @@
 title: "Notes"
 format: html
 ---
+
+# Week 1 - The Golem of Prague
+
+## Lecture notes
+
+### DAGS
+
+There's frequently a stats discourse between Bayes and Frequentist stats - we're not going to talk about that at all really, just instead about "causal inference"
+
+For **statistical** models to produce any scientific insight, they require additional **scientific** (causal) models. The reasons for a stats analysis are not found in the data, but instead in the causes of the data: causes can't get extracted from the data alone, need an additional causal model. "no causes in, no causes out!"
+
+What is causal inference?
+
+-   more than association between variables - associations run both directions - there's no causation in there.
+
+-   instead, causal inference is a prediction of intervention - it's the prediction of the consequences of changing one variable on the others
+
+    -   if you look outside and trees are swaying, you know that wind is causing the trees to sway. knowing the cause means being able to predict the consequences of an intervention. the "what if I do this?" question. There's nothing within the data themselves to say that, you just know something extra.
+
+-   or, can be thought of as the imputation.
+
+    -   knowing the cause means being able to construct unobserved counterfactual outcomes "what if I had done something else?"
+
+Causes are not optional!
+
+-   even when the goal is descriptive science, you still need a causal model: the sample differs from the population - describing the population requires causal thinking about why it's different from the population
+
+Now back to DAGS:
+
+-   Directed Acyclic Graphs
+
+    -   they're heuristic causal models that clarify scientific thinking - if you change an variable at the start of an arrow, it will change the thing at the end of the arrow: "What can we decide, without additional assumptions?". These are the gateway to scientific modeling.
+
+    -   basically they're letters with arrows between talking about what influences what.
+
+    -   different questions have different models - each causal query would require a different model.
+
+        -   comes down to choosing good control variables. there's also bad controls - you can't just add everything.
+
+        -   DAGS help you understand how to test/refine the causal model
+
+### GOLEMS
+
+the golem of prague was built for a particular task but blind to the intent, so harm happened accidentally along the way - so he got decommissioned NO MORE GOLEM!
+
+We're also designing a lot of golems - we're making statistical models that execute the instructions we give them but they're blind to our intent. they're powerful, they're good, but they have no wisdom or foresight and applied in the wrong context they can be dangerous
+
+we're traditionally taught flowcharts of what to do with what types of data (if you have x type of data, use y test). But, this approach is limiting! focuses on rejecting null hypotheses, doesn't teach the relationship between the research and the test.
+
+We are doing observational work, and in these contexts null models are rarely unique. they don't really work - what's a null population dynamics model? This is apparently not sensible
