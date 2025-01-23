@@ -39,6 +39,8 @@ Now back to DAGS:
 
     -   different questions have different models - each causal query would require a different model.
 
+    -   ![](images/Tred-G.svg.png){width="277"}
+
         -   comes down to choosing good control variables. there's also bad controls - you can't just add everything.
 
         -   DAGS help you understand how to test/refine the causal model
@@ -52,3 +54,47 @@ We're also designing a lot of golems - we're making statistical models that exec
 we're traditionally taught flowcharts of what to do with what types of data (if you have x type of data, use y test). But, this approach is limiting! focuses on rejecting null hypotheses, doesn't teach the relationship between the research and the test.
 
 We are doing observational work, and in these contexts null models are rarely unique. they don't really work - what's a null population dynamics model? This is apparently not sensible
+
+SO! Research requires more than null robots. We're making golems, so we'll need: generative causal models (built on DAGs initially), and then use those to make statistical models justified by generative models and questions (called estimands, which are the quantities that we're trying to estimate by statistical analysis). this is an effective way to produce estimates I guess.
+
+### Justifying "controls"
+
+![](images/Tred-G.svg.png){width="277"}
+
+When looking at the above model, the relationships between the variables affecting any given variable make it hard to pick control variables. apparently we'll later learn a way to pick which variables are right based on this to make up the "adjustment set" (I think, the ones to include?)
+
+We have finite data but infinite problems. a DAG is not enough - we need a generative model to design inference. He thinks that the way to do this is a bayesian framework to get the best outcome with the least fuss.
+
+Bayes is practical, not philosophical - in theory sometimes Bayes is overkill - in theory in simple analyses there's little difference between frequentist stats and bayesian stats and bayes adds mess. but in REALITY, ecological analyses have a bunch of measurement error, missing data, latent variables, etc - and bayes handles this with less fuss!
+
+He thinks the statistics wars are over on this point. Bayes is no longer controversial or marginalized - bayesian methods are routine, it's just that we're waiting for teaching to catch up.
+
+### OWLS!
+
+this is our workflow!
+
+he's trying to teach us the intermediate steps between drawing some circles and drawing the rest of the owl. we're going to try to document all the steps of drawing the owl as it were, and i think we're going to do that using R.
+
+drawing the bayesian owl:
+
+-   necessary because scientific data analysis is like software engineering done by amateurs. We do a lot of scripting, which is a simple kind of programming, and should be treated as such!
+
+-   three modes of drawing our owls:
+
+    -   understand what you're doing - don't just make code salad
+
+    -   document your work to reduce error
+
+    -   we also want to be able to produce a respectable scientific workflow
+
+-   our basic owl steps:
+
+    -   outline a theoretical estimand (figure out what you want to know)
+
+    -   scientific (causal) models (this is like a formalized conceptual model, the DAG)/generative models (this is like what the math would actually look like written out)
+
+    -   use first two to build statistical models (statistical models are the bridge between declaring what you think is happening vs actually crunching the numbers)
+
+    -   then, use simulation from the generative model to validate that the statistical model yields our theoretical estimand
+
+    -   analyze the real data
