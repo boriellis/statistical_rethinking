@@ -5,7 +5,7 @@ format: html
 
 # Week 1 - The Golem of Prague
 
-## Lecture notes
+## Lecture 1 notes
 
 ### DAGS
 
@@ -98,3 +98,137 @@ drawing the bayesian owl:
     -   then, use simulation from the generative model to validate that the statistical model yields our theoretical estimand
 
     -   analyze the real data
+
+## Lecture 2 notes: The Garden of Forking Data
+
+We're going to try to estimate the proportion of our earth that is covered by water, imagining that we have a globe that we can throw in the air, and that every time we catch the globe with one finger we mark down if it's land or water. do that again and again to get a sample, use that to estimate the proportion of the surface that's water.
+
+Our **estimand** is the proportion of the globe that's covered by water.
+
+so:
+
+-   how should we use the sample to get at the estimand to produce an estimate?
+
+-   how to produce a summary of that?
+
+-   and how to represent uncertainty of that estimate?
+
+so:
+
+1\) define generative model of the sample
+
+2\) define a specific estimand
+
+3\) design a statistical way to produce an estimate
+
+4\) test 3) using 1)
+
+5\) analyze sample, summarize
+
+### step 1 - generative model of the globe
+
+-   begin conceptually - how do the variables influence one another?
+
+    -   there's *p*, the proportion of water
+
+    -   there's N number of tosses
+
+    -   W number of water **observations**
+
+    -   L number of land **observations**
+
+-   now want to write down the relationships between:
+
+    -   N influences W and L (more times you toss globe, bigger #s of W and L) so arrows from N to W and L representing causal influences (if you change N, W and L change)
+
+    -   p influences W and L (if there's a different proportion, it would change the numbers of W and L)
+
+-   the above is the written out DAG. to make this generative, you need to write out what the arrows mean exactly -
+
+    -   *W,L = F(p,N)*
+
+    -   this says that W and L are some function of p and N
+
+### Bayesian data analysis
+
+-   for each possible explanation of the sample, count all the ways the sample could happen. Explanations with more ways to produce the sample are more likely to be true.
+
+-   He calls this, the "Garden of Forking Data" - some of the things that happen in the process of sampling are from how we're collecting the data, some are from natural processes, but they all influence the sample.
+
+For each possible proportion of water on the globe, count all the ways the sample of tosses could happen. Proportions with more ways to produce the sample are more plausible.
+
+### Step 3 - design a statistical way to produce estimate
+
+I think we're now setting up how we could do this simply if we had a four sided globe
+
+![](images/IMG_8202.jpg){width="445"}
+
+we have 5 possibilities for our globe, we did 3 tosses, got water land water.
+
+you do this for each of the possibiliites (for 25% water shown below)
+
+![](images/FullSizeRender.jpg){width="401"}
+
+figure out what the options are (above) then,
+
+![](images/IMG_8204.jpg){width="377"}
+
+You would do the same process for each of the different options (of the original five), to get the below:
+
+![](images/Screenshot 2025-01-24 at 15.57.28.png){width="414"}
+
+the garden diagram literally becomes formulas:
+
+![](images/Screenshot 2025-01-24 at 15.59.23.png){width="410"}
+
+then you can get more data by tossing your globe again:
+
+![](images/Screenshot 2025-01-24 at 16.01.29.png){width="410"}
+
+so eventually if you have a bunch of data you have a bunch of data points to deal with:
+
+![](images/Screenshot 2025-01-24 at 16.04.03.png){width="446"}
+
+in the above, the first number getting multiplied is the number of ways to get water multiplied by the number of observations of water. The second is the number of ways to get land in that scenario multiplied by the number of observations of land. so you then get to the formula at the bottom, which is that the number of observations of water and land are a function that looks like that. I got lost on that point but am choosing to try to be okay about that.
+
+Now we're talking about probability
+
+Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has
+
+2^W\ x\ 2^L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:
+
+![](images/Screenshot 2025-01-24 at 16.14.45.png){width="501"}
+
+the posterior distribution is posterior to the sample - it's after collecting the data?
+
+### Step 4 - now test step 3 using step 1
+
+we always want to test before we estimate. to do that, we first code a generative simulation, then code an estimator. then we test the estimator with the generative simulation. this makes the data that we can then use to run our formula which is asking about what the reality is based on the data we collect. so below, we're making a function that produces some observations based on the proportion of water on our globe:
+
+```{r}
+#function to toss a globe covered p by water N times
+sim_globe <- function (p = 0.7, N=9){
+  sample(c("W", "L"), #possible observations
+         size = N, #number tosses
+         prob = c(p,1-p), #probability of each possible observation
+         replace = TRUE)
+}
+
+sim_globe()
+
+replicate(sim_globe(p=0.5, N = 9), n=10)
+```
+
+test in extreme settings:
+
+```{r}
+sim_globe(p=1, N=11) #like, what if it's fully water, there should be no land!
+```
+
+motto is test! all code has bugs! you don't want the bugs to influence the results! the simulation needs to honestly represent the model you intend, so you test that first (i think above), THEN, you code the estimator and then test it using the simulation function. that's below (we're just writing the formula into an R function). so, we made some fake data above, and then we need to make an R function that uses the fake data to tell us about the probabilities of each original scenario being the reality based on the data we observed:
+
+![](images/Screenshot 2025-01-24 at 16.27.16.png)
+
+so you would then wrap sim_globe in the compute_posterior function. basically saying, with the data we got, what's the likelihood of each of the original cases:
+
+![](images/Screenshot 2025-01-24 at 16.37.43.png){width="442"}
