@@ -232,3 +232,54 @@ motto is test! all code has bugs! you don't want the bugs to influence the resul
 so you would then wrap sim_globe in the compute_posterior function. basically saying, with the data we got, what's the likelihood of each of the original cases:
 
 ![](images/Screenshot 2025-01-24 at 16.37.43.png){width="442"}
+
+Now let's build up some intuition to move from our 4 sided globe to 10 to 20 to infinity:
+
+![](images/Screenshot 2025-01-27 at 16.43.04.png){width="552"}
+
+As you get more possibilities, the number of proportions increases, and the distribution smooths out across them - so the highest probability will get smaller as it gets spread out over more
+
+Infitinite possibilties - so, the globe is a polyhedron with an infinite number of sides. the probability of any "side" p, is still proportional to p^W^ (1-p)^L^ . with some calculus, that takes us to the "Beta" distribution:
+
+![](images/Screenshot 2025-01-27 at 16.46.43.png){width="479"}
+
+this distribution gives us the posterior probability of any particular value of p. the normalizing constant is there so that your probabilities sum to 1, and the second term is just the thing from before - \# ways to observe sample
+
+your posterior distribution is the estimate for the parameter after you've incorporated data from your prior. That's your best estimate of whatever you're trying to estimate. It can take any form. the beta distribution is the shape of the posterior that you want when you have a probability between 0 and 1 that you're trying to estimate
+
+now, we do ten tosses of our actual globe (note that when we do infinite possibilities we call it density instead of probability):
+
+![](images/Screenshot 2025-01-27 at 16.49.15.png){width="438"}
+
+![](images/Screenshot 2025-01-27 at 16.49.32.png){width="438"}
+
+so you get a refining peak of your curve as you get more and more data from tossing again and again
+
+some lessons from this!
+
+-   with bayesian data, there's no minimum sample size. don't get confused from non-bayesian stats - bayesian inference is different in a lot of ways. every time you add more data/update, your estimate improves, but it is "correct" as an estimate based on the data you have available regardless of the sample size.
+
+-   the shape of the curve embodies the sample size.
+
+-   no point estimates in bayesian inference. you could for the sake of communication talk about points on the distribution, like its mode and mean, but neither of these points is special as a point estimate. You want to work with the whole distribution and use that to make your predictions. THE DISTRIBUTION IS THE ESTIMATE. ALWAYS USE THE ENTIRE DISTRIBUTION.
+
+-   no one true interval. intervals are not important in bayesian inference, they're just summaries of the distribition. the interval just communicates shape of the posterier - to use 95% is obvious superstition - nothing magical happens at the boundary. it's still the shape of the whole distribution that matters!
+
+### Step 5 - analyze the sample and summarize!
+
+From posterior distribution to prediction
+
+-   implications of the model depend upon the entire posterior.
+
+-   They must average any inference over the entire posterior
+
+-   that normally requires integral calculus, OR we can just take samples from the posterior.
+
+![](images/Screenshot 2025-01-27 at 17.01.32.png){width="556"}
+
+```{r}
+library(rethinking)
+post_samples <- rbeta( 1e3, 6+1, 3+1 )
+dens(post_samples, lwd = 4, col = 2, xlab = "proportion water", adj = 0.1)
+curve(dbeta(x, 6+1, 3+1), add = TRUE, lty=2, lwd = 3)
+```
