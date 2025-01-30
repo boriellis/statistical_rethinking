@@ -273,7 +273,7 @@ From posterior distribution to prediction
 
 -   They must average any inference over the entire posterior
 
--   that normally requires integral calculus, OR we can just take samples from the posterior.
+-   that normally requires integral calculus, OR we can just take samples from the posterior. to get a really good estimation of that integral without doing the calculus
 
 ![](images/Screenshot 2025-01-27 at 17.01.32.png){width="556"}
 
@@ -283,3 +283,31 @@ post_samples <- rbeta( 1e3, 6+1, 3+1 )
 dens(post_samples, lwd = 4, col = 2, xlab = "proportion water", adj = 0.1)
 curve(dbeta(x, 6+1, 3+1), add = TRUE, lty=2, lwd = 3)
 ```
+
+Typically 1000 samples from your posterior distribution is plenty to estimate
+
+Now we're trying to make predictions - so if you randomly sample any particular value of density from the posterior distribution based on the liklihood of seeing that value as described by the posterior distribution (so if the peak is around 0.7, you're sampling more around 0.7s than farther #s).
+
+![](images/Screenshot 2025-01-29 at 16.06.18.png)
+
+I am still kind of lost on what the above is doing, but I think one key takeaway is that with bayesian stats the uncertainty is baked in and gets carried through at every step. you're trying to take samples of the possible reality from the posterior distribution and expect what you would see if you tool more samples if the reality was that (predictive distribution for p) and then sample from that prediction to make a predictive model of the posterior based on the new data
+
+![](images/Screenshot 2025-01-29 at 16.00.17.png)
+
+```{r}
+library(rethinking)
+post_samples <- rbeta(1e4, 6+1, 3+1)
+pred_post <- sapply(post_samples, function(p) sum(sim_globe(p,10) == "W"))
+tab_post <- table(pred_post)
+for(i in 0:10) lines(c(i,i), c(0,tab_post[i+1]), lwd=4, col=4)
+```
+
+The above chunk is broken for some reason but it produces the blue graph from the last image. the blue is the posterior predictive, which is more spread out than the predictive (black) because it considers more possibilities of p, better capturing the uncertainty
+
+Sampling is a great way to get around the calculus problem and turn it into a data summary problem. MCMC methods only produces samples - you run your model, it returns samples, and we'll learn how to process those.
+
+### summary of bayesian data analysis:
+
+for each possible explanation of the data, count all the ways the data can happen. explanations with more ways to produce the data are more plausible.
+
+Bayesian inference gives you no guarantees except that it's logical. it does the best job it can taking those assumptions seriously. any stats framework that promises you more than this is hiding assumptions!
