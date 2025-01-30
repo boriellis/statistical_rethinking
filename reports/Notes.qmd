@@ -311,3 +311,7 @@ Sampling is a great way to get around the calculus problem and turn it into a da
 for each possible explanation of the data, count all the ways the data can happen. explanations with more ways to produce the data are more plausible.
 
 Bayesian inference gives you no guarantees except that it's logical. it does the best job it can taking those assumptions seriously. any stats framework that promises you more than this is hiding assumptions!
+
+### Bonus round - handling misclassification of data
+
+In reality systems aren't perfect, there's also user error influencing data - what if you write it down wrong. So for example in our first DAG there could be another thing influencing the number of water observations beyond the number tosses and the proportion of water - that would be the amount mistakes you make recording data. he gets into an example for what to do with this
