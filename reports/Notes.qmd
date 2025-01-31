@@ -7,6 +7,16 @@ format: html
 
 ## Lecture 1 notes
 
+The core issue with frequentist stats is that it's based on proving null hypotheses wrong. in reality, deductive falsification is impossible:
+
+*"(1) Hypotheses are not models. The relations among hypotheses and different kinds of models are complex. Many models correspond to the same hypothesis, and many hypotheses correspond to a single model. This makes strict falsification impossible."*
+
+In order to try to falsify a hypothesis we have to create a model to approximate it, but all models are false - trying to falsify it doesn't answer the hypothesis.
+
+*(2) Measurement matters. Even when we think the data falsify a model, another observer will debate our methods and measures. They don't trust the data. Sometimes they are right."*
+
+We need to use chance and uncertainty to discover reliable knowledge. All stats relies on this to some extent, but bayesian analysis embraces it most fully.
+
 ### DAGS
 
 There's frequently a stats discourse between Bayes and Frequentist stats - we're not going to talk about that at all really, just instead about "causal inference"
@@ -175,19 +185,19 @@ figure out what the options are (above) then,
 
 You would do the same process for each of the different options (of the original five), to get the below:
 
-![](images/Screenshot 2025-01-24 at 15.57.28.png){width="414"}
+![](images/Screenshot%202025-01-24%20at%2015.57.28.png){width="414"}
 
 the garden diagram literally becomes formulas:
 
-![](images/Screenshot 2025-01-24 at 15.59.23.png){width="410"}
+![](images/Screenshot%202025-01-24%20at%2015.59.23.png){width="410"}
 
 then you can get more data by tossing your globe again:
 
-![](images/Screenshot 2025-01-24 at 16.01.29.png){width="410"}
+![](images/Screenshot%202025-01-24%20at%2016.01.29.png){width="410"}
 
 so eventually if you have a bunch of data you have a bunch of data points to deal with:
 
-![](images/Screenshot 2025-01-24 at 16.04.03.png){width="446"}
+![](images/Screenshot%202025-01-24%20at%2016.04.03.png){width="446"}
 
 in the above, the first number getting multiplied is the number of ways to get water multiplied by the number of observations of water. The second is the number of ways to get land in that scenario multiplied by the number of observations of land. so you then get to the formula at the bottom, which is that the number of observations of water and land are a function that looks like that. I got lost on that point but am choosing to try to be okay about that.
 
@@ -195,9 +205,9 @@ Now we're talking about probability
 
 Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has
 
-2^W\ x\ 2^L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:
+2^W x 2^L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:
 
-![](images/Screenshot 2025-01-24 at 16.14.45.png){width="501"}
+![](images/Screenshot%202025-01-24%20at%2016.14.45.png){width="501"}
 
 the posterior distribution is posterior to the sample - it's after collecting the data?
 
@@ -227,21 +237,21 @@ sim_globe(p=1, N=11) #like, what if it's fully water, there should be no land!
 
 motto is test! all code has bugs! you don't want the bugs to influence the results! the simulation needs to honestly represent the model you intend, so you test that first (i think above), THEN, you code the estimator and then test it using the simulation function. that's below (we're just writing the formula into an R function). so, we made some fake data above, and then we need to make an R function that uses the fake data to tell us about the probabilities of each original scenario being the reality based on the data we observed:
 
-![](images/Screenshot 2025-01-24 at 16.27.16.png)
+![](images/Screenshot%202025-01-24%20at%2016.27.16.png)
 
 so you would then wrap sim_globe in the compute_posterior function. basically saying, with the data we got, what's the likelihood of each of the original cases:
 
-![](images/Screenshot 2025-01-24 at 16.37.43.png){width="442"}
+![](images/Screenshot%202025-01-24%20at%2016.37.43.png){width="442"}
 
 Now let's build up some intuition to move from our 4 sided globe to 10 to 20 to infinity:
 
-![](images/Screenshot 2025-01-27 at 16.43.04.png){width="552"}
+![](images/Screenshot%202025-01-27%20at%2016.43.04.png){width="552"}
 
 As you get more possibilities, the number of proportions increases, and the distribution smooths out across them - so the highest probability will get smaller as it gets spread out over more
 
 Infitinite possibilties - so, the globe is a polyhedron with an infinite number of sides. the probability of any "side" p, is still proportional to p^W^ (1-p)^L^ . with some calculus, that takes us to the "Beta" distribution:
 
-![](images/Screenshot 2025-01-27 at 16.46.43.png){width="479"}
+![](images/Screenshot%202025-01-27%20at%2016.46.43.png){width="479"}
 
 this distribution gives us the posterior probability of any particular value of p. the normalizing constant is there so that your probabilities sum to 1, and the second term is just the thing from before - \# ways to observe sample
 
@@ -249,9 +259,9 @@ your posterior distribution is the estimate for the parameter after you've incor
 
 now, we do ten tosses of our actual globe (note that when we do infinite possibilities we call it density instead of probability):
 
-![](images/Screenshot 2025-01-27 at 16.49.15.png){width="438"}
+![](images/Screenshot%202025-01-27%20at%2016.49.15.png){width="438"}
 
-![](images/Screenshot 2025-01-27 at 16.49.32.png){width="438"}
+![](images/Screenshot%202025-01-27%20at%2016.49.32.png){width="438"}
 
 so you get a refining peak of your curve as you get more and more data from tossing again and again
 
@@ -275,7 +285,7 @@ From posterior distribution to prediction
 
 -   that normally requires integral calculus, OR we can just take samples from the posterior. to get a really good estimation of that integral without doing the calculus
 
-![](images/Screenshot 2025-01-27 at 17.01.32.png){width="556"}
+![](images/Screenshot%202025-01-27%20at%2017.01.32.png){width="556"}
 
 ```{r}
 library(rethinking)
@@ -288,18 +298,18 @@ Typically 1000 samples from your posterior distribution is plenty to estimate
 
 Now we're trying to make predictions - so if you randomly sample any particular value of density from the posterior distribution based on the liklihood of seeing that value as described by the posterior distribution (so if the peak is around 0.7, you're sampling more around 0.7s than farther #s).
 
-![](images/Screenshot 2025-01-29 at 16.06.18.png)
+![](images/Screenshot%202025-01-29%20at%2016.06.18.png)
 
 I am still kind of lost on what the above is doing, but I think one key takeaway is that with bayesian stats the uncertainty is baked in and gets carried through at every step. you're trying to take samples of the possible reality from the posterior distribution and expect what you would see if you tool more samples if the reality was that (predictive distribution for p) and then sample from that prediction to make a predictive model of the posterior based on the new data
 
-![](images/Screenshot 2025-01-29 at 16.00.17.png)
+![](images/Screenshot%202025-01-29%20at%2016.00.17.png)
 
 ```{r}
 library(rethinking)
 post_samples <- rbeta(1e4, 6+1, 3+1)
 pred_post <- sapply(post_samples, function(p) sum(sim_globe(p,10) == "W"))
 tab_post <- table(pred_post)
-for(i in 0:10) lines(c(i,i), c(0,tab_post[i+1]), lwd=4, col=4)
+#for(i in 0:10) lines(c(i,i), c(0,tab_post[i+1]), lwd=4, col=4)
 ```
 
 The above chunk is broken for some reason but it produces the blue graph from the last image. the blue is the posterior predictive, which is more spread out than the predictive (black) because it considers more possibilities of p, better capturing the uncertainty

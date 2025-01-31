@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Notes_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Notes_files/libs/quarto-html/quarto.js"></script>
+<script src="Notes_files/libs/quarto-html/popper.min.js"></script>
+<script src="Notes_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Notes_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Notes_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Notes_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Notes_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Notes_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Notes_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Notes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="week-1---the-golem-of-prague" class="level1">
+<h1>Week 1 - The Golem of Prague</h1>
+<section id="lecture-1-notes" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-1-notes">Lecture 1 notes</h2>
+<p>The core issue with frequentist stats is that it’s based on proving null hypotheses wrong. in reality, deductive falsification is impossible:</p>
+<p><em>“(1) Hypotheses are not models. The relations among hypotheses and different kinds of models are complex. Many models correspond to the same hypothesis, and many hypotheses correspond to a single model. This makes strict falsification impossible.”</em></p>
+<p>In order to try to falsify a hypothesis we have to create a model to approximate it, but all models are false - trying to falsify it doesn’t answer the hypothesis.</p>
+<p><em>(2) Measurement matters. Even when we think the data falsify a model, another observer will debate our methods and measures. They don’t trust the data. Sometimes they are right.”</em></p>
+<p>We need to use chance and uncertainty to discover reliable knowledge. All stats relies on this to some extent, but bayesian analysis embraces it most fully.</p>
+<section id="dags" class="level3">
+<h3 class="anchored" data-anchor-id="dags">DAGS</h3>
+<p>There’s frequently a stats discourse between Bayes and Frequentist stats - we’re not going to talk about that at all really, just instead about “causal inference”</p>
+<p>For <strong>statistical</strong> models to produce any scientific insight, they require additional <strong>scientific</strong> (causal) models. The reasons for a stats analysis are not found in the data, but instead in the causes of the data: causes can’t get extracted from the data alone, need an additional causal model. “no causes in, no causes out!”</p>
+<p>What is causal inference?</p>
+<ul>
+<li><p>more than association between variables - associations run both directions - there’s no causation in there.</p></li>
+<li><p>instead, causal inference is a prediction of intervention - it’s the prediction of the consequences of changing one variable on the others</p>
+<ul>
+<li>if you look outside and trees are swaying, you know that wind is causing the trees to sway. knowing the cause means being able to predict the consequences of an intervention. the “what if I do this?” question. There’s nothing within the data themselves to say that, you just know something extra.</li>
+</ul></li>
+<li><p>or, can be thought of as the imputation.</p>
+<ul>
+<li>knowing the cause means being able to construct unobserved counterfactual outcomes “what if I had done something else?”</li>
+</ul></li>
+</ul>
+<p>Causes are not optional!</p>
+<ul>
+<li>even when the goal is descriptive science, you still need a causal model: the sample differs from the population - describing the population requires causal thinking about why it’s different from the population</li>
+</ul>
+<p>Now back to DAGS:</p>
+<ul>
+<li><p>Directed Acyclic Graphs</p>
+<ul>
+<li><p>they’re heuristic causal models that clarify scientific thinking - if you change an variable at the start of an arrow, it will change the thing at the end of the arrow: “What can we decide, without additional assumptions?”. These are the gateway to scientific modeling.</p></li>
+<li><p>basically they’re letters with arrows between talking about what influences what.</p></li>
+<li><p>different questions have different models - each causal query would require a different model.</p></li>
+<li><p><img src="images/Tred-G.svg.png" class="img-fluid" width="277"></p>
+<ul>
+<li><p>comes down to choosing good control variables. there’s also bad controls - you can’t just add everything.</p></li>
+<li><p>DAGS help you understand how to test/refine the causal model</p></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="golems" class="level3">
+<h3 class="anchored" data-anchor-id="golems">GOLEMS</h3>
+<p>the golem of prague was built for a particular task but blind to the intent, so harm happened accidentally along the way - so he got decommissioned NO MORE GOLEM!</p>
+<p>We’re also designing a lot of golems - we’re making statistical models that execute the instructions we give them but they’re blind to our intent. they’re powerful, they’re good, but they have no wisdom or foresight and applied in the wrong context they can be dangerous</p>
+<p>we’re traditionally taught flowcharts of what to do with what types of data (if you have x type of data, use y test). But, this approach is limiting! focuses on rejecting null hypotheses, doesn’t teach the relationship between the research and the test.</p>
+<p>We are doing observational work, and in these contexts null models are rarely unique. they don’t really work - what’s a null population dynamics model? This is apparently not sensible</p>
+<p>SO! Research requires more than null robots. We’re making golems, so we’ll need: generative causal models (built on DAGs initially), and then use those to make statistical models justified by generative models and questions (called estimands, which are the quantities that we’re trying to estimate by statistical analysis). this is an effective way to produce estimates I guess.</p>
+</section>
+<section id="justifying-controls" class="level3">
+<h3 class="anchored" data-anchor-id="justifying-controls">Justifying “controls”</h3>
+<p><img src="images/Tred-G.svg.png" class="img-fluid" width="277"></p>
+<p>When looking at the above model, the relationships between the variables affecting any given variable make it hard to pick control variables. apparently we’ll later learn a way to pick which variables are right based on this to make up the “adjustment set” (I think, the ones to include?)</p>
+<p>We have finite data but infinite problems. a DAG is not enough - we need a generative model to design inference. He thinks that the way to do this is a bayesian framework to get the best outcome with the least fuss.</p>
+<p>Bayes is practical, not philosophical - in theory sometimes Bayes is overkill - in theory in simple analyses there’s little difference between frequentist stats and bayesian stats and bayes adds mess. but in REALITY, ecological analyses have a bunch of measurement error, missing data, latent variables, etc - and bayes handles this with less fuss!</p>
+<p>He thinks the statistics wars are over on this point. Bayes is no longer controversial or marginalized - bayesian methods are routine, it’s just that we’re waiting for teaching to catch up.</p>
+</section>
+<section id="owls" class="level3">
+<h3 class="anchored" data-anchor-id="owls">OWLS!</h3>
+<p>this is our workflow!</p>
+<p>he’s trying to teach us the intermediate steps between drawing some circles and drawing the rest of the owl. we’re going to try to document all the steps of drawing the owl as it were, and i think we’re going to do that using R.</p>
+<p>drawing the bayesian owl:</p>
+<ul>
+<li><p>necessary because scientific data analysis is like software engineering done by amateurs. We do a lot of scripting, which is a simple kind of programming, and should be treated as such!</p></li>
+<li><p>three modes of drawing our owls:</p>
+<ul>
+<li><p>understand what you’re doing - don’t just make code salad</p></li>
+<li><p>document your work to reduce error</p></li>
+<li><p>we also want to be able to produce a respectable scientific workflow</p></li>
+</ul></li>
+<li><p>our basic owl steps:</p>
+<ul>
+<li><p>outline a theoretical estimand (figure out what you want to know)</p></li>
+<li><p>scientific (causal) models (this is like a formalized conceptual model, the DAG)/generative models (this is like what the math would actually look like written out)</p></li>
+<li><p>use first two to build statistical models (statistical models are the bridge between declaring what you think is happening vs actually crunching the numbers)</p></li>
+<li><p>then, use simulation from the generative model to validate that the statistical model yields our theoretical estimand</p></li>
+<li><p>analyze the real data</p></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="lecture-2-notes-the-garden-of-forking-data" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-2-notes-the-garden-of-forking-data">Lecture 2 notes: The Garden of Forking Data</h2>
+<p>We’re going to try to estimate the proportion of our earth that is covered by water, imagining that we have a globe that we can throw in the air, and that every time we catch the globe with one finger we mark down if it’s land or water. do that again and again to get a sample, use that to estimate the proportion of the surface that’s water.</p>
+<p>Our <strong>estimand</strong> is the proportion of the globe that’s covered by water.</p>
+<p>so:</p>
+<ul>
+<li><p>how should we use the sample to get at the estimand to produce an estimate?</p></li>
+<li><p>how to produce a summary of that?</p></li>
+<li><p>and how to represent uncertainty of that estimate?</p></li>
+</ul>
+<p>so:</p>
+<p>1) define generative model of the sample</p>
+<p>2) define a specific estimand</p>
+<p>3) design a statistical way to produce an estimate</p>
+<p>4) test 3) using 1)</p>
+<p>5) analyze sample, summarize</p>
+<section id="step-1---generative-model-of-the-globe" class="level3">
+<h3 class="anchored" data-anchor-id="step-1---generative-model-of-the-globe">step 1 - generative model of the globe</h3>
+<ul>
+<li><p>begin conceptually - how do the variables influence one another?</p>
+<ul>
+<li><p>there’s <em>p</em>, the proportion of water</p></li>
+<li><p>there’s N number of tosses</p></li>
+<li><p>W number of water <strong>observations</strong></p></li>
+<li><p>L number of land <strong>observations</strong></p></li>
+</ul></li>
+<li><p>now want to write down the relationships between:</p>
+<ul>
+<li><p>N influences W and L (more times you toss globe, bigger #s of W and L) so arrows from N to W and L representing causal influences (if you change N, W and L change)</p></li>
+<li><p>p influences W and L (if there’s a different proportion, it would change the numbers of W and L)</p></li>
+</ul></li>
+<li><p>the above is the written out DAG. to make this generative, you need to write out what the arrows mean exactly -</p>
+<ul>
+<li><p><em>W,L = F(p,N)</em></p></li>
+<li><p>this says that W and L are some function of p and N</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="bayesian-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-data-analysis">Bayesian data analysis</h3>
+<ul>
+<li><p>for each possible explanation of the sample, count all the ways the sample could happen. Explanations with more ways to produce the sample are more likely to be true.</p></li>
+<li><p>He calls this, the “Garden of Forking Data” - some of the things that happen in the process of sampling are from how we’re collecting the data, some are from natural processes, but they all influence the sample.</p></li>
+</ul>
+<p>For each possible proportion of water on the globe, count all the ways the sample of tosses could happen. Proportions with more ways to produce the sample are more plausible.</p>
+</section>
+<section id="step-3---design-a-statistical-way-to-produce-estimate" class="level3">
+<h3 class="anchored" data-anchor-id="step-3---design-a-statistical-way-to-produce-estimate">Step 3 - design a statistical way to produce estimate</h3>
+<p>I think we’re now setting up how we could do this simply if we had a four sided globe</p>
+<p><img src="images/IMG_8202.jpg" class="img-fluid" width="445"></p>
+<p>we have 5 possibilities for our globe, we did 3 tosses, got water land water.</p>
+<p>you do this for each of the possibiliites (for 25% water shown below)</p>
+<p><img src="images/FullSizeRender.jpg" class="img-fluid" width="401"></p>
+<p>figure out what the options are (above) then,</p>
+<p><img src="images/IMG_8204.jpg" class="img-fluid" width="377"></p>
+<p>You would do the same process for each of the different options (of the original five), to get the below:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2015.57.28.png" class="img-fluid" width="414"></p>
+<p>the garden diagram literally becomes formulas:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2015.59.23.png" class="img-fluid" width="410"></p>
+<p>then you can get more data by tossing your globe again:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.01.29.png" class="img-fluid" width="410"></p>
+<p>so eventually if you have a bunch of data you have a bunch of data points to deal with:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.04.03.png" class="img-fluid" width="446"></p>
+<p>in the above, the first number getting multiplied is the number of ways to get water multiplied by the number of observations of water. The second is the number of ways to get land in that scenario multiplied by the number of observations of land. so you then get to the formula at the bottom, which is that the number of observations of water and land are a function that looks like that. I got lost on that point but am choosing to try to be okay about that.</p>
+<p>Now we’re talking about probability</p>
+<p>Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has</p>
+<p>2<sup>W&nbsp;x&nbsp;2</sup>L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.14.45.png" class="img-fluid" width="501"></p>
+<p>the posterior distribution is posterior to the sample - it’s after collecting the data?</p>
+</section>
+<section id="step-4---now-test-step-3-using-step-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-4---now-test-step-3-using-step-1">Step 4 - now test step 3 using step 1</h3>
+<p>we always want to test before we estimate. to do that, we first code a generative simulation, then code an estimator. then we test the estimator with the generative simulation. this makes the data that we can then use to run our formula which is asking about what the reality is based on the data we collect. so below, we’re making a function that produces some observations based on the proportion of water on our globe:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#function to toss a globe covered p by water N times</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sim_globe <span class="ot">&lt;-</span> <span class="cf">function</span> (<span class="at">p =</span> <span class="fl">0.7</span>, <span class="at">N=</span><span class="dv">9</span>){</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"W"</span>, <span class="st">"L"</span>), <span class="co">#possible observations</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">size =</span> N, <span class="co">#number tosses</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">prob =</span> <span class="fu">c</span>(p,<span class="dv">1</span><span class="sc">-</span>p), <span class="co">#probability of each possible observation</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_globe</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "W" "W" "L" "L" "W" "W" "L" "W" "L"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="fu">sim_globe</span>(<span class="at">p=</span><span class="fl">0.5</span>, <span class="at">N =</span> <span class="dv">9</span>), <span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+ [1,] "W"  "W"  "W"  "W"  "L"  "L"  "L"  "L"  "W"  "W"  
+ [2,] "L"  "L"  "W"  "L"  "W"  "L"  "L"  "L"  "L"  "W"  
+ [3,] "L"  "L"  "L"  "W"  "L"  "W"  "W"  "W"  "L"  "W"  
+ [4,] "W"  "L"  "W"  "L"  "W"  "L"  "L"  "W"  "W"  "L"  
+ [5,] "W"  "W"  "W"  "L"  "W"  "L"  "L"  "W"  "L"  "L"  
+ [6,] "L"  "W"  "L"  "W"  "W"  "W"  "L"  "L"  "L"  "W"  
+ [7,] "L"  "L"  "L"  "W"  "L"  "W"  "W"  "W"  "L"  "L"  
+ [8,] "W"  "W"  "W"  "W"  "W"  "L"  "L"  "W"  "L"  "W"  
+ [9,] "W"  "L"  "L"  "W"  "W"  "W"  "W"  "W"  "W"  "W"  </code></pre>
+</div>
+</div>
+<p>test in extreme settings:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_globe</span>(<span class="at">p=</span><span class="dv">1</span>, <span class="at">N=</span><span class="dv">11</span>) <span class="co">#like, what if it's fully water, there should be no land!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "W" "W" "W" "W" "W" "W" "W" "W" "W" "W" "W"</code></pre>
+</div>
+</div>
+<p>motto is test! all code has bugs! you don’t want the bugs to influence the results! the simulation needs to honestly represent the model you intend, so you test that first (i think above), THEN, you code the estimator and then test it using the simulation function. that’s below (we’re just writing the formula into an R function). so, we made some fake data above, and then we need to make an R function that uses the fake data to tell us about the probabilities of each original scenario being the reality based on the data we observed:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.27.16.png" class="img-fluid"></p>
+<p>so you would then wrap sim_globe in the compute_posterior function. basically saying, with the data we got, what’s the likelihood of each of the original cases:</p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.37.43.png" class="img-fluid" width="442"></p>
+<p>Now let’s build up some intuition to move from our 4 sided globe to 10 to 20 to infinity:</p>
+<p><img src="images/Screenshot%202025-01-27%20at%2016.43.04.png" class="img-fluid" width="552"></p>
+<p>As you get more possibilities, the number of proportions increases, and the distribution smooths out across them - so the highest probability will get smaller as it gets spread out over more</p>
+<p>Infitinite possibilties - so, the globe is a polyhedron with an infinite number of sides. the probability of any “side” p, is still proportional to p<sup>W</sup> (1-p)<sup>L</sup> . with some calculus, that takes us to the “Beta” distribution:</p>
+<p><img src="images/Screenshot%202025-01-27%20at%2016.46.43.png" class="img-fluid" width="479"></p>
+<p>this distribution gives us the posterior probability of any particular value of p.&nbsp;the normalizing constant is there so that your probabilities sum to 1, and the second term is just the thing from before - # ways to observe sample</p>
+<p>your posterior distribution is the estimate for the parameter after you’ve incorporated data from your prior. That’s your best estimate of whatever you’re trying to estimate. It can take any form. the beta distribution is the shape of the posterior that you want when you have a probability between 0 and 1 that you’re trying to estimate</p>
+<p>now, we do ten tosses of our actual globe (note that when we do infinite possibilities we call it density instead of probability):</p>
+<p><img src="images/Screenshot%202025-01-27%20at%2016.49.15.png" class="img-fluid" width="438"></p>
+<p><img src="images/Screenshot%202025-01-27%20at%2016.49.32.png" class="img-fluid" width="438"></p>
+<p>so you get a refining peak of your curve as you get more and more data from tossing again and again</p>
+<p>some lessons from this!</p>
+<ul>
+<li><p>with bayesian data, there’s no minimum sample size. don’t get confused from non-bayesian stats - bayesian inference is different in a lot of ways. every time you add more data/update, your estimate improves, but it is “correct” as an estimate based on the data you have available regardless of the sample size.</p></li>
+<li><p>the shape of the curve embodies the sample size.</p></li>
+<li><p>no point estimates in bayesian inference. you could for the sake of communication talk about points on the distribution, like its mode and mean, but neither of these points is special as a point estimate. You want to work with the whole distribution and use that to make your predictions. THE DISTRIBUTION IS THE ESTIMATE. ALWAYS USE THE ENTIRE DISTRIBUTION.</p></li>
+<li><p>no one true interval. intervals are not important in bayesian inference, they’re just summaries of the distribition. the interval just communicates shape of the posterier - to use 95% is obvious superstition - nothing magical happens at the boundary. it’s still the shape of the whole distribution that matters!</p></li>
+</ul>
+</section>
+<section id="step-5---analyze-the-sample-and-summarize" class="level3">
+<h3 class="anchored" data-anchor-id="step-5---analyze-the-sample-and-summarize">Step 5 - analyze the sample and summarize!</h3>
+<p>From posterior distribution to prediction</p>
+<ul>
+<li><p>implications of the model depend upon the entire posterior.</p></li>
+<li><p>They must average any inference over the entire posterior</p></li>
+<li><p>that normally requires integral calculus, OR we can just take samples from the posterior. to get a really good estimation of that integral without doing the calculus</p></li>
+</ul>
+<p><img src="images/Screenshot%202025-01-27%20at%2017.01.32.png" class="img-fluid" width="556"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: cmdstanr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is cmdstanr version 0.8.1.9000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStan path: /Users/aspenellis/.cmdstan/cmdstan-2.36.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStan version: 2.36.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: posterior</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'posterior' was built under R version 4.4.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is posterior version 1.6.0.9000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'posterior'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    mad, sd, var</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    %in%, match</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: parallel</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>rethinking (Version 2.42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rethinking'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    rstudent</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>post_samples <span class="ot">&lt;-</span> <span class="fu">rbeta</span>( <span class="fl">1e3</span>, <span class="dv">6</span><span class="sc">+</span><span class="dv">1</span>, <span class="dv">3</span><span class="sc">+</span><span class="dv">1</span> )</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dens</span>(post_samples, <span class="at">lwd =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"proportion water"</span>, <span class="at">adj =</span> <span class="fl">0.1</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, <span class="dv">6</span><span class="sc">+</span><span class="dv">1</span>, <span class="dv">3</span><span class="sc">+</span><span class="dv">1</span>), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Notes_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Typically 1000 samples from your posterior distribution is plenty to estimate</p>
+<p>Now we’re trying to make predictions - so if you randomly sample any particular value of density from the posterior distribution based on the liklihood of seeing that value as described by the posterior distribution (so if the peak is around 0.7, you’re sampling more around 0.7s than farther #s).</p>
+<p><img src="images/Screenshot%202025-01-29%20at%2016.06.18.png" class="img-fluid"></p>
+<p>I am still kind of lost on what the above is doing, but I think one key takeaway is that with bayesian stats the uncertainty is baked in and gets carried through at every step. you’re trying to take samples of the possible reality from the posterior distribution and expect what you would see if you tool more samples if the reality was that (predictive distribution for p) and then sample from that prediction to make a predictive model of the posterior based on the new data</p>
+<p><img src="images/Screenshot%202025-01-29%20at%2016.00.17.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>post_samples <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="fl">1e4</span>, <span class="dv">6</span><span class="sc">+</span><span class="dv">1</span>, <span class="dv">3</span><span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>pred_post <span class="ot">&lt;-</span> <span class="fu">sapply</span>(post_samples, <span class="cf">function</span>(p) <span class="fu">sum</span>(<span class="fu">sim_globe</span>(p,<span class="dv">10</span>) <span class="sc">==</span> <span class="st">"W"</span>))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>tab_post <span class="ot">&lt;-</span> <span class="fu">table</span>(pred_post)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#for(i in 0:10) lines(c(i,i), c(0,tab_post[i+1]), lwd=4, col=4)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The above chunk is broken for some reason but it produces the blue graph from the last image. the blue is the posterior predictive, which is more spread out than the predictive (black) because it considers more possibilities of p, better capturing the uncertainty</p>
+<p>Sampling is a great way to get around the calculus problem and turn it into a data summary problem. MCMC methods only produces samples - you run your model, it returns samples, and we’ll learn how to process those.</p>
+</section>
+<section id="summary-of-bayesian-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-bayesian-data-analysis">summary of bayesian data analysis:</h3>
+<p>for each possible explanation of the data, count all the ways the data can happen. explanations with more ways to produce the data are more plausible.</p>
+<p>Bayesian inference gives you no guarantees except that it’s logical. it does the best job it can taking those assumptions seriously. any stats framework that promises you more than this is hiding assumptions!</p>
+</section>
+<section id="bonus-round---handling-misclassification-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-round---handling-misclassification-of-data">Bonus round - handling misclassification of data</h3>
+<p>In reality systems aren’t perfect, there’s also user error influencing data - what if you write it down wrong. So for example in our first DAG there could be another thing influencing the number of water observations beyond the number tosses and the proportion of water - that would be the amount mistakes you make recording data. he gets into an example for what to do with this</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
