@@ -111,7 +111,13 @@ drawing the bayesian owl:
 
 ## Lecture 2 notes: The Garden of Forking Data
 
-We're going to try to estimate the proportion of our earth that is covered by water, imagining that we have a globe that we can throw in the air, and that every time we catch the globe with one finger we mark down if it's land or water. do that again and again to get a sample, use that to estimate the proportion of the surface that's water.
+Okay, so in stats there is a small world and a big world. The small world is the self contained logical model of the world that we're creating. The big world is the actual world - the broader context in which we deploy the model. Bayesian stats let's us tidily pass back and forth between worlds, making our guesses and then updating them as we check them against how they perform in the big world.
+
+### We're going to start by working in the small world. 
+
+he ways that bayesian inference works is that we are considering all of the things that could have happened in order to make good inference about what did happen. As we get more information about what did happen, we get to prune out some alternatives, refining our inference about what did happen. What it produces is ranked hypotheses - that can't guarantee a correct answer, but it can help us do a good job of presenting our best possible answer based on the information we have.
+
+As an example, We're going to try to estimate the proportion of our earth that is covered by water, imagining that we have a globe that we can throw in the air, and that every time we catch the globe with one finger we mark down if it's land or water. do that again and again to get a sample, use that to estimate the proportion of the surface that's water.
 
 Our **estimand** is the proportion of the globe that's covered by water.
 
@@ -135,7 +141,7 @@ so:
 
 5\) analyze sample, summarize
 
-### step 1 - generative model of the globe
+#### step 1 - generative model of the globe
 
 -   begin conceptually - how do the variables influence one another?
 
@@ -159,7 +165,7 @@ so:
 
     -   this says that W and L are some function of p and N
 
-### Bayesian data analysis
+#### Bayesian data analysis
 
 -   for each possible explanation of the sample, count all the ways the sample could happen. Explanations with more ways to produce the sample are more likely to be true.
 
@@ -167,7 +173,7 @@ so:
 
 For each possible proportion of water on the globe, count all the ways the sample of tosses could happen. Proportions with more ways to produce the sample are more plausible.
 
-### Step 3 - design a statistical way to produce estimate
+#### Step 3 - design a statistical way to produce estimate
 
 I think we're now setting up how we could do this simply if we had a four sided globe
 
@@ -191,7 +197,7 @@ the garden diagram literally becomes formulas:
 
 ![](images/Screenshot%202025-01-24%20at%2015.59.23.png){width="410"}
 
-then you can get more data by tossing your globe again:
+then you can get more data by tossing your globe again, and then multiplying your previous counts by your new ways that each conjecture could produce the new datapoint.
 
 ![](images/Screenshot%202025-01-24%20at%2016.01.29.png){width="410"}
 
@@ -203,13 +209,21 @@ in the above, the first number getting multiplied is the number of ways to get w
 
 Now we're talking about probability
 
-Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has
-
-2^W x 2^L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:
+Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has 2^W x 2^L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:
 
 ![](images/Screenshot%202025-01-24%20at%2016.14.45.png){width="501"}
 
 the posterior distribution is posterior to the sample - it's after collecting the data?
+
+Some definitions that are also useful:
+
+• A conjectured proportion of blue draws, p, is usually called a PARAMETER value. It's just a way of indexing possible explanations of the data.
+
+• The relative number of ways that a value *p* can produce the data is usually called a LIKELIHOOD. It is derived by enumerating all the possible data sequences that could have happened and then eliminating those sequences inconsistent with the data.
+
+• The prior plausibility of any specific *p* is usually called the PRIOR PROBABILITY.
+
+• The new, updated plausibility of any specific *p* is usually called the POSTERIOR PROBABILITY.
 
 ### Step 4 - now test step 3 using step 1
 
@@ -274,6 +288,22 @@ some lessons from this!
 -   no point estimates in bayesian inference. you could for the sake of communication talk about points on the distribution, like its mode and mean, but neither of these points is special as a point estimate. You want to work with the whole distribution and use that to make your predictions. THE DISTRIBUTION IS THE ESTIMATE. ALWAYS USE THE ENTIRE DISTRIBUTION.
 
 -   no one true interval. intervals are not important in bayesian inference, they're just summaries of the distribition. the interval just communicates shape of the posterier - to use 95% is obvious superstition - nothing magical happens at the boundary. it's still the shape of the whole distribution that matters!
+
+## Overview on the inside world:
+
+Components of a bayesian model:
+
+In the previous section, we counted three things:
+
+\(1\) The number of ways each conjecture could produce an observation
+
+\(2\) The accumulated number of ways each conjecture could produce the entire data
+
+\(3\) The initial plausibility of each conjectured cause of the data
+
+to count those things, we choose distributions and devices to represent the number of ways they can happen. Those distributions and devices are a liklihood function, some number of parameters, and a prior (normally chosen in that order).
+
+STOPPED READING ON FRIDAY AT 2.3.1 - LIKLIHOOD
 
 ### Step 5 - analyze the sample and summarize!
 
