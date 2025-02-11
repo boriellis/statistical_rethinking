@@ -415,12 +415,6 @@ we'll stick with grid approximation for this chapter and next, but we'll need to
 
 once you get into multilevel (mixed effects) models, you've got crazy numbers of parameters. that means we've gotten funky with trying to do model fitting. One such is Mixed Chain Monte Carlo models (MCMC). it's really not intuitive. THIS IS WHERE YOU SAMPLE FROM THE POSTERIOR! You end up with a collection of parameter values, and the frequencies of these values correspond to the posterior plausibilities. You can then build a picture of the posterior from the histogram of these samples.
 
-				
-
-			
-
-		
-
 	
 
 ##### 
