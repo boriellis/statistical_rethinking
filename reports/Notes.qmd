@@ -289,7 +289,7 @@ some lessons from this!
 
 -   no one true interval. intervals are not important in bayesian inference, they're just summaries of the distribition. the interval just communicates shape of the posterier - to use 95% is obvious superstition - nothing magical happens at the boundary. it's still the shape of the whole distribution that matters!
 
-## Overview on the inside world:
+### Overview on the inside world:
 
 Components of a bayesian model:
 
@@ -301,11 +301,130 @@ In the previous section, we counted three things:
 
 \(3\) The initial plausibility of each conjectured cause of the data
 
-to count those things, we choose distributions and devices to represent the number of ways they can happen. Those distributions and devices are a liklihood function, some number of parameters, and a prior (normally chosen in that order).
+to count those things, we choose distributions and devices to represent the number of ways they can happen.
 
-STOPPED READING ON FRIDAY AT 2.3.1 - LIKLIHOOD
+#### Variables
 
-### Step 5 - analyze the sample and summarize!
+in our globe tossing example, there are three variables - the proportion of water, the number of water observations, and the number of land observations. the proportion can't be observed, and is therefore called a **parameter** - but we can infer it from the other variables.
+
+#### Definitions
+
+For our observed water and land observations, we define the plausibility of that combination of observations for any specific value of the proportion of water. So that we don't have to count, we can use a function that tells us the right plausibility. in non-bayes stats, these are called **likelihoods:** mathematical formulas that specify the plausibility of the data. It's just the distribution function assigned to an observed variable. It tells you the probability of any possible observation for any possible condition of the (small) world. you can make your own from assumptions of my story for how the data would arise, or use one that are commonly used (which we'll learn more about later). But for example, in our globe tossing analogy, we end up with a binomial distribution, because every toss is indpendent of the other tosses, and the probability of a water observation is the same on every toss - this is a common "coin tossing" distribution.
+
+![](images/Screenshot 2025-02-10 at 16.29.04.png){width="481"}
+
+Sometimes, likelihoods are written *L*(*p*/*w, n*): the likelihood of *p*, conditional on *w*and *n*. Note however that this notation reverses what is on the left side of the \| symbol. Just keep in mind that the job of the likelihood is to tell us the relative number of ways to see the data *w*, given values for *p* and *n*.
+
+Can do this in R with the binomial function:
+
+```{r}
+dbinom( 6 , size=9 , prob=0.5 ) 
+```
+
+the above is the relative number of ways to get 6 water observations if you sample 9 times if the probability of getting water is 0.5.
+
+worth noting that the most influential assumptions in both bayesian and non-bayesian approaches are the likelihood functions and their relationships to the parameters!
+
+Now, the distributions we assign to observed variables typically have their own, unobserved variables: the **parameter**s. we still have to define those even though we can't observe them. a Bayesian machine needs a defined **Prior distribution** for that parameter. Once you have a previous estimate that can become the prior (like when we kept rerunning with more globe tosses) - but at the start, it's a little trickier to put in a good prior. We'll get into that more in later chapters.
+
+![](images/Screenshot 2025-02-10 at 17.00.50.png)
+
+					
+
+The key lesson is that the posterior is proportional to the product of the prior and the probability of the data. Why? Because for each specific value of p, the number of paths through the garden of forking data is the product of the prior number of paths and the new number of paths.
+	
+![](images/Screenshot 2025-02-10 at 17.09.21.png){width="388"}
+
+#### Motors
+
+ok, so our model is a machine (a golem) and its built on definitions for liklihood, the parameters, and the prior. but at its heart is a motor that conditions the prior on the data. We'll talk about three different conditioning engines:					
+
+\(1\) Grid approximation\
+
+(2) Quadratic approximation\
+
+(3) Markov chain Monte Carlo (MCMC)
+
+##### Grid approximation
+
+This is mostly useful to explain how bayes theory works, it'll get replaced later by better tools (it can't handle large amounts of data well). This works by, at any particular value of a parameter, mulitplying the prior probability of that value by the likelihood at that value. you repeat this for a selected grid of values and it approximates the exact posterior distribution. Here are the steps to do this, with r code:
+
+```{r}
+# define grid (decide how many points you want and make a list of those parameter values)
+p_grid <- seq( from=0 , to=1 , length.out=20 )
+# define prior at each parameter value in grid
+prior <- rep( 1 , 20 )
+# compute likelihood at each value in grid
+likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+# compute product of likelihood and prior 
+unstd.posterior <- likelihood * prior
+# standardize the posterior, so it sums to 1
+posterior <- unstd.posterior / sum(unstd.posterior)
+```
+
+that makes a grid of 20 values. to display them:
+
+```{r}
+plot( p_grid , posterior , type="b" ,
+    xlab="probability of water" , ylab="posterior probability" )
+mtext( "20 points" )
+```
+
+the below chunk tries it with different priors:
+
+```{r}
+
+# define grid (decide how many points you want and make a list of those parameter values)
+p_grid <- seq( from=0 , to=1 , length.out=20 )
+# define prior at each parameter value in grid
+prior <- ifelse( p_grid < 0.5 , 0 , 1 )
+# compute likelihood at each value in grid
+likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+# compute product of likelihood and prior 
+unstd.posterior <- likelihood * prior
+# standardize the posterior, so it sums to 1
+posterior <- unstd.posterior / sum(unstd.posterior)
+
+plot( p_grid , posterior , type="b" ,
+    xlab="probability of water" , ylab="posterior probability" )
+mtext( "20 points" )
+
+# define grid (decide how many points you want and make a list of those parameter values)
+p_grid <- seq( from=0 , to=1 , length.out=20 )
+# define prior at each parameter value in grid
+prior <- exp( -5*abs( p_grid - 0.5 ) )
+# compute likelihood at each value in grid
+likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+# compute product of likelihood and prior 
+unstd.posterior <- likelihood * prior
+# standardize the posterior, so it sums to 1
+posterior <- unstd.posterior / sum(unstd.posterior)
+
+plot( p_grid , posterior , type="b" ,
+    xlab="probability of water" , ylab="posterior probability" )
+mtext( "20 points" )
+
+
+```
+
+##### Quadratic approximation
+
+we'll stick with grid approximation for this chapter and next, but we'll need to upgrade in the future, because as parameters in models increase so do do the number of values you have to consider in the grid increases and then it gets wacky weird. quadratic approximation is an approach that you can use with some more success here - works bc near the peak of a posterior distribution it looks pretty normal? It doesn't work very well with small sample sizes. I did not take detailed notes on how it works.
+
+##### MCMC
+
+once you get into multilevel (mixed effects) models, you've got crazy numbers of parameters. that means we've gotten funky with trying to do model fitting. One such is Mixed Chain Monte Carlo models (MCMC). it's really not intuitive. THIS IS WHERE YOU SAMPLE FROM THE POSTERIOR! You end up with a collection of parameter values, and the frequencies of these values correspond to the posterior plausibilities. You can then build a picture of the posterior from the histogram of these samples.
+
+				
+
+			
+
+		
+
+	
+
+##### 
+Step 5 - analyze the sample and summarize!
 
 From posterior distribution to prediction
 
