@@ -532,6 +532,72 @@ I think this summarizes nicely the thing that was confusing me in the lecture:
 
 I think in the above graph what we're doing is progogating the uncertainty of p forward as we're making predictions. so if we have our data and we summarize it with our posterior distribution, and then want to make guesses about what will happen based on that (envisioning birds flying at collision risk height?) and we want to progogate that uncertainty in p forward!
 
+Easy problems from the chapter:
+
+```{r}
+p_grid <- seq( from=0 , to=1 , length.out=1000 )
+
+
+prior <- rep( 1 , 1000 )
+
+
+likelihood <- dbinom( 6 , size=9 , prob=p_grid )
+
+
+posterior <- likelihood * prior
+
+
+posterior <- posterior / sum(posterior)
+
+
+set.seed(100)
+
+
+samples <- sample( p_grid , prob=posterior , size=1e4 , replace=TRUE )
+```
+
+**3E1.**  How much posterior probability lies below p = 0.2?
+
+```{r}
+sum( samples < 0.2 ) / 1e4
+```
+
+**3E2.**  How much posterior probability lies above p=0.8 ?
+
+```{r}
+sum( samples > 0.8 ) / 1e4
+```
+
+**3E3.**  How much posterior probability lies between p= 0.2 and p = 0.8 ?
+
+```{r}
+sum( samples > 0.2 & samples < 0.8) / 1e4
+```
+
+**3E4.**  20% of the posterior probability lies below which value of *p*?
+
+```{r}
+quantile( samples , 0.2 )
+```
+
+**3E5.**  20% of the posterior probability lies above which value of *p*?
+
+```{r}
+quantile( samples , 0.8 )
+```
+
+**3E6.**  Which values of *p* contain the narrowest interval equal to 66% of the posterior probability?
+
+```{r}
+HPDI( samples , prob=0.66 )
+```
+
+**3E7.**  Which values of *p* contain 66% of the posterior probability, assuming equal posterior probability both below and above the interval?
+
+```{r}
+PI( samples , prob=0.66 )
+```
+
 ### summary of bayesian data analysis:
 
 for each possible explanation of the data, count all the ways the data can happen. explanations with more ways to produce the data are more plausible.
