@@ -113,7 +113,7 @@ drawing the bayesian owl:
 
 Okay, so in stats there is a small world and a big world. The small world is the self contained logical model of the world that we're creating. The big world is the actual world - the broader context in which we deploy the model. Bayesian stats let's us tidily pass back and forth between worlds, making our guesses and then updating them as we check them against how they perform in the big world.
 
-### We're going to start by working in the small world. 
+### We're going to start by working in the small world.
 
 he ways that bayesian inference works is that we are considering all of the things that could have happened in order to make good inference about what did happen. As we get more information about what did happen, we get to prune out some alternatives, refining our inference about what did happen. What it produces is ranked hypotheses - that can't guarantee a correct answer, but it can help us do a good job of presenting our best possible answer based on the information we have.
 
@@ -311,7 +311,7 @@ in our globe tossing example, there are three variables - the proportion of wate
 
 For our observed water and land observations, we define the plausibility of that combination of observations for any specific value of the proportion of water. So that we don't have to count, we can use a function that tells us the right plausibility. in non-bayes stats, these are called **likelihoods:** mathematical formulas that specify the plausibility of the data. It's just the distribution function assigned to an observed variable. It tells you the probability of any possible observation for any possible condition of the (small) world. you can make your own from assumptions of my story for how the data would arise, or use one that are commonly used (which we'll learn more about later). But for example, in our globe tossing analogy, we end up with a binomial distribution, because every toss is indpendent of the other tosses, and the probability of a water observation is the same on every toss - this is a common "coin tossing" distribution.
 
-![](images/Screenshot 2025-02-10 at 16.29.04.png){width="481"}
+![](images/Screenshot%202025-02-10%20at%2016.29.04.png){width="481"}
 
 Sometimes, likelihoods are written *L*(*p*/*w, n*): the likelihood of *p*, conditional on *w*and *n*. Note however that this notation reverses what is on the left side of the \| symbol. Just keep in mind that the job of the likelihood is to tell us the relative number of ways to see the data *w*, given values for *p* and *n*.
 
@@ -327,17 +327,15 @@ worth noting that the most influential assumptions in both bayesian and non-baye
 
 Now, the distributions we assign to observed variables typically have their own, unobserved variables: the **parameter**s. we still have to define those even though we can't observe them. a Bayesian machine needs a defined **Prior distribution** for that parameter. Once you have a previous estimate that can become the prior (like when we kept rerunning with more globe tosses) - but at the start, it's a little trickier to put in a good prior. We'll get into that more in later chapters.
 
-![](images/Screenshot 2025-02-10 at 17.00.50.png)
-
-					
+![](images/Screenshot%202025-02-10%20at%2017.00.50.png)
 
 The key lesson is that the posterior is proportional to the product of the prior and the probability of the data. Why? Because for each specific value of p, the number of paths through the garden of forking data is the product of the prior number of paths and the new number of paths.
-	
-![](images/Screenshot 2025-02-10 at 17.09.21.png){width="388"}
+
+![](images/Screenshot%202025-02-10%20at%2017.09.21.png){width="388"}
 
 #### Motors
 
-ok, so our model is a machine (a golem) and its built on definitions for liklihood, the parameters, and the prior. but at its heart is a motor that conditions the prior on the data. We'll talk about three different conditioning engines:					
+ok, so our model is a machine (a golem) and its built on definitions for liklihood, the parameters, and the prior. but at its heart is a motor that conditions the prior on the data. We'll talk about three different conditioning engines:
 
 \(1\) Grid approximation\
 
@@ -418,6 +416,7 @@ once you get into multilevel (mixed effects) models, you've got crazy numbers of
 ### Large World
 
 #### 
+
 Step 5 - analyze the sample and summarize!
 
 From posterior distribution to prediction
@@ -528,7 +527,7 @@ you can use bayesian models two ways - to guess at parameters, and to generate o
 
 I think this summarizes nicely the thing that was confusing me in the lecture:
 
-![](images/Screenshot 2025-02-12 at 19.00.49.png)
+![](images/Screenshot%202025-02-12%20at%2019.00.49.png)
 
 I think in the above graph what we're doing is progogating the uncertainty of p forward as we're making predictions. so if we have our data and we summarize it with our posterior distribution, and then want to make guesses about what will happen based on that (envisioning birds flying at collision risk height?) and we want to progogate that uncertainty in p forward!
 
