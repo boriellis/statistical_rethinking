@@ -606,3 +606,36 @@ Bayesian inference gives you no guarantees except that it's logical. it does the
 ### Bonus round - handling misclassification of data
 
 In reality systems aren't perfect, there's also user error influencing data - what if you write it down wrong. So for example in our first DAG there could be another thing influencing the number of water observations beyond the number tosses and the proportion of water - that would be the amount mistakes you make recording data. he gets into an example for what to do with this
+
+# Week 1 Homework
+
+1.  Suppose the globe tossing data ( lec 2 chapter 2) had turned out to be 3 water and 11 land. construct the posterior distribution.
+
+```{r}
+compute_posterior <- function(the_sample, poss = c(0, 0.25, 0.5, 0.75, 1)) {
+  W <- sum(the_sample == "W") #number of water obs
+  L <- sum(the_sample == "L") #number of land obs
+  ways <- sapply(poss, function(q) (q*4)^W * ((1-q)*4)^L)
+  post <- ways/sum(ways)
+  data.frame(poss, ways, post = round(post, 3))
+}
+
+sample <- c("W", "W", "W", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L", "L")
+
+compute_posterior(sample)
+
+
+```
+
+2.  using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.
+
+```{r}
+
+curve(dbeta(x, 3+1, 11+1), from = 0, to = 1, xlab = "p") #this plots the beta distribution from the above example, which is the same as the posterior. dbeta shows us the density. 
+
+
+p_samples <- rbeta(1e4, 3+1, 11+1) #we are pulling 1e4 samples from the beta distribution
+W_sim <- rbinom(1e4, size = 5, p = p_samples) #r binomial takes the number of observations (we're doing 1000) and the number of trials in each observations (5 tosses) ad the probability of success in each trial which comes from the beta distribition from the posterior above. 
+
+plot(table(W_sim)) #plot the samples
+```
