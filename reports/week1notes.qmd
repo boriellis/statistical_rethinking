@@ -49,7 +49,7 @@ Now back to DAGS:
 
     -   different questions have different models - each causal query would require a different model.
 
-    -   ![](images/Tred-G.svg.png){width="277"}
+    -   ![](images/week1/Tred-G.svg.png)
 
         -   comes down to choosing good control variables. there's also bad controls - you can't just add everything.
 
@@ -69,7 +69,7 @@ SO! Research requires more than null robots. We're making golems, so we'll need:
 
 ### Justifying "controls"
 
-![](images/Tred-G.svg.png){width="277"}
+![](images/week1/Tred-G.svg.png)
 
 When looking at the above model, the relationships between the variables affecting any given variable make it hard to pick control variables. apparently we'll later learn a way to pick which variables are right based on this to make up the "adjustment set" (I think, the ones to include?)
 
