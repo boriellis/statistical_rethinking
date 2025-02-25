@@ -3,3 +3,146 @@ title: "week2notes"
 format: html
 ---
 
+# Week 2 Lecture Notes
+
+## Lecture 3 - Geocentric Models
+
+Our metaphor here is how we explain the patterns of planet's orbits. Historically they managed to make some genuinely wild guesses at the shapes of planetary orbits as being based around them orbiting around earth that matched how they are observed from earth. but those are fully wrong - this is setting the stage to teach us linear regression.
+
+### About Linear Regression
+
+Linear regression is geocentric: it describes associations, makes predictions, but it's almost always mechanistically wrong. The problem is not the model itself but we can't believe it's a generative structural model of reality. They're not accurate mechanistic explanations of reality.
+
+We're going to use gaussian error models - the error model is not generative in the same detailed way we were doing generative models last week but it will be very useful for us.
+
+#### More on Gaussian (normal) distributions
+
+a lot of natural processes produce something very much like a gaussian distribution, b/c:
+
+1.  they're generative - summed fluctuations in small natural processes tend towards normal distributions
+
+2.  inferential - for estimating mean and variance, normal distribution is the least informative distribution (it contains no other info beyond the mean and variance - so if you know more about that then you could use other distributions, but gaussian is making the least assumptions if you don't)
+
+a variable does not have to be empirically normally distributed for normal model to be useful because it contains the fewest assumptions - it is a good tool for estimating mean and variance.
+
+### Making Geocentric Models
+
+We're going to develop some skills:
+
+1.  language for representing models
+
+2.  calculate posterior distributions for multiple unknowns
+
+3.  we'll better understand constructing linear models
+
+revisiting our owl:
+
+1.  state a clear question
+
+2.  sketch your causal assumptions (DAG)
+
+3.  use the sketch to define a generative model
+
+4.  use generative model to build estimator (garden of forking data - planted on generative assumptions)
+
+5.  profit (analyze the real data)
+
+or:
+
+for human growth today, we'll:
+
+1.  question/goal/estimand
+
+2.  scientific model
+
+3.  statistical models
+
+4.  validate model
+
+5.  analyze data
+
+#### Question/Goal/estimand
+
+Describe association between Adult weight and height
+
+```{r}
+library(rethinking)
+data(Howell1)
+```
+
+#### Scientific Model
+
+How does height influence weight?
+
+H -\> W
+
+or, W = f(H)
+
+Both mean, weight is some function of height
+
+#### Statistical model
+
+options for this:
+
+1.  dynamic models - incremental growth of an organism, both mass and height derive from growth pattern, gaussian variation result of summed fluctuations. We're NOT going to do this
+
+2.  Static models - changes in height result in changes in weight, but no mechanism, gaussian variation result of growth history. This is what we're going to do.
+
+So, for us, How does height influence weight?
+
+H -\> W \<- U
+
+W = f(H,U)
+
+this is, Weight is some function of height and unobserved stuff
+
+Now, building the model:
+
+For adults, weight is a proportion of height plus the influence of unobserved causes
+
+![](images/Screenshot 2025-02-24 at 17.20.19.png)
+
+```{r}
+#function to simulate weights
+sim_weight <- function(H, b, sd) { #b for beta - some proportion of height 
+  U <- rnorm(length(H), 0, sd)
+  W <- b * H + U
+  return(W)
+}
+```
+
+```{r}
+H <- runif (200, min = 130, max = 170)
+W <- sim_weight(H, b = 0.4, sd = 5)
+plot(W~H, col = 2, lwd = 3)
+```
+
+Now we need some language about statistical model notation:
+
+1.  list the variables
+
+2.  define each variable as a deterministic or distributional function of the other variables (where it gets its value)
+
+For our human height model above:
+
+![](images/Screenshot 2025-02-24 at 17.28.13.png)
+
+"i"s represent individuals
+
+= is deterministic
+
+\~ is distributed as
+
+first equation is for expected weight
+
+second says the unknown stuff has a gaussian distribution with standard error sigma
+
+third says height is uniformly distributed from 130 to 170
+
+#### Validate Model
+
+#### Analyze data
+
+## Lecture 4 - Categories and Curves
+
+# Week 2 Reading Notes - Chapter 4
