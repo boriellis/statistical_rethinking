@@ -49,7 +49,7 @@ Now back to DAGS:
 
     -   different questions have different models - each causal query would require a different model.
 
-    -   ![](images/week1/Tred-G.svg.png)
+    -   ![](images/Tred-G.svg.png){width="211"}
 
         -   comes down to choosing good control variables. there's also bad controls - you can't just add everything.
 
@@ -69,7 +69,7 @@ SO! Research requires more than null robots. We're making golems, so we'll need:
 
 ### Justifying "controls"
 
-![](images/week1/Tred-G.svg.png)
+![](images/Tred-G.svg.png){width="334"}
 
 When looking at the above model, the relationships between the variables affecting any given variable make it hard to pick control variables. apparently we'll later learn a way to pick which variables are right based on this to make up the "adjustment set" (I think, the ones to include?)
 
@@ -177,33 +177,33 @@ For each possible proportion of water on the globe, count all the ways the sampl
 
 I think we're now setting up how we could do this simply if we had a four sided globe
 
-![](images/week1/IMG_8202.jpg)
+![](images/IMG_8202.jpg){width="563"}
 
 we have 5 possibilities for our globe, we did 3 tosses, got water land water.
 
 you do this for each of the possibiliites (for 25% water shown below)
 
-![](images/week1/FullSizeRender.jpg)
+![](images/FullSizeRender.jpg){width="583"}
 
 figure out what the options are (above) then,
 
-![](images/week1/IMG_8204.jpg)
+![](images/IMG_8204.jpg){width="572"}
 
 You would do the same process for each of the different options (of the original five), to get the below:
 
-![](images/week1/Screenshot%202025-01-24%20at%2015.57.28.png)
+![](images/Screenshot%202025-01-24%20at%2015.57.28.png){width="576"}
 
 the garden diagram literally becomes formulas:
 
-![](images/week1/Screenshot%202025-01-24%20at%2015.59.23.png)
+![](images/Screenshot%202025-01-24%20at%2015.59.23.png){width="562"}
 
 then you can get more data by tossing your globe again, and then multiplying your previous counts by your new ways that each conjecture could produce the new datapoint.
 
-![](images/week1/Screenshot%202025-01-24%20at%2016.01.29.png)
+![](images/Screenshot%202025-01-24%20at%2016.01.29.png){width="537"}
 
 so eventually if you have a bunch of data you have a bunch of data points to deal with:
 
-![](images/week1/Screenshot%202025-01-24%20at%2016.04.03.png)
+![](images/Screenshot%202025-01-24%20at%2016.04.03.png){width="515"}
 
 in the above, the first number getting multiplied is the number of ways to get water multiplied by the number of observations of water. The second is the number of ways to get land in that scenario multiplied by the number of observations of land. so you then get to the formula at the bottom, which is that the number of observations of water and land are a function that looks like that. I got lost on that point but am choosing to try to be okay about that.
 
@@ -211,7 +211,7 @@ Now we're talking about probability
 
 Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has 2^W x 2^L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:
 
-![](images/week1/Screenshot%202025-01-24%20at%2016.14.45.png)
+![](images/Screenshot%202025-01-24%20at%2016.14.45.png){width="573"}
 
 the posterior distribution is posterior to the sample - it's after collecting the data?
 
@@ -251,21 +251,21 @@ sim_globe(p=1, N=11) #like, what if it's fully water, there should be no land!
 
 motto is test! all code has bugs! you don't want the bugs to influence the results! the simulation needs to honestly represent the model you intend, so you test that first (i think above), THEN, you code the estimator and then test it using the simulation function. that's below (we're just writing the formula into an R function). so, we made some fake data above, and then we need to make an R function that uses the fake data to tell us about the probabilities of each original scenario being the reality based on the data we observed:
 
-![](images/week1/Screenshot%202025-01-24%20at%2016.27.16.png)
+![](images/Screenshot%202025-01-24%20at%2016.27.16.png){width="529"}
 
 so you would then wrap sim_globe in the compute_posterior function. basically saying, with the data we got, what's the likelihood of each of the original cases:
 
-![](images/week1/Screenshot%202025-01-24%20at%2016.37.43.png)
+![](images/Screenshot%202025-01-24%20at%2016.37.43.png){width="523"}
 
 Now let's build up some intuition to move from our 4 sided globe to 10 to 20 to infinity:
 
-![](images/week1/Screenshot%202025-01-27%20at%2016.43.04.png)
+![](images/Screenshot%202025-01-27%20at%2016.43.04.png){width="487"}
 
 As you get more possibilities, the number of proportions increases, and the distribution smooths out across them - so the highest probability will get smaller as it gets spread out over more
 
 Infitinite possibilties - so, the globe is a polyhedron with an infinite number of sides. the probability of any "side" p, is still proportional to p^W^ (1-p)^L^ . with some calculus, that takes us to the "Beta" distribution:
 
-![](images/week1/Screenshot%202025-01-27%20at%2016.46.43.png)
+![](images/Screenshot%202025-01-27%20at%2016.46.43.png){width="508"}
 
 this distribution gives us the posterior probability of any particular value of p. the normalizing constant is there so that your probabilities sum to 1, and the second term is just the thing from before - \# ways to observe sample
 

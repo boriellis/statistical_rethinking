@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>they’re heuristic causal models that clarify scientific thinking - if you change an variable at the start of an arrow, it will change the thing at the end of the arrow: “What can we decide, without additional assumptions?”. These are the gateway to scientific modeling.</p></li>
 <li><p>basically they’re letters with arrows between talking about what influences what.</p></li>
 <li><p>different questions have different models - each causal query would require a different model.</p></li>
-<li><p><img src="images/Tred-G.svg.png" class="img-fluid" width="277"></p>
+<li><p><img src="images/Tred-G.svg.png" class="img-fluid" width="211"></p>
 <ul>
 <li><p>comes down to choosing good control variables. there’s also bad controls - you can’t just add everything.</p></li>
 <li><p>DAGS help you understand how to test/refine the causal model</p></li>
@@ -150,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="justifying-controls" class="level3">
 <h3 class="anchored" data-anchor-id="justifying-controls">Justifying “controls”</h3>
-<p><img src="images/Tred-G.svg.png" class="img-fluid" width="277"></p>
+<p><img src="images/Tred-G.svg.png" class="img-fluid" width="334"></p>
 <p>When looking at the above model, the relationships between the variables affecting any given variable make it hard to pick control variables. apparently we’ll later learn a way to pick which variables are right based on this to make up the “adjustment set” (I think, the ones to include?)</p>
 <p>We have finite data but infinite problems. a DAG is not enough - we need a generative model to design inference. He thinks that the way to do this is a bayesian framework to get the best outcome with the least fuss.</p>
 <p>Bayes is practical, not philosophical - in theory sometimes Bayes is overkill - in theory in simple analyses there’s little difference between frequentist stats and bayesian stats and bayes adds mess. but in REALITY, ecological analyses have a bunch of measurement error, missing data, latent variables, etc - and bayes handles this with less fuss!</p>
@@ -233,24 +233,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-3---design-a-statistical-way-to-produce-estimate" class="level4">
 <h4 class="anchored" data-anchor-id="step-3---design-a-statistical-way-to-produce-estimate">Step 3 - design a statistical way to produce estimate</h4>
 <p>I think we’re now setting up how we could do this simply if we had a four sided globe</p>
-<p><img src="images/IMG_8202.jpg" class="img-fluid" width="445"></p>
+<p><img src="images/IMG_8202.jpg" class="img-fluid" width="563"></p>
 <p>we have 5 possibilities for our globe, we did 3 tosses, got water land water.</p>
 <p>you do this for each of the possibiliites (for 25% water shown below)</p>
-<p><img src="images/FullSizeRender.jpg" class="img-fluid" width="401"></p>
+<p><img src="images/FullSizeRender.jpg" class="img-fluid" width="583"></p>
 <p>figure out what the options are (above) then,</p>
-<p><img src="images/IMG_8204.jpg" class="img-fluid" width="377"></p>
+<p><img src="images/IMG_8204.jpg" class="img-fluid" width="572"></p>
 <p>You would do the same process for each of the different options (of the original five), to get the below:</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2015.57.28.png" class="img-fluid" width="414"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2015.57.28.png" class="img-fluid" width="576"></p>
 <p>the garden diagram literally becomes formulas:</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2015.59.23.png" class="img-fluid" width="410"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2015.59.23.png" class="img-fluid" width="562"></p>
 <p>then you can get more data by tossing your globe again, and then multiplying your previous counts by your new ways that each conjecture could produce the new datapoint.</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2016.01.29.png" class="img-fluid" width="410"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.01.29.png" class="img-fluid" width="537"></p>
 <p>so eventually if you have a bunch of data you have a bunch of data points to deal with:</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2016.04.03.png" class="img-fluid" width="446"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.04.03.png" class="img-fluid" width="515"></p>
 <p>in the above, the first number getting multiplied is the number of ways to get water multiplied by the number of observations of water. The second is the number of ways to get land in that scenario multiplied by the number of observations of land. so you then get to the formula at the bottom, which is that the number of observations of water and land are a function that looks like that. I got lost on that point but am choosing to try to be okay about that.</p>
 <p>Now we’re talking about probability</p>
 <p>Probability are non-negative values that sum to one. Suppose W = 20, L=10, then P=0.5 has 2<sup>W&nbsp;x&nbsp;2</sup>L = 1,073,741,824 ways to produce sample - the numbers actually get crazy big super fast, so we convert to probability. I guess this is just to make it less messy in your computer bc the numbers get ridic so instead doing it by the proportion of 1 for the total is tidier:</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2016.14.45.png" class="img-fluid" width="501"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.14.45.png" class="img-fluid" width="573"></p>
 <p>the posterior distribution is posterior to the sample - it’s after collecting the data?</p>
 <p>Some definitions that are also useful:</p>
 <p>• A conjectured proportion of blue draws, p, is usually called a&nbsp;PARAMETER&nbsp;value. It’s just a way of indexing possible explanations of the data.</p>
@@ -272,20 +272,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_globe</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "L" "W" "W" "L" "L" "L" "L" "W" "W"</code></pre>
+<pre><code>[1] "L" "W" "W" "L" "W" "W" "L" "L" "L"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="fu">sim_globe</span>(<span class="at">p=</span><span class="fl">0.5</span>, <span class="at">N =</span> <span class="dv">9</span>), <span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
- [1,] "L"  "L"  "W"  "W"  "W"  "W"  "W"  "W"  "W"  "W"  
- [2,] "L"  "W"  "L"  "W"  "W"  "W"  "L"  "L"  "L"  "W"  
- [3,] "L"  "W"  "L"  "W"  "W"  "L"  "W"  "W"  "W"  "L"  
- [4,] "W"  "W"  "W"  "L"  "W"  "W"  "W"  "W"  "W"  "L"  
- [5,] "L"  "L"  "W"  "L"  "L"  "W"  "L"  "W"  "L"  "L"  
- [6,] "L"  "W"  "L"  "L"  "L"  "W"  "W"  "L"  "L"  "L"  
- [7,] "W"  "L"  "L"  "W"  "L"  "L"  "W"  "L"  "W"  "W"  
- [8,] "W"  "W"  "L"  "W"  "L"  "W"  "L"  "L"  "L"  "W"  
- [9,] "L"  "W"  "W"  "L"  "L"  "L"  "W"  "L"  "L"  "W"  </code></pre>
+ [1,] "L"  "L"  "L"  "W"  "W"  "W"  "L"  "L"  "L"  "W"  
+ [2,] "L"  "W"  "W"  "W"  "W"  "L"  "L"  "L"  "L"  "W"  
+ [3,] "L"  "W"  "L"  "L"  "L"  "W"  "W"  "L"  "W"  "L"  
+ [4,] "W"  "L"  "W"  "W"  "L"  "L"  "W"  "L"  "L"  "L"  
+ [5,] "W"  "W"  "W"  "L"  "L"  "L"  "L"  "W"  "W"  "W"  
+ [6,] "L"  "W"  "W"  "L"  "L"  "W"  "L"  "W"  "W"  "W"  
+ [7,] "L"  "W"  "L"  "W"  "L"  "L"  "W"  "W"  "L"  "L"  
+ [8,] "L"  "L"  "L"  "L"  "W"  "L"  "W"  "L"  "W"  "L"  
+ [9,] "W"  "W"  "L"  "W"  "W"  "W"  "W"  "L"  "L"  "L"  </code></pre>
 </div>
 </div>
 <p>test in extreme settings:</p>
@@ -296,14 +296,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>motto is test! all code has bugs! you don’t want the bugs to influence the results! the simulation needs to honestly represent the model you intend, so you test that first (i think above), THEN, you code the estimator and then test it using the simulation function. that’s below (we’re just writing the formula into an R function). so, we made some fake data above, and then we need to make an R function that uses the fake data to tell us about the probabilities of each original scenario being the reality based on the data we observed:</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2016.27.16.png" class="img-fluid"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.27.16.png" class="img-fluid" width="529"></p>
 <p>so you would then wrap sim_globe in the compute_posterior function. basically saying, with the data we got, what’s the likelihood of each of the original cases:</p>
-<p><img src="images/Screenshot%202025-01-24%20at%2016.37.43.png" class="img-fluid" width="442"></p>
+<p><img src="images/Screenshot%202025-01-24%20at%2016.37.43.png" class="img-fluid" width="523"></p>
 <p>Now let’s build up some intuition to move from our 4 sided globe to 10 to 20 to infinity:</p>
-<p><img src="images/Screenshot%202025-01-27%20at%2016.43.04.png" class="img-fluid" width="552"></p>
+<p><img src="images/Screenshot%202025-01-27%20at%2016.43.04.png" class="img-fluid" width="487"></p>
 <p>As you get more possibilities, the number of proportions increases, and the distribution smooths out across them - so the highest probability will get smaller as it gets spread out over more</p>
 <p>Infitinite possibilties - so, the globe is a polyhedron with an infinite number of sides. the probability of any “side” p, is still proportional to p<sup>W</sup> (1-p)<sup>L</sup> . with some calculus, that takes us to the “Beta” distribution:</p>
-<p><img src="images/Screenshot%202025-01-27%20at%2016.46.43.png" class="img-fluid" width="479"></p>
+<p><img src="images/Screenshot%202025-01-27%20at%2016.46.43.png" class="img-fluid" width="508"></p>
 <p>this distribution gives us the posterior probability of any particular value of p.&nbsp;the normalizing constant is there so that your probabilities sum to 1, and the second term is just the thing from before - # ways to observe sample</p>
 <p>your posterior distribution is the estimate for the parameter after you’ve incorporated data from your prior. That’s your best estimate of whatever you’re trying to estimate. It can take any form. the beta distribution is the shape of the posterior that you want when you have a probability between 0 and 1 that you’re trying to estimate</p>
 <p>now, we do ten tosses of our actual globe (note that when we do infinite possibilities we call it density instead of probability):</p>
@@ -602,7 +602,7 @@ Attaching package: 'rethinking'</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( samples <span class="sc">&lt;</span> <span class="fl">0.5</span> ) <span class="sc">/</span> <span class="fl">1e4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1722</code></pre>
+<pre><code>[1] 0.1701</code></pre>
 </div>
 </div>
 <p>Skimmed the rest of this - my main takeaway is present the whole distribution whenever possible and find intentional ways to summarize it if absolutely necessary!</p>
