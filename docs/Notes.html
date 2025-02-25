@@ -258,9 +258,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>• The prior plausibility of any specific&nbsp;<em>p</em>&nbsp;is usually called the&nbsp;PRIOR PROBABILITY.</p>
 <p>• The new, updated plausibility of any specific&nbsp;<em>p</em>&nbsp;is usually called the&nbsp;POSTERIOR PROBABILITY.</p>
 </section>
-</section>
-<section id="step-4---now-test-step-3-using-step-1" class="level3">
-<h3 class="anchored" data-anchor-id="step-4---now-test-step-3-using-step-1">Step 4 - now test step 3 using step 1</h3>
+<section id="step-4---now-test-step-3-using-step-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-4---now-test-step-3-using-step-1">Step 4 - now test step 3 using step 1</h4>
 <p>we always want to test before we estimate. to do that, we first code a generative simulation, then code an estimator. then we test the estimator with the generative simulation. this makes the data that we can then use to run our formula which is asking about what the reality is based on the data we collect. so below, we’re making a function that produces some observations based on the proportion of water on our globe:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#function to toss a globe covered p by water N times</span></span>
@@ -273,20 +272,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_globe</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "W" "L" "W" "W" "W" "W" "L" "W" "W"</code></pre>
+<pre><code>[1] "W" "L" "W" "W" "W" "L" "L" "L" "W"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">replicate</span>(<span class="fu">sim_globe</span>(<span class="at">p=</span><span class="fl">0.5</span>, <span class="at">N =</span> <span class="dv">9</span>), <span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
- [1,] "W"  "W"  "W"  "L"  "L"  "W"  "L"  "W"  "L"  "L"  
- [2,] "L"  "W"  "W"  "L"  "W"  "W"  "W"  "W"  "L"  "W"  
- [3,] "L"  "W"  "L"  "W"  "L"  "W"  "W"  "L"  "L"  "W"  
- [4,] "L"  "W"  "L"  "W"  "W"  "L"  "L"  "L"  "W"  "W"  
- [5,] "L"  "L"  "L"  "W"  "L"  "W"  "W"  "W"  "W"  "L"  
- [6,] "W"  "W"  "L"  "L"  "L"  "W"  "L"  "W"  "L"  "L"  
- [7,] "W"  "L"  "W"  "W"  "L"  "L"  "L"  "W"  "L"  "W"  
- [8,] "L"  "L"  "L"  "L"  "L"  "L"  "W"  "W"  "W"  "W"  
- [9,] "L"  "W"  "W"  "L"  "W"  "L"  "L"  "W"  "W"  "L"  </code></pre>
+ [1,] "L"  "L"  "L"  "W"  "W"  "L"  "W"  "W"  "W"  "L"  
+ [2,] "W"  "W"  "L"  "L"  "W"  "W"  "L"  "L"  "W"  "W"  
+ [3,] "L"  "L"  "W"  "L"  "L"  "L"  "L"  "L"  "L"  "W"  
+ [4,] "L"  "L"  "W"  "W"  "W"  "W"  "L"  "W"  "L"  "W"  
+ [5,] "L"  "L"  "L"  "W"  "L"  "W"  "W"  "L"  "L"  "L"  
+ [6,] "W"  "L"  "L"  "L"  "L"  "W"  "L"  "W"  "L"  "L"  
+ [7,] "L"  "W"  "W"  "W"  "W"  "W"  "W"  "W"  "L"  "W"  
+ [8,] "W"  "W"  "W"  "W"  "L"  "L"  "W"  "L"  "L"  "W"  
+ [9,] "L"  "L"  "L"  "W"  "L"  "L"  "L"  "L"  "W"  "W"  </code></pre>
 </div>
 </div>
 <p>test in extreme settings:</p>
@@ -318,6 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>no point estimates in bayesian inference. you could for the sake of communication talk about points on the distribution, like its mode and mean, but neither of these points is special as a point estimate. You want to work with the whole distribution and use that to make your predictions. THE DISTRIBUTION IS THE ESTIMATE. ALWAYS USE THE ENTIRE DISTRIBUTION.</p></li>
 <li><p>no one true interval. intervals are not important in bayesian inference, they’re just summaries of the distribition. the interval just communicates shape of the posterier - to use 95% is obvious superstition - nothing magical happens at the boundary. it’s still the shape of the whole distribution that matters!</p></li>
 </ul>
+</section>
 </section>
 <section id="overview-on-the-inside-world" class="level3">
 <h3 class="anchored" data-anchor-id="overview-on-the-inside-world">Overview on the inside world:</h3>
@@ -442,8 +442,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h5 class="anchored" data-anchor-id="mcmc">MCMC</h5>
 <p>once you get into multilevel (mixed effects) models, you’ve got crazy numbers of parameters. that means we’ve gotten funky with trying to do model fitting. One such is Mixed Chain Monte Carlo models (MCMC). it’s really not intuitive. THIS IS WHERE YOU SAMPLE FROM THE POSTERIOR! You end up with a collection of parameter values, and the frequencies of these values correspond to the posterior plausibilities. You can then build a picture of the posterior from the histogram of these samples.</p>
 </section>
-<section id="section" class="level5">
-<h5 class="anchored" data-anchor-id="section"></h5>
+</section>
+</section>
+<section id="large-world" class="level3">
+<h3 class="anchored" data-anchor-id="large-world">Large World</h3>
+<section id="section" class="level4">
+<h4 class="anchored" data-anchor-id="section"></h4>
 <p>Step 5 - analyze the sample and summarize!</p>
 <p>From posterior distribution to prediction</p>
 <ul>
@@ -533,6 +537,162 @@ Attaching package: 'rethinking'</code></pre>
 <p>The above chunk is broken for some reason but it produces the blue graph from the last image. the blue is the posterior predictive, which is more spread out than the predictive (black) because it considers more possibilities of p, better capturing the uncertainty</p>
 <p>Sampling is a great way to get around the calculus problem and turn it into a data summary problem. MCMC methods only produces samples - you run your model, it returns samples, and we’ll learn how to process those.</p>
 </section>
+<section id="example-from-the-book-of-this" class="level4">
+<h4 class="anchored" data-anchor-id="example-from-the-book-of-this">Example from the book of this</h4>
+<p>How to compute the posterior from the globe model - posterior meaning the probability of p conditional on the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>p_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>( <span class="at">from=</span><span class="dv">0</span> , <span class="at">to=</span><span class="dv">1</span> , <span class="at">length.out=</span><span class="dv">1000</span> )</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>prob_p <span class="ot">&lt;-</span> <span class="fu">rep</span>( <span class="dv">1</span> , <span class="dv">1000</span> )</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>prob_data <span class="ot">&lt;-</span> <span class="fu">dbinom</span>( <span class="dv">6</span> , <span class="at">size=</span><span class="dv">9</span> , <span class="at">prob=</span>p_grid )</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> prob_data <span class="sc">*</span> prob_p</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> posterior <span class="sc">/</span> <span class="fu">sum</span>(posterior)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(posterior)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Notes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>now we’re going to sample from this. we’ve got a bucket of these values - the values closer to the peak of the distribution are more common than those at the tails. so we’ll sample 10,000 times from the bucket:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">sample</span>( p_grid , <span class="at">prob=</span>posterior , <span class="at">size=</span><span class="fl">1e4</span> , <span class="at">replace=</span><span class="cn">TRUE</span> ) </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">#sample is drawing values</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#p_grid is my parameter values</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#probability of each value is given by posterior, which I computed above</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( samples )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Notes_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dens</span>( samples )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Notes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>the above density is similar to the posterior distribution! good! right now we’ve just done this to replicate the posterior - not very useful. but now, we will use it to describe and understand the posterior:</p>
+<p>questions we might ask include things about how much posterior probability lies between particular parameter values, etc.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add up posterior probability where p &lt; 0.5</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( posterior[ p_grid <span class="sc">&lt;</span> <span class="fl">0.5</span> ] )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1718746</code></pre>
+</div>
+</div>
+<p>this is simple but won’t work when there’s more than one parameter in the model? so we do it using the samples, which does work whenever. I guess that looks like counting all the samples below .5, but then dividing by the total # samples:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( samples <span class="sc">&lt;</span> <span class="fl">0.5</span> ) <span class="sc">/</span> <span class="fl">1e4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1718</code></pre>
+</div>
+</div>
+<p>Skimmed the rest of this - my main takeaway is present the whole distribution whenever possible and find intentional ways to summarize it if absolutely necessary!</p>
+<p>The other thing that sampling sets up well for is simulating predictions. you do this for 5 things usually:</p>
+<ol type="1">
+<li><p>you can sample not just from the posterior, but from the prior - to understand intentionally what it will do to use that prior.</p></li>
+<li><p>check on your model - after you’ve updated it with data, it’s good to simulate implied observations to check if they fit well</p></li>
+<li><p>validate your software by producing numbers under a known model and then try to recover the parameters the data were simulated under</p></li>
+<li><p>design your research using power analysis</p></li>
+<li><p>forecasting - make predictions and critique models</p></li>
+</ol>
+<p>you can use bayesian models two ways - to guess at parameters, and to generate observations based on parameters - you can make dummy data with them to work with</p>
+<p>I think this summarizes nicely the thing that was confusing me in the lecture:</p>
+<p><img src="images/Screenshot%202025-02-12%20at%2019.00.49.png" class="img-fluid"></p>
+<p>I think in the above graph what we’re doing is progogating the uncertainty of p forward as we’re making predictions. so if we have our data and we summarize it with our posterior distribution, and then want to make guesses about what will happen based on that (envisioning birds flying at collision risk height?) and we want to progogate that uncertainty in p forward!</p>
+<p>Easy problems from the chapter:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>p_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>( <span class="at">from=</span><span class="dv">0</span> , <span class="at">to=</span><span class="dv">1</span> , <span class="at">length.out=</span><span class="dv">1000</span> )</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">rep</span>( <span class="dv">1</span> , <span class="dv">1000</span> )</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>likelihood <span class="ot">&lt;-</span> <span class="fu">dbinom</span>( <span class="dv">6</span> , <span class="at">size=</span><span class="dv">9</span> , <span class="at">prob=</span>p_grid )</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> likelihood <span class="sc">*</span> prior</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> posterior <span class="sc">/</span> <span class="fu">sum</span>(posterior)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">sample</span>( p_grid , <span class="at">prob=</span>posterior , <span class="at">size=</span><span class="fl">1e4</span> , <span class="at">replace=</span><span class="cn">TRUE</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>3E1.</strong>&nbsp;&nbsp;How much posterior probability lies below&nbsp;p = 0.2?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( samples <span class="sc">&lt;</span> <span class="fl">0.2</span> ) <span class="sc">/</span> <span class="fl">1e4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4e-04</code></pre>
+</div>
+</div>
+<p><strong>3E2.</strong>&nbsp;&nbsp;How much posterior probability lies above p=0.8&nbsp;?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( samples <span class="sc">&gt;</span> <span class="fl">0.8</span> ) <span class="sc">/</span> <span class="fl">1e4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1116</code></pre>
+</div>
+</div>
+<p><strong>3E3.</strong>&nbsp;&nbsp;How much posterior probability lies between p=&nbsp;0.2&nbsp;and&nbsp;p = 0.8 ?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( samples <span class="sc">&gt;</span> <span class="fl">0.2</span> <span class="sc">&amp;</span> samples <span class="sc">&lt;</span> <span class="fl">0.8</span>) <span class="sc">/</span> <span class="fl">1e4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.888</code></pre>
+</div>
+</div>
+<p><strong>3E4.</strong>&nbsp;&nbsp;20% of the posterior probability lies below which value of&nbsp;<em>p</em>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>( samples , <span class="fl">0.2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      20% 
+0.5185185 </code></pre>
+</div>
+</div>
+<p><strong>3E5.</strong>&nbsp;&nbsp;20% of the posterior probability lies above which value of&nbsp;<em>p</em>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>( samples , <span class="fl">0.8</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      80% 
+0.7557558 </code></pre>
+</div>
+</div>
+<p><strong>3E6.</strong>&nbsp;&nbsp;Which values of&nbsp;<em>p</em>&nbsp;contain the narrowest interval equal to 66% of the posterior probability?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HPDI</span>( samples , <span class="at">prob=</span><span class="fl">0.66</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    |0.66     0.66| 
+0.5085085 0.7737738 </code></pre>
+</div>
+</div>
+<p><strong>3E7.</strong>&nbsp;&nbsp;Which values of&nbsp;<em>p</em>&nbsp;contain 66% of the posterior probability, assuming equal posterior probability both below and above the interval?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PI</span>( samples , <span class="at">prob=</span><span class="fl">0.66</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      17%       83% 
+0.5025025 0.7697698 </code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="summary-of-bayesian-data-analysis" class="level3">
@@ -545,6 +705,57 @@ Attaching package: 'rethinking'</code></pre>
 <p>In reality systems aren’t perfect, there’s also user error influencing data - what if you write it down wrong. So for example in our first DAG there could be another thing influencing the number of water observations beyond the number tosses and the proportion of water - that would be the amount mistakes you make recording data. he gets into an example for what to do with this</p>
 </section>
 </section>
+</section>
+<section id="week-1-homework" class="level1">
+<h1>Week 1 Homework</h1>
+<ol type="1">
+<li>Suppose the globe tossing data ( lec 2 chapter 2) had turned out to be 3 water and 11 land. construct the posterior distribution.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>compute_posterior <span class="ot">&lt;-</span> <span class="cf">function</span>(the_sample, <span class="at">poss =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>)) {</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">sum</span>(the_sample <span class="sc">==</span> <span class="st">"W"</span>) <span class="co">#number of water obs</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> <span class="fu">sum</span>(the_sample <span class="sc">==</span> <span class="st">"L"</span>) <span class="co">#number of land obs</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  ways <span class="ot">&lt;-</span> <span class="fu">sapply</span>(poss, <span class="cf">function</span>(q) (q<span class="sc">*</span><span class="dv">4</span>)<span class="sc">^</span>W <span class="sc">*</span> ((<span class="dv">1</span><span class="sc">-</span>q)<span class="sc">*</span><span class="dv">4</span>)<span class="sc">^</span>L)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  post <span class="ot">&lt;-</span> ways<span class="sc">/</span><span class="fu">sum</span>(ways)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(poss, ways, <span class="at">post =</span> <span class="fu">round</span>(post, <span class="dv">3</span>))</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"W"</span>, <span class="st">"W"</span>, <span class="st">"W"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>, <span class="st">"L"</span>)</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_posterior</span>(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  poss   ways  post
+1 0.00      0 0.000
+2 0.25 177147 0.915
+3 0.50  16384 0.085
+4 0.75     27 0.000
+5 1.00      0 0.000</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>using the posterior distribution from 1, compute the posterior predictive distribution for the next 5 tosses of the same globe. Use the sampling method.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dbeta</span>(x, <span class="dv">3</span><span class="sc">+</span><span class="dv">1</span>, <span class="dv">11</span><span class="sc">+</span><span class="dv">1</span>), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"p"</span>) <span class="co">#this plots the beta distribution from the above example, which is the same as the posterior. dbeta shows us the density. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Notes_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>p_samples <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="fl">1e4</span>, <span class="dv">3</span><span class="sc">+</span><span class="dv">1</span>, <span class="dv">11</span><span class="sc">+</span><span class="dv">1</span>) <span class="co">#we are pulling 1e4 samples from the beta distribution</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>W_sim <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="fl">1e4</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">p =</span> p_samples) <span class="co">#r binomial takes the number of observations (we're doing 1000) and the number of trials in each observations (5 tosses) ad the probability of success in each trial which comes from the beta distribition from the posterior above. </span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(W_sim)) <span class="co">#plot the samples</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Notes_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
 </main>
