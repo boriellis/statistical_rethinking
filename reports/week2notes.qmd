@@ -100,7 +100,7 @@ Now, building the model:
 
 For adults, weight is a proportion of height plus the influence of unobserved causes
 
-![](images/Screenshot 2025-02-24 at 17.20.19.png)
+![](images/Screenshot%202025-02-24%20at%2017.20.19.png)
 
 ```{r}
 #function to simulate weights
@@ -125,7 +125,7 @@ Now we need some language about statistical model notation:
 
 For our human height model above:
 
-![](images/Screenshot 2025-02-24 at 17.28.13.png)
+![](images/Screenshot%202025-02-24%20at%2017.28.13.png)
 
 "i"s represent individuals
 
