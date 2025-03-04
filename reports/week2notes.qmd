@@ -139,9 +139,174 @@ second says the unknown stuff has a gaussian distribution with standard error si
 
 third says height is uniformly distributed from 130 to 170
 
+##### Developing an estimator:
+
+We want to estimate how the avg weight changes with height:
+
+![](images/Screenshot 2025-03-03 at 16.12.58.png)
+
+we start by building a posterior distribution:
+
+![](images/Screenshot 2025-03-03 at 16.19.14.png)
+
+left is posterior probability of a specific line - alpha and beta define the line, sigma defines the eror around it - these are condition on the data which are H and W which are our observed data. we need a posterior distribution for alpha beta and sigma bc they're unobserved, we don't for H and W because those are our observed data
+
+on the right, we have the number of ways the generative process could produce W sub i time the prior (previous data). then there's the normalizing constant which is Z and apparently we're not fussing with it.
+
+Through the first half of the course we're going to use quadratic approximation instead of grid approximation (but I think eventually we'll move to MCMC). quadratic is continuous - we approximate the posterior distribution as a multivariate gaussian distribution (bc posterior distributions are typically gaussian if the sample is large enough!)
+
+we'll use the quap function from the rethinking package
+
+m3.1 \<- quap(
+
+alist(
+
+W \~ dnorm(mu, sigma),
+
+mu \<- a+ b\*h,
+
+a \~ dnorm (0,10),
+
+b \~dunif(0,1),
+
+sigma \~dunif(0,10)
+
+) , data = list(W=W, H=H)
+
+)
+
+```{r}
+m3.1 <- quap(
+  alist(
+    W ~ dnorm(mu, sigma),
+    mu <- a+ b*H,
+    a ~ dnorm (0,10),
+    b ~dunif(0,1),
+    sigma ~dunif(0,10)
+  ) , data = list(W=W, H=H)
+)
+```
+
+Now we have to define the priors so that before the model has seen data it doesn't make wild claims. priors should express scientific knowledge softly. we do these like so for this example:
+
+![](images/Screenshot 2025-03-03 at 16.32.31.png){width="458"}
+
+we defined these using the following logical statements. We're basically trying to bumper it in to reality as much as possible without telling it fully what the model should do.
+
+When H=0, W = 0 (that's alpha varying from 0-10) - giving it a bit of a range there but keeping it not crazy
+
+Weight increases (on avg) with height - beta has to be positive
+
+weight(kg) is less than height (cm)
+
+sigma must be positive - standard deviations are positive, a standard deviation of 10 would be a 100kilo variation around a point which is super high so it should be within that range.
+
+now we're going to understand the implications of the priors thru simulation - what do the observable variables look like with these priors?
+
+```{r}
+n <- 1e3 #a thousand random samples from the prior of alpha and beta
+a <-rnorm(n,0,10) # normally distributed mean zero std 10
+b <- runif(n,0,1) # normally distributed btwn 0-1
+plot( NULL, xlim = c(130, 170) , ylim = c(50,90),
+      xlab = "height(cm)", ylab = "weight(kg)") #plot the implied line
+for(j in 1:50) abline (a = a[j], b = b[j], lwd = 2, col = 2) #add fifty points in
+```
+
+This is what the golem imagines before it's seen any data based on the priors we gave it. The intercept is just pretty nutty in the above. doing this helps us understand what the model is thinking.
+
+We're going to work with these kinda bad priors for now but we'll come back to it later - these won't do any damage for now.
+
+NOTES ON PRIORS!
+
+-   there are no correct priors, only scientifically justifiable ones
+
+-   justify with information outside the data - like we do with the rest of the model
+
+-   priors are not so important in simple models
+
+-   very important/useful in complex models
+
+-   need to practice now - simulate and understand them!
+
+so, now we have a generative model that we can use to test it on simulated people!
+
 #### Validate Model
 
+we HAVE to test our code like this. test statistical model with simulated observations from scientific model. Our golem might be broken and even working golems might not distribute what we hoped.
+
+```{r}
+#simulate a sample of 10 peole
+set.seed(93)
+H <- runif(10,130,170)
+W <- sim_weight(H, b=0.5, sd=5) #data generating slope is 0.5, we'll vary that across runs and make sure the estimator tracks it. 
+
+#run the model using quap, takes formula list 
+library(rethinking)
+m3.1 <- quap(
+  alist(
+    W ~ dnorm(mu, sigma),
+    mu <- a+ b*H,
+    a ~ dnorm (0,10),
+    b ~dunif(0,1),
+    sigma ~dunif(0,10)
+  ) , data = list(W=W, H=H)
+)
+
+#summary
+precis(m3.1) #this just gives a quick summmary of the marginal posterior distributions of the unknown
+```
+
+you would want to rerun that with different slopes and see if the posterior distribution tracks it
+
 #### Analyze data
+
+```{r}
+data(Howell1)
+d2 <- Howell1[Howell1$age>=18,]
+```
+
+```{r}
+dat <- list(W=d2$weight, H=d2$height)
+m3.2 <- quap(
+  alist(
+    W ~ dnorm(mu, sigma),
+    mu <- a+ b*H,
+    a ~ dnorm (0,10),
+    b ~dunif(0,1),
+    sigma ~dunif(0,10)
+  ) , data = list(W=W, H=H)
+)
+precis(m3.2)
+```
+
+my summary stats are pretty different from his? not totally sure why: here were his:
+
+![](images/Screenshot 2025-03-03 at 17.05.29.png){width="412"}
+
+first law of statistical interpretation: the parameters are not independent of one another and cannot always be independently interpreted. instead, we push out posterior predictions and describe/interpret those. We do that by extracting samples.
+
+The posterior distribution is full of lines:
+
+```{r}
+post <-  extract.samples(m3.2)
+plot(d2$height, d2$weight, col =2, lwd = 3,
+     xlab = "height (cm)", ylab = "weight (kg)")
+for(j in 1:20)
+  abline(a = post$a[j], b=post$b[j], lwd =1) #not sure why these aren't showing up on the plot below
+```
+
+there's no one true line in bayes analysis - better way is to draw all the lines and plot them all.
+
+the posterior is also full of people. we can add a prediction envelop around the solid lines in the graph that helps us convey the uncertainty? this is a percentile interval - we give it a fit model and some new data - 20 individuals ranging from 130 to 190 in height. it simulates from the posterior distribution the posterior predictive animation behind the scenes and then returns a big data table of the simulations which would be individual weights, takes a percentile interval for each height value - I **really don't know what it's doing below at all actually.**
+
+```{r}
+height_seq <- seq(130, 190, len=20)
+W_postpred <- sim(m3.2,
+                  data = list(H=height_seq))
+W_PI <- apply(W_postpred, 2, PI)
+lines(height_seq, W_PI[1,], lty=2, lwd = 2)
+lines(height_seq, W_PI[2,], lty = 2, lwd = 2)
+```
 
 ## Lecture 4 - Categories and Curves
 
