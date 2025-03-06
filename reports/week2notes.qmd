@@ -143,11 +143,11 @@ third says height is uniformly distributed from 130 to 170
 
 We want to estimate how the avg weight changes with height:
 
-![](images/Screenshot 2025-03-03 at 16.12.58.png)
+![](images/Screenshot%202025-03-03%20at%2016.12.58.png)
 
 we start by building a posterior distribution:
 
-![](images/Screenshot 2025-03-03 at 16.19.14.png)
+![](images/Screenshot%202025-03-03%20at%2016.19.14.png)
 
 left is posterior probability of a specific line - alpha and beta define the line, sigma defines the eror around it - these are condition on the data which are H and W which are our observed data. we need a posterior distribution for alpha beta and sigma bc they're unobserved, we don't for H and W because those are our observed data
 
@@ -189,7 +189,7 @@ m3.1 <- quap(
 
 Now we have to define the priors so that before the model has seen data it doesn't make wild claims. priors should express scientific knowledge softly. we do these like so for this example:
 
-![](images/Screenshot 2025-03-03 at 16.32.31.png){width="458"}
+![](images/Screenshot%202025-03-03%20at%2016.32.31.png){width="458"}
 
 we defined these using the following logical statements. We're basically trying to bumper it in to reality as much as possible without telling it fully what the model should do.
 
@@ -281,7 +281,7 @@ precis(m3.2)
 
 my summary stats are pretty different from his? not totally sure why: here were his:
 
-![](images/Screenshot 2025-03-03 at 17.05.29.png){width="412"}
+![](images/Screenshot%202025-03-03%20at%2017.05.29.png){width="412"}
 
 first law of statistical interpretation: the parameters are not independent of one another and cannot always be independently interpreted. instead, we push out posterior predictions and describe/interpret those. We do that by extracting samples.
 
@@ -309,5 +309,290 @@ lines(height_seq, W_PI[2,], lty = 2, lwd = 2)
 ```
 
 ## Lecture 4 - Categories and Curves
+
+In this lecture, for a single generative model we're going to have a generative model with mulitple estimands for the first time. This means multiple estimators. We also are going to process results differently - the result we want is not going to show up in a summary table so we're going to need to do some post-processing.
+
+the new statistical tools in this lecture are categorical models and curves - this are tools we need to build causal estimators.
+
+### Categories
+
+How to cope with causes that are not continuous - discrete, unordered types of data. In linear models that normally means you fit a different line for each of the categories:
+
+In the Howell height and weight data, there are also columns for age and sex. if we wanted to add sex in, we'd start by adding it to the DAG:
+
+![](images/Screenshot 2025-03-05 at 15.41.54.png){width="483"}
+
+The causes aren't in the data. you can't just look at the scatterplot and know what causes what! we KNOW that height influences weight and that there are few things you can do to adjust weight that would influence height. similarly, height doesn't influence sex, but sex does influence height. So:
+
+![](images/Screenshot 2025-03-05 at 15.44.09.png){width="323"}
+
+the influence of sex on weight is both direct and indirect, because it also influences height. SO:
+
+![](images/Screenshot 2025-03-05 at 15.45.05.png){width="264"}
+
+(height is a function of sex, weight is a function of height and sex)
+
+there are also unobserved causes that influence each variable - we normally don't draw them in and can ignore them UNLESS they're SHARED (confounding variables) - for example, if temperature in reptiles influences both sex and weight, that would be an issue. we'll come back to that later but for our human example we are ignoring confounds.
+
+here's a simple version of a function that we can use to simulate height and weight with inputs of sex data
+
+```{r}
+#S=1 female; S=2 male
+sim_HW <- function(S,b,a) { #sex, b is beta, proportionality of height that is weight, and a, which is direct effect of sex 
+  N <- length(S) 
+  H <- ifelse(S==1, 150, 160) +rnorm(N,0,5) #if female, on avg, height 150cm, if male, 160, add some gaussian variation
+  W <-a[S] +b[S]*H + rnorm(N,0,5) #same as prev lecture - but adding, men and women could have different proportionality with height (for each S, diff height and weight line)
+  data.frame(S,H,W)
+}
+
+S <-  rbern(100) +1 #100 individuals randomly males or females
+dat <- sim_HW(S, b=c(0.5, 0.6), a = c(0,0)) #simulate height and weight w no direct effect of sex on bodyweight and there's slightly different slopes
+head(dat)
+```
+
+First think scientifically and define questions:
+
+different causal questions need different statistical models:
+
+-   Q: causal effect of H on W?
+
+-   Q: causal effect of S on W?
+
+-   Q: direct causal effect of S on W?
+
+We'll do all:
+
+![](images/Screenshot 2025-03-05 at 15.59.30.png){width="485"}
+
+Drawing categorical owls:
+
+several wasys to code categorical variables:
+
+1\) indicator variables (0/1)
+
+2\) index variables: 1,2,3,4. this are like ID numbers.
+
+We'll use index variables: they extend to many categories with no change in code, they're better for specifying priors, and extend well to multi-level models.
+
+![](images/Screenshot 2025-03-05 at 16.02.48.png){width="385"}
+
+![](images/Screenshot 2025-03-05 at 16.04.27.png){width="381"}
+
+I got a little lost as he explained index variables
+
+### Testing with categories
+
+#### Total causal effect of sex
+
+What is the total causal effect of sex? it is something we measure from simulation in this because there's direct and indirect influence. We can simulate this because we have a generative model that we can do experiments on. so we would intervene on a single variable - we could construct two samples, one where everyone is male and one where everyone is female and then caluculate the avg difference in body weight to get the total causal effect of sex on body weight (includes direct and indirect). that's shown below:
+
+![](images/Screenshot 2025-03-05 at 16.12.10.png){width="296"}
+
+```{r}
+#female sample
+S <-  rep(1,100)
+simF <- sim_HW(S, b=c(0.5, 0.6), a = c(0,0))
+
+#male sample 
+S <- rep(2,100)
+simM <- sim_HW(S, b=c(0.5,0.6), a = c(0,0))
+
+#effect of sex (male-female)
+mean(simM$W - simF$W)
+```
+
+now run the estimating model and synthetic sample. the estimator is the model that we developed with the indicator variable. We're doing an observational study where sex is a random variable, we observe their height and weight and estimate the causal effect of sex through both direct and indirect maths.
+
+```{r}
+#observe sample
+S <-rbern(100) +1
+dat <- sim_HW(S,b=c(0.5, 0.6), a=c(0,0))
+
+#estimate posterior
+m_SW <- quap(
+  alist(
+    W ~ dnorm(mu, sigma),
+    mu <- a[S],
+    a[S] ~ dnorm(60,10),
+    sigma ~ dunif(0,10)
+  ), data = dat
+)
+precis(m_SW, depth = 2)
+```
+
+output at the bottom has 2 a variables, one for men one for women, there's a different average weight for each, the difference between these two is the combined direct and indirect effect of sex on weight.
+
+##### Analyze the real sample:
+
+```{r}
+data(Howell1)
+d <- Howell1
+d <-d[d$age>=18,]
+dat <- list(
+  W = d$weight,
+  S=d$male + 1 #S = 1 female, S = 2 male
+) 
+
+m_SW <- quap(
+  alist(
+    W ~dnorm(mu,sigma),
+    mu <- a[S],
+    a[S] ~ dnorm(60,10),
+    sigma ~ dunif(0,10)
+  ), data = dat
+)
+```
+
+![](images/Screenshot 2025-03-05 at 16.24.58.png){width="276"}
+
+Now postprocessing:
+
+usually w/ these models the unknowns aren't what we want - we don't want a(1) or a(2), we want to do comparisons of the posterior distributions. think about difference in mean weight. that's not in the posterior, but we're looking at the contrast between the two categories. we need to use the whole posterior distribution for that. second chunk of code is simulating normally distributed PEOPLE using sigma. in the second plot there's a lot more overlap - the difference in means is reliable but there's a lot of overlap in mean weights.
+
+```{r}
+#posterior mean W
+post <- extract.samples(m_SW)
+dens (post$a[,1], xlim = c(39,50), lwd=3,
+      col = 2, xlab = "posterior mean weight(kg)")
+dens(post$a[,2], lwd = 3, col = 4, add = TRUE)
+
+#posterior W distributions
+W1 <-  rnorm(1000, post$a[,1], post$sigma)
+W2 <- rnorm(1000, post$a[,2], post$sigma)
+dens(W1, xlim=c(20,70), ylim=c(0,0.085),
+     lwd=3, col = 2)
+dens(W2, lwd = 3, col = 4, add = TRUE)
+```
+
+we still now want to compute the posterior distribution of the difference between category 1 and 2 -
+
+we need to always compute the contrast, or difference between the categories. it is never legitimate to compare overlap, only difference. so, we can here compute the causal difference in **means**:
+
+```{r}
+#causal contrast in means
+mu_contrast <- post$a[,2] - post$a[,1]
+
+dens(mu_contrast, xlim = c(3,10), lwd = 3, col = 1, xlab = "posterior mean weight contrast (kg)")
+```
+
+That's the posterior distribution of difference between women and men in this sample of body weight - so difference is somewhere between 5 and 9
+
+What about **real people**? the distributions overlap a lot, what's the contrast between these distributions?
+
+```{r}
+#posterior W distributions
+W1 <-  rnorm(1000, post$a[,1], post$sigma)
+W2 <- rnorm(1000, post$a[,2], post$sigma)
+
+#contrast
+W_contrast <- W2 - W1
+dens(W_contrast, xlim = c(-25,35), lwd=3,
+     col = 1, xlab = "posterior weight contrast (kg")
+
+#proportion above zero
+sum(W_contrast >0)/1000
+#proportion below zero
+sum(W_contrast <0) /1000
+```
+
+so the proportion of men that are heavier than women is 82%, or the amount of the distribution that's above zero.
+
+#### Direct causal effect of sex on height
+
+SO! all the above was figuring out the total causal effect of sex on weight. NOW, what about DIRECT causal effect of S on W? so we need to try to "block" the indirect effect through height. we're calling this "stratifying by height"
+
+```{r}
+S <- rbern(100) +1
+dat <- sim_HW(S, b=c(0.5,0.5), a=c(0,10))
+```
+
+in this simulation the causal effect of height is the same for men on women (same slopes). the direct effects are different - men on avg 10 kilos heavier regardless of height in the above simulation. the indirect effect would be that height influences weight differently for sexes (so, different slopes), so we're removing that. the direct effect is that weight differs based on sex directly.
+
+So how can we make a statistical model that estimates that direct effect? another linear model. We're going to update our model from before to stratify for the height effect. "for individuals of the same height, what are the differences by category"
+
+![](images/Screenshot 2025-03-05 at 17.03.08.png)
+
+![](images/Screenshot 2025-03-05 at 17.04.28.png)
+
+so stratify by categorical variables we're going to put sex subscripts on everthing.
+
+![](images/Screenshot 2025-03-05 at 17.06.44.png){width="562"}
+
+![](images/Screenshot 2025-03-05 at 17.07.06.png){width="592"}
+
+##### Analyze the sample 
+
+we skipped testing on simulated data this time because we're lazy.
+
+```{r}
+data(Howell1)
+d <- Howell1
+d <-d[d$age>=18,]
+dat <- list(
+  W = d$weight,
+  H = d$height,
+  Hbar = mean(d$height),
+  S=d$male + 1 #S = 1 female, S = 2 male
+) 
+
+m_SHW <- quap(
+  alist(
+    W ~dnorm(mu,sigma),
+    mu <- a[S] +b[S]*(H-Hbar),
+    a[S] ~ dnorm(60,10),
+    b[S] ~dunif(0,1),
+    sigma ~ dunif(0,10)
+  ), data = dat
+)
+#getting a weird error on this saying I have bad priors?
+```
+
+Contrast now at each height -
+
+1.  compute posterior predictive for women
+
+2.  compute posterior predictive for men
+
+3.  subtract 2 from 1
+
+4.  plot distribution at each height (on right)
+
+```{r}
+xseq <- seq(from=130, to=190, len=50)
+
+muF <- 
+  link(m_adults2, data = list(S=rep(1,50), H=xseq, Hbar=mean(d$height)))
+lines(xseq, apply(muF, 2, mean), lwd=3, col =2)
+  
+muM <- 
+  link(m_adults2, data = list(S=rep(2,50), H=xseq, Hbar = mean(d$height)))
+lines(xseq, apply(muM, 2, mean), lwd=3, col=4)
+  
+mu_contrast <- muF - muM
+plot(NULL, xlim=range(xseq), ylim=c(-6,8), xlab="height (cm)",
+     ylab = "weight contrast(F-M)")
+for(p in c(0.5,0.6,0.7,0.8,0.9,0.99))
+  shade(apply(mu_contrast, 2, PI, prob=p), xseq)
+abline(h=0, lty=2)
+
+```
+
+I couldn't get the above code chunk to run some issue with m_adults2 that I don't have time or energy to resolve right now. but it should look like this
+
+![](images/Screenshot 2025-03-05 at 17.22.02.png){width="518"}
+
+NEARLY ALL OF THE CAUSAL EFFECT OF sex on weight acts through HEIGHT differences. that's the outcome of this exercise. basically, yeah, men weigh more, because men are taller.
+
+summary thoughts from this chunk:
+
+-   categorical varaiables show up a lot
+
+-   we want to use index coding when we do categorical variables. we care about them because we want to stratify our estimates by the relevant categories
+
+-   parameters are rarely the estimate themselves, we use samples to compute relevant contrasts.
+
+-   always summarize as the LAST step!
+
+-   we want the MEAN DIFFERENCE and not the DIFFERENCE OF MEANS. the whole
 
 # Week 2 Reading Notes - Chapter 4
