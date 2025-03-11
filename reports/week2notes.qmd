@@ -320,15 +320,15 @@ How to cope with causes that are not continuous - discrete, unordered types of d
 
 In the Howell height and weight data, there are also columns for age and sex. if we wanted to add sex in, we'd start by adding it to the DAG:
 
-![](images/Screenshot 2025-03-05 at 15.41.54.png){width="483"}
+![](images/Screenshot%202025-03-05%20at%2015.41.54.png){width="483"}
 
 The causes aren't in the data. you can't just look at the scatterplot and know what causes what! we KNOW that height influences weight and that there are few things you can do to adjust weight that would influence height. similarly, height doesn't influence sex, but sex does influence height. So:
 
-![](images/Screenshot 2025-03-05 at 15.44.09.png){width="323"}
+![](images/Screenshot%202025-03-05%20at%2015.44.09.png){width="323"}
 
 the influence of sex on weight is both direct and indirect, because it also influences height. SO:
 
-![](images/Screenshot 2025-03-05 at 15.45.05.png){width="264"}
+![](images/Screenshot%202025-03-05%20at%2015.45.05.png){width="264"}
 
 (height is a function of sex, weight is a function of height and sex)
 
@@ -337,6 +337,7 @@ there are also unobserved causes that influence each variable - we normally don'
 here's a simple version of a function that we can use to simulate height and weight with inputs of sex data
 
 ```{r}
+library(rethinking)
 #S=1 female; S=2 male
 sim_HW <- function(S,b,a) { #sex, b is beta, proportionality of height that is weight, and a, which is direct effect of sex 
   N <- length(S) 
@@ -348,6 +349,7 @@ sim_HW <- function(S,b,a) { #sex, b is beta, proportionality of height that is w
 S <-  rbern(100) +1 #100 individuals randomly males or females
 dat <- sim_HW(S, b=c(0.5, 0.6), a = c(0,0)) #simulate height and weight w no direct effect of sex on bodyweight and there's slightly different slopes
 head(dat)
+
 ```
 
 First think scientifically and define questions:
@@ -362,7 +364,7 @@ different causal questions need different statistical models:
 
 We'll do all:
 
-![](images/Screenshot 2025-03-05 at 15.59.30.png){width="485"}
+![](images/Screenshot%202025-03-05%20at%2015.59.30.png){width="485"}
 
 Drawing categorical owls:
 
@@ -374,9 +376,9 @@ several wasys to code categorical variables:
 
 We'll use index variables: they extend to many categories with no change in code, they're better for specifying priors, and extend well to multi-level models.
 
-![](images/Screenshot 2025-03-05 at 16.02.48.png){width="385"}
+![](images/Screenshot%202025-03-05%20at%2016.02.48.png){width="385"}
 
-![](images/Screenshot 2025-03-05 at 16.04.27.png){width="381"}
+![](images/Screenshot%202025-03-05%20at%2016.04.27.png){width="381"}
 
 I got a little lost as he explained index variables
 
@@ -386,7 +388,7 @@ I got a little lost as he explained index variables
 
 What is the total causal effect of sex? it is something we measure from simulation in this because there's direct and indirect influence. We can simulate this because we have a generative model that we can do experiments on. so we would intervene on a single variable - we could construct two samples, one where everyone is male and one where everyone is female and then caluculate the avg difference in body weight to get the total causal effect of sex on body weight (includes direct and indirect). that's shown below:
 
-![](images/Screenshot 2025-03-05 at 16.12.10.png){width="296"}
+![](images/Screenshot%202025-03-05%20at%2016.12.10.png){width="296"}
 
 ```{r}
 #female sample
@@ -443,7 +445,7 @@ m_SW <- quap(
 )
 ```
 
-![](images/Screenshot 2025-03-05 at 16.24.58.png){width="276"}
+![](images/Screenshot%202025-03-05%20at%2016.24.58.png){width="276"}
 
 Now postprocessing:
 
@@ -510,17 +512,17 @@ in this simulation the causal effect of height is the same for men on women (sam
 
 So how can we make a statistical model that estimates that direct effect? another linear model. We're going to update our model from before to stratify for the height effect. "for individuals of the same height, what are the differences by category"
 
-![](images/Screenshot 2025-03-05 at 17.03.08.png)
+![](images/Screenshot%202025-03-05%20at%2017.03.08.png)
 
-![](images/Screenshot 2025-03-05 at 17.04.28.png)
+![](images/Screenshot%202025-03-05%20at%2017.04.28.png)
 
 so stratify by categorical variables we're going to put sex subscripts on everthing.
 
-![](images/Screenshot 2025-03-05 at 17.06.44.png){width="562"}
+![](images/Screenshot%202025-03-05%20at%2017.06.44.png){width="562"}
 
-![](images/Screenshot 2025-03-05 at 17.07.06.png){width="592"}
+![](images/Screenshot%202025-03-05%20at%2017.07.06.png){width="592"}
 
-##### Analyze the sample 
+##### Analyze the sample
 
 we skipped testing on simulated data this time because we're lazy.
 
@@ -579,7 +581,7 @@ abline(h=0, lty=2)
 
 I couldn't get the above code chunk to run some issue with m_adults2 that I don't have time or energy to resolve right now. but it should look like this
 
-![](images/Screenshot 2025-03-05 at 17.22.02.png){width="518"}
+![](images/Screenshot%202025-03-05%20at%2017.22.02.png){width="518"}
 
 NEARLY ALL OF THE CAUSAL EFFECT OF sex on weight acts through HEIGHT differences. that's the outcome of this exercise. basically, yeah, men weigh more, because men are taller.
 
@@ -594,5 +596,43 @@ summary thoughts from this chunk:
 -   always summarize as the LAST step!
 
 -   we want the MEAN DIFFERENCE and not the DIFFERENCE OF MEANS. the whole
+
+### Curves from lines
+
+H -\> W obviously not linear. linear models can easily fit curves, but this is not mechanistic.
+
+2 popular strtegies to make linear models fit curves:
+
+1\) polynomials: awful, don't do it
+
+2\) additive functions called splines or their relatives that are generalized additive models
+
+#### Polynomial linear models
+
+Strategy for this is via polynomial functions. they have problems in that they have strange symmetries and explosive uncertainty at edges. DON'T USE THEM!! THIS IS LIKE WHAT HAPPENED TO ALLISON WITH HER SEAL DEMOGRAPHIC DATA. With these, any value along the x axis could bizarrely change the shape of the curve way far away from it.
+
+#### Splines
+
+simplest: basis-splines - wiggly function built from many local functions. These are nice! This guy likes em! says we should use splines! they're just linear models with some weird synthetic variables
+
+![](images/Screenshot 2025-03-10 at 16.59.20.png){width="549"}
+
+![](images/Screenshot 2025-03-10 at 16.59.38.png){width="564"}
+
+the colors are the basis functions, the Ws are how much they're weighting the spline
+
+so if we flip the weight of basis function 1 (red) to -1, it would change the curve like this (because everywhere else basis funciton 1 is zero)
+
+![](images/Screenshot 2025-03-10 at 17.01.10.png){width="568"}
+
+so for height as a function of age, it isn't linear, we want a function that could get it approximately right. We'll fit a spline as an example but a biological model would be a lot better.
+
+Summary of that:
+
+-   can build very non-linear functions from linear pieces
+
+-   splines can be great for cases where you don't know ANYTHING else and they're good at just telling you what's going on when that's happening.
+
+-   but in cases where you have more scientific information it would be nice to be able to include that in the model. So splitting it up so that you can do answers just about the chunks of data where you're expecting patterns can be better - like in the case of allison's senescence data, she ended up doing "piecewise segmented regression" because she was asking specifically about the chunk where things were senescing instead of just trying to demonstrate what was happening over the whole curve.
 
 # Week 2 Reading Notes - Chapter 4
