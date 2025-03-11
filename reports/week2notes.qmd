@@ -539,7 +539,7 @@ dat <- list(
 
 m_SHW <- quap(
   alist(
-    W ~dnorm(mu,sigma),
+    W ~ dnorm(mu,sigma),
     mu <- a[S] +b[S]*(H-Hbar),
     a[S] ~ dnorm(60,10),
     b[S] ~dunif(0,1),
