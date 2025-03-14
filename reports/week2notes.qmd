@@ -386,7 +386,7 @@ I got a little lost as he explained index variables
 
 #### Total causal effect of sex
 
-What is the total causal effect of sex? it is something we measure from simulation in this because there's direct and indirect influence. We can simulate this because we have a generative model that we can do experiments on. so we would intervene on a single variable - we could construct two samples, one where everyone is male and one where everyone is female and then caluculate the avg difference in body weight to get the total causal effect of sex on body weight (includes direct and indirect). that's shown below:
+What is the total causal effect of sex? it is something we measure from simulation in this because there's direct and indirect influence. We can simulate this because we have a generative model that we can do experiments on. so we would intervene on a single variable - we could construct two samples, one where everyone is male and one where everyone is female and then calculate the avg difference in body weight to get the total causal effect of sex on body weight (includes direct and indirect). that's shown below:
 
 ![](images/Screenshot%202025-03-05%20at%2016.12.10.png){width="296"}
 
@@ -849,6 +849,14 @@ Splines are the other major way to do curves. B-splines (basis splines) are comm
 # Homework
 
 ![](images/Screenshot 2025-03-14 at 11.31.13.png)
+
+```{r}
+library(rethinking)
+data(Howell1); d <- Howell1; d2 <- d[ d$age < 13 , ]
+
+```
+
+![](images/IMG_8638.jpg)
 
 ![](images/Screenshot 2025-03-14 at 11.31.25.png)
 
