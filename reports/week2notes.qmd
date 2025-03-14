@@ -839,3 +839,9 @@ b <- rnorm( N , 0 , 10 )
 ```
 
 didn't copy over the code to do the rest of the above since it was similar to the lecture.
+
+## Curves from lines
+
+polynomial models can be a good fit for data but they often imply stuff that isn't true at the edges because of the forced shape. a point anywhere on the x axis can influence the interpretation at a very different point on the x axis. if we have expert knowledge we can often do better than them we should feel embarrassed to use them so that we don't get comfortable with the phenomenological explanations they provide.
+
+Splines are the other major way to do curves. B-splines (basis splines) are commonplace. basis refers to "components" - b-splines are wiggly functions built from less wiggly components, called basis functions. they divide the full range of some predictor variable into parts, and assign a parameter to each part. those parameters get turned on and off in a way that makes a wiggly curve. you divide the data up by placing "knots" throughout it - we'll learn more about how later. he does it at even quantiles through his cherry blossom data example. the nice thing about this is that the basis functions each only apply to a chunk of the data so variables far from that chunk don't influence its shape.
