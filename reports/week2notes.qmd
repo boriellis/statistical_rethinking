@@ -850,13 +850,13 @@ Splines are the other major way to do curves. B-splines (basis splines) are comm
 
 ![](images/Screenshot 2025-03-14 at 11.31.13.png)
 
+![](images/IMG_8638.jpg){width="485"}
+
 ```{r}
 library(rethinking)
 data(Howell1); d <- Howell1; d2 <- d[ d$age < 13 , ]
 
 ```
-
-![](images/IMG_8638.jpg)
 
 ![](images/Screenshot 2025-03-14 at 11.31.25.png)
 
