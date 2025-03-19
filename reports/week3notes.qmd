@@ -67,7 +67,49 @@ we play god on M - we delete the arrows going into M to simulate the causal effe
 
 ![](images/Screenshot 2025-03-19 at 16.18.56.png)
 
+the guess from the above is that M on D is a lot smaller than A on D
+
+but you still need to to estimate causal effect of A:
+
+![](images/Screenshot 2025-03-19 at 16.21.01.png){width="451"}
+
 ### The Pipe
+
+there was also a Pipe in the above example. let's look at that now.
+
+![](images/Screenshot 2025-03-19 at 16.26.14.png)
+
+statistically the pipe and the fork look the same but causally they're very different so we need to think about them differently. so if we stratified by Z there would be no association between Y and X again - because all the association is transmitted through the effect of X on Z
+
+![](images/Screenshot 2025-03-19 at 16.29.14.png)
+
+EVERYTHING THAT Y KNOWS ABOUT X IS ALREADY KNOWN BY Z.
+
+Example of a pipe:
+
+sometimes ppl think if they're doing a controlled experiment you don't have to bother with all this confound stuff but that's WRONG:
+
+![](images/Screenshot 2025-03-19 at 16.31.43.png){width="495"}
+
+Scientific Model:
+
+![](images/Screenshot 2025-03-19 at 16.32.26.png){width="283"}
+
+then we introduce our treatment: plant could be directly affected by the treatment (hurt or help) but for sure hopefully treatment will affect fungus.
+
+![](images/Screenshot 2025-03-19 at 16.32.55.png){width="375"}
+
+![](images/Screenshot 2025-03-19 at 16.33.53.png){width="413"}
+
+If we want to know the total causal effect of T on H, we DON'T want to stratify by F because we want the total causal effect here to know if we should use the treatment or not.
+
+Sometimes you DO want to stratify by the mediator if you want to know the direct effect - that just isn't the case here!
+
+Another example: POST-TREATMENT BIAS
+
+-   if you stratify by the consequence of the treatment, you can induce post-treatment bias - mislead you that it doesn't work, or that it does work. Rule of thumb: consequences of the treatment should not usually be included in the estimator. there are exceptions to this - things you measure during the experiment sometimes do need to be included.
+
+it can often be dangerous to stratify by
 
 ### The Collider
 
