@@ -666,11 +666,11 @@ dens(d2$height)
 
 we're going to use a gaussian for the probability distribution for the data. To define the heights as normally distributed with a mean *μ* and standard deviation σ:
 
-![](images/Screenshot 2025-03-12 at 16.43.11.png){width="169"}
+![](images/Screenshot%202025-03-12%20at%2016.43.11.png){width="169"}
 
 need some priors:
 
-![](images/Screenshot 2025-03-12 at 16.50.04.png){width="303"}
+![](images/Screenshot%202025-03-12%20at%2016.50.04.png){width="303"}
 
 plot priors to see if we like em:
 
@@ -848,7 +848,7 @@ Splines are the other major way to do curves. B-splines (basis splines) are comm
 
 # Homework
 
-![](images/Screenshot 2025-03-14 at 11.31.13.png)
+![](images/Screenshot%202025-03-14%20at%2011.31.13.png)
 
 ![](images/IMG_8638.jpg){width="485"}
 
@@ -858,6 +858,6 @@ data(Howell1); d <- Howell1; d2 <- d[ d$age < 13 , ]
 
 ```
 
-![](images/Screenshot 2025-03-14 at 11.31.25.png)
+![](images/Screenshot%202025-03-14%20at%2011.31.25.png)
 
-![](images/Screenshot 2025-03-14 at 11.31.34.png)
+![](images/Screenshot%202025-03-14%20at%2011.31.34.png)
