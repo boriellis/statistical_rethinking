@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>week3notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="week3notes_files/libs/clipboard/clipboard.min.js"></script>
+<script src="week3notes_files/libs/quarto-html/quarto.js"></script>
+<script src="week3notes_files/libs/quarto-html/popper.min.js"></script>
+<script src="week3notes_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="week3notes_files/libs/quarto-html/anchor.min.js"></script>
+<link href="week3notes_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="week3notes_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="week3notes_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="week3notes_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="week3notes_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">week3notes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="week-3-lecture-notes" class="level1">
+<h1>Week 3 Lecture Notes</h1>
+<section id="lecture-5---elemental-confounds" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-5---elemental-confounds">Lecture 5 - Elemental Confounds</h2>
+<p><img src="images/Screenshot%202025-03-19%20at%2015.43.55.png" class="img-fluid"></p>
+<p>We’re going to talk today about things that happen during the estimator that can cause issues with our estimate.</p>
+<section id="assocation-causation" class="level4">
+<h4 class="anchored" data-anchor-id="assocation-causation">Assocation &amp; Causation</h4>
+<p>Statistical recipes must defend against confounding, which is a feature of the sample and how we use it that misleads us</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2015.45.23.png" class="img-fluid"></p>
+</section>
+<section id="the-fork" class="level3">
+<h3 class="anchored" data-anchor-id="the-fork">The Fork</h3>
+<p>Z is a common cause of X and Y: X &amp; Y are associated because they share the common cause Z. Once stratified by Z, there’s no association between X and Y - so, at each level of Z, X and Y are independent (not associated) with one another.</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2015.51.30.png" class="img-fluid" width="465"></p>
+<p>in the above example, you can see that at z values of 0 or 1 X and Y aren’t correlated (correlation is out of 1, above 0.3 typically considered correlated)</p>
+<p>so, example: why do regions of the USA with higher rates of marriage also have higher rates of divorce? Does marriage cause divorce?</p>
+<p>estimand is causal effect of marriage on divorce</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2015.56.08.png" class="img-fluid" width="382"></p>
+<p>(points of the scatter plot not showing up)</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2015.57.34.png" class="img-fluid" width="309"></p>
+<p><img src="images/Screenshot%202025-03-19%20at%2015.59.54.png" class="img-fluid"></p>
+<p>to stratify by A (age at marriage) include as term in linear model</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.01.10.png" class="img-fluid"></p>
+<p>it is often conveneient to standardize by the mean in linear regression. standardizing means subtract mean and divide by standard deviation - it makes it easier to choose sensible prior and makes computation work better.</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.04.46.png" class="img-fluid"></p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.05.33.png" class="img-fluid" width="346"></p>
+<p>The above code produces this ^ which is bad - they’re totally different, the slopes are too extreme,</p>
+<p>better priors:</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.06.47.png" class="img-fluid"></p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.06.57.png" class="img-fluid" width="329"></p>
+<p>I think this below is plotting the priors which can be useful?</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.15.07.png" class="img-fluid"></p>
+<p>The slope is not the causal effect of M - that’s often reported but it’s not quite right. We’re going to do it the principled way which works when we get to more complex models. We do a simulation:</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.17.01.png" class="img-fluid"></p>
+<p>we play god on M - we delete the arrows going into M to simulate the causal effect of M on D</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.18.56.png" class="img-fluid"></p>
+<p>the guess from the above is that M on D is a lot smaller than A on D</p>
+<p>but you still need to to estimate causal effect of A:</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.21.01.png" class="img-fluid" width="451"></p>
+</section>
+<section id="the-pipe" class="level3">
+<h3 class="anchored" data-anchor-id="the-pipe">The Pipe</h3>
+<p>there was also a Pipe in the above example. let’s look at that now.</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.26.14.png" class="img-fluid"></p>
+<p>statistically the pipe and the fork look the same but causally they’re very different so we need to think about them differently. so if we stratified by Z there would be no association between Y and X again - because all the association is transmitted through the effect of X on Z</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.29.14.png" class="img-fluid"></p>
+<p>EVERYTHING THAT Y KNOWS ABOUT X IS ALREADY KNOWN BY Z.</p>
+<p>Example of a pipe:</p>
+<p>sometimes ppl think if they’re doing a controlled experiment you don’t have to bother with all this confound stuff but that’s WRONG:</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.31.43.png" class="img-fluid" width="495"></p>
+<p>Scientific Model:</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.32.26.png" class="img-fluid" width="283"></p>
+<p>then we introduce our treatment: plant could be directly affected by the treatment (hurt or help) but for sure hopefully treatment will affect fungus.</p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.32.55.png" class="img-fluid" width="375"></p>
+<p><img src="images/Screenshot%202025-03-19%20at%2016.33.53.png" class="img-fluid" width="413"></p>
+<p>If we want to know the total causal effect of T on H, we DON’T want to stratify by F because we want the total causal effect here to know if we should use the treatment or not.</p>
+<p>Sometimes you DO want to stratify by the mediator if you want to know the direct effect - that just isn’t the case here!</p>
+<p>Another example: POST-TREATMENT BIAS</p>
+<ul>
+<li>if you stratify by the consequence of the treatment, you can induce post-treatment bias - mislead you that it doesn’t work, or that it does work. Rule of thumb: consequences of the treatment should not usually be included in the estimator. there are exceptions to this - things you measure during the experiment sometimes do need to be included.</li>
+</ul>
+<p>it can often be dangerous to stratify by</p>
+</section>
+<section id="the-collider" class="level3">
+<h3 class="anchored" data-anchor-id="the-collider">The Collider</h3>
+<p>The collider is where Z is jointly caused by both x and y. X and Y are NOT associated, they’re independent of one another - but bc they both influence Z, once stratified by Z, X and Y look VERY associated.</p>
+<p><img src="images/Screenshot%202025-03-20%20at%2013.22.36.png" class="img-fluid"></p>
+<p>the strong associations could read as causal, so there’s a risk of thinking something else is going on, like a fork.</p>
+<p>they appear for a variety of reasons:</p>
+<ul>
+<li><p>some already arise from selection: suppose there are 200 research grant applications, scored both on newsworthiness and trustworthiness. let’s say they’re totally unrelated to one another. then we could think about the ones that are funded - if they’re sufficiently newsworthy and/or trustworthy they could both be funded. once you stratify by whether they’re funded or not there’s a strong association between trustworthiness and newsworthiness but in reality the two are not associated:</p>
+<p><img src="images/Screenshot%202025-03-20%20at%2013.29.47.png" class="img-fluid"></p></li>
+<li><p>points not showing on graph again</p></li>
+</ul>
+<p>other examples:</p>
+<ul>
+<li><p>restaurants survive by having good food or a good location - bad food in good locations</p></li>
+<li><p>actors can succeed by being attractive or by being skilled - attractive actors are less skilled.</p></li>
+</ul>
+<p>endogenous colliders - colliders can also arise through your analysis via endogenous selection: if you stratify by a collider, it creates phantom non-causal associations.</p>
+<ul>
+<li><p>example: does age influence happiness? Possible confound here is marital status. suppose age has zero influence on happiness but that both age and happiness influence marital status (happier ppl more likely to get married) (older you are more likely you are to get married)</p></li>
+<li><p><img src="images/Screenshot%202025-03-20%20at%2013.38.15.png" class="img-fluid"></p></li>
+</ul>
+</section>
+<section id="the-descendent" class="level3">
+<h3 class="anchored" data-anchor-id="the-descendent">The Descendent</h3>
+<p>descendent is easy - it’s a parasite on the other three: how it behaves is dependent on what it’s attached to</p>
+<p><img src="images/Screenshot%202025-03-20%20at%2013.41.37.png" class="img-fluid" width="479"></p>
+<p>because Z is the parent of A, A holds information about Z - so if you stratified by A, it would reduce the measured association between X and Y. but A is actually not causally associated with X or Y</p>
+<p>descendents are SUPER COMMON - many measurements are proxies of what we actually want to measure:</p>
+<ul>
+<li>factor analysis, measurement error, social networks - the things we’re measuring are not the thing we’re wanting to measure, but they contain information about the unobserved things.</li>
+</ul>
+<p>They’re both dangerous AND useful.</p>
+</section>
+</section>
+<section id="lecture-6---good-bad-controls" class="level2">
+<h2 class="anchored" data-anchor-id="lecture-6---good-bad-controls">Lecture 6 - Good &amp; Bad Controls</h2>
+</section>
+</section>
+<section id="week-3-reading-notes" class="level1">
+<h1>Week 3 Reading Notes</h1>
+<section id="chapter-5" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-5">Chapter 5</h2>
+</section>
+<section id="chapter-6" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-6">Chapter 6</h2>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

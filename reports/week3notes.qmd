@@ -113,7 +113,45 @@ it can often be dangerous to stratify by
 
 ### The Collider
 
+The collider is where Z is jointly caused by both x and y. X and Y are NOT associated, they're independent of one another - but bc they both influence Z, once stratified by Z, X and Y look VERY associated.
+
+![](images/Screenshot 2025-03-20 at 13.22.36.png)
+
+the strong associations could read as causal, so there's a risk of thinking something else is going on, like a fork.
+
+they appear for a variety of reasons:
+
+-   some already arise from selection: suppose there are 200 research grant applications, scored both on newsworthiness and trustworthiness. let's say they're totally unrelated to one another. then we could think about the ones that are funded - if they're sufficiently newsworthy and/or trustworthy they could both be funded. once you stratify by whether they're funded or not there's a strong association between trustworthiness and newsworthiness but in reality the two are not associated:
+
+    ![](images/Screenshot 2025-03-20 at 13.29.47.png)
+
+-   points not showing on graph again
+
+other examples:
+
+-   restaurants survive by having good food or a good location - bad food in good locations
+
+-   actors can succeed by being attractive or by being skilled - attractive actors are less skilled.
+
+endogenous colliders - colliders can also arise through your analysis via endogenous selection: if you stratify by a collider, it creates phantom non-causal associations.
+
+-   example: does age influence happiness? Possible confound here is marital status. suppose age has zero influence on happiness but that both age and happiness influence marital status (happier ppl more likely to get married) (older you are more likely you are to get married)
+
+-   ![](images/Screenshot 2025-03-20 at 13.38.15.png)
+
 ### The Descendent
+
+descendent is easy - it's a parasite on the other three: how it behaves is dependent on what it's attached to
+
+![](images/Screenshot 2025-03-20 at 13.41.37.png){width="479"}
+
+because Z is the parent of A, A holds information about Z - so if you stratified by A, it would reduce the measured association between X and Y. but A is actually not causally associated with X or Y
+
+descendents are SUPER COMMON - many measurements are proxies of what we actually want to measure:
+
+-   factor analysis, measurement error, social networks - the things we're measuring are not the thing we're wanting to measure, but they contain information about the unobserved things.
+
+They're both dangerous AND useful.
 
 ## Lecture 6 - Good & Bad Controls
 
