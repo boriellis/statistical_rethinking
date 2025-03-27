@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -162,6 +196,153 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="lecture-6---good-bad-controls" class="level2">
 <h2 class="anchored" data-anchor-id="lecture-6---good-bad-controls">Lecture 6 - Good &amp; Bad Controls</h2>
+<p>Try to avoid being clever - that’s unreliable and opaque! we should instead be as boring as possible - reliant, transparent, logical procedures to derive implications that others can use to verify and challenge our work. We’re going to work on developing those tools more in this lecture.</p>
+<p>We want a framework to take the confounds and do something with them. We think about a treatment X on a Y outcome and the issue of a common cause U that may or may not be measured but usually isn’t. Our best bet if we can is to randomize the treatment to remove its link with U - but that often doesn’t work, especially with observational studies. we also can attempt to randomize but it doesn’t always work all the way - there can still be a partial influence of U:</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.11.50.png" class="img-fluid"></p>
+<p>Is there a statistical procedure that we can use to mimic randomization on X?</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.13.03.png" class="img-fluid" width="419"></p>
+<p>we’re not going to learn this in a detailed mathematical way but this is useful for a lot of causal models so we wanna talk about it. So in a simple example with a simple confound, we can deal with the confound here by stratifying by U if we can measure it because it’s a fork:</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.14.43.png" class="img-fluid"></p>
+<p>to look at the causal effect of X on Y, intervene on X to get “The distribution of Y, stratified by X and U, averaged over the distribution of U”</p>
+<p>example:</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.20.05.png" class="img-fluid" width="390"></p>
+<p>for DAGs, rules for finding P(Y|do(X)) are known s do-calculus (not calculus, just the calculations). do-calculus has two perspectives: it’s kind of the worst-case scenario, additional assumptions often allow stronger inference. do-calculus is also kind of a best case scenario - if inference is possible by do-calculus, it does not depend on special assumptions.</p>
+<section id="backdoor-criterion" class="level3">
+<h3 class="anchored" data-anchor-id="backdoor-criterion">Backdoor criterion</h3>
+<p>The Backdoor criterion is a shortcut to apply some results of do-caculus. it’s a rule to find a set of variables to stratify by to yield P(Y|do(X))</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.23.58.png" class="img-fluid" width="280"></p>
+<p>3 steps (with example in photos)</p>
+<ol type="1">
+<li><p>identify all paths connecting the treatment X to the outcome Y</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.25.16.png" class="img-fluid"></p></li>
+<li><p>Paths with arrows ENTERING X are backdoor paths</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.26.13.png" class="img-fluid"></p></li>
+<li><p>find the adjustment set that block or close all backdoor paths:</p></li>
+</ol>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.26.52.png" class="img-fluid" width="405"></p>
+<p>To simulate that confounded Y:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: cmdstanr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is cmdstanr version 0.8.1.9000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStanR documentation and vignettes: mc-stan.org/cmdstanr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStan path: /Users/aspenellis/.cmdstan/cmdstan-2.36.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- CmdStan version: 2.36.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: posterior</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'posterior' was built under R version 4.4.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is posterior version 1.6.0.9000</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'posterior'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    mad, sd, var</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    %in%, match</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: parallel</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>rethinking (Version 2.42)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rethinking'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:stats':
+
+    rstudent</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>b_XY <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>b_UY <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>b_UZ <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>b_ZX <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="fu">rbern</span>(N)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N,b_UZ<span class="sc">*</span>U)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N,b_ZX<span class="sc">*</span>Z)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N,b_XY<span class="sc">*</span>X<span class="sc">+</span>b_UY<span class="sc">*</span>U)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Y=</span>Y, <span class="at">X=</span>X, <span class="at">Z=</span>Z)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#now run linear regressions</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">#ignore U,Z</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>m_YX <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    Y <span class="sc">~</span> <span class="fu">dnorm</span>(mu, sigma),</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> a <span class="sc">+</span> b_XY<span class="sc">*</span>X,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    b_XY <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span><span class="fu">dexp</span>(<span class="dv">1</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">data =</span> d</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="co">#stratify by Z</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>m_YXZ <span class="ot">&lt;-</span> <span class="fu">quap</span>(</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">alist</span>(</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    Y <span class="sc">~</span> <span class="fu">dnorm</span>(mu, sigma),</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span>  a <span class="sc">+</span> b_XY<span class="sc">*</span>X <span class="sc">+</span> b_Z<span class="sc">*</span>Z,</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    a <span class="sc">~</span> <span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(b_XY, b_Z) <span class="sc">~</span><span class="fu">dnorm</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    sigma <span class="sc">~</span><span class="fu">dexp</span>(<span class="dv">1</span>)</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">data =</span> d</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract.samples</span>(m_YX)</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>post2 <span class="ot">&lt;-</span>  <span class="fu">extract.samples</span>(m_YXZ)</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="fu">dens</span>(post<span class="sc">$</span>b_XY, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="dv">1</span>, <span class="at">xlab =</span> <span class="st">"posterior b_XY"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.3</span>, <span class="fl">0.3</span>))</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="fu">dens</span>(post2<span class="sc">$</span>b_XY, <span class="at">lwd=</span><span class="dv">3</span>,<span class="at">col=</span><span class="dv">2</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="week3notes_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.41.26.png" class="img-fluid" width="467"></p>
+<p>More complicated example of a backdoor criterion:</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.44.42.png" class="img-fluid"></p>
+<p>we’re looking for a statistical to delete the arrows into X. you list all the paths connecting treatment X to outcome Y:</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.46.13.png" class="img-fluid"></p>
+<p>you look at each of these paths and realize that you need to add Z, C, and or or B to the “adjustment set”</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.49.48.png" class="img-fluid"></p>
+<p>you can use a tool to help you do this: www.daggitty.net</p>
+<p>you can draw DAGs on your screen, then have it help you figure out the adjustment set.</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.52.06.png" class="img-fluid" width="445"></p>
+<p>analyze this using the backdoor criterion:</p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.55.08.png" class="img-fluid" width="342"></p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.55.22.png" class="img-fluid" width="365"></p>
+<p><img src="images/Screenshot%202025-03-26%20at%2016.54.42.png" class="img-fluid"></p>
+<p>Summarizing backdoor criterion:</p>
+<p>do-calc is more than backdoors and adjustment sets. full luzury Bayes uses all variables but in separate sub-models instead of single regression. do-calc is less demanding - finds relebant variables saves us having to make some assumptions, not always a regression.</p>
+</section>
 </section>
 </section>
 <section id="week-3-reading-notes" class="level1">

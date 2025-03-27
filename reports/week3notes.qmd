@@ -7,7 +7,7 @@ format: html
 
 ## Lecture 5 - Elemental Confounds
 
-![](images/Screenshot 2025-03-19 at 15.43.55.png)
+![](images/Screenshot%202025-03-19%20at%2015.43.55.png)
 
 We're going to talk today about things that happen during the estimator that can cause issues with our estimate.
 
@@ -15,13 +15,13 @@ We're going to talk today about things that happen during the estimator that can
 
 Statistical recipes must defend against confounding, which is a feature of the sample and how we use it that misleads us
 
-![](images/Screenshot 2025-03-19 at 15.45.23.png)
+![](images/Screenshot%202025-03-19%20at%2015.45.23.png)
 
 ### The Fork
 
 Z is a common cause of X and Y: X & Y are associated because they share the common cause Z. Once stratified by Z, there's no association between X and Y - so, at each level of Z, X and Y are independent (not associated) with one another.
 
-![](images/Screenshot 2025-03-19 at 15.51.30.png){width="465"}
+![](images/Screenshot%202025-03-19%20at%2015.51.30.png){width="465"}
 
 in the above example, you can see that at z values of 0 or 1 X and Y aren't correlated (correlation is out of 1, above 0.3 typically considered correlated)
 
@@ -29,59 +29,59 @@ so, example: why do regions of the USA with higher rates of marriage also have h
 
 estimand is causal effect of marriage on divorce
 
-![](images/Screenshot 2025-03-19 at 15.56.08.png){width="382"}
+![](images/Screenshot%202025-03-19%20at%2015.56.08.png){width="382"}
 
 (points of the scatter plot not showing up)
 
-![](images/Screenshot 2025-03-19 at 15.57.34.png){width="309"}
+![](images/Screenshot%202025-03-19%20at%2015.57.34.png){width="309"}
 
-![](images/Screenshot 2025-03-19 at 15.59.54.png)
+![](images/Screenshot%202025-03-19%20at%2015.59.54.png)
 
 to stratify by A (age at marriage) include as term in linear model
 
-![](images/Screenshot 2025-03-19 at 16.01.10.png)
+![](images/Screenshot%202025-03-19%20at%2016.01.10.png)
 
 it is often conveneient to standardize by the mean in linear regression. standardizing means subtract mean and divide by standard deviation - it makes it easier to choose sensible prior and makes computation work better.
 
-![](images/Screenshot 2025-03-19 at 16.04.46.png)
+![](images/Screenshot%202025-03-19%20at%2016.04.46.png)
 
-![](images/Screenshot 2025-03-19 at 16.05.33.png){width="346"}
+![](images/Screenshot%202025-03-19%20at%2016.05.33.png){width="346"}
 
 The above code produces this \^ which is bad - they're totally different, the slopes are too extreme,
 
 better priors:
 
-![](images/Screenshot 2025-03-19 at 16.06.47.png)
+![](images/Screenshot%202025-03-19%20at%2016.06.47.png)
 
-![](images/Screenshot 2025-03-19 at 16.06.57.png){width="329"}
+![](images/Screenshot%202025-03-19%20at%2016.06.57.png){width="329"}
 
 I think this below is plotting the priors which can be useful?
 
-![](images/Screenshot 2025-03-19 at 16.15.07.png)
+![](images/Screenshot%202025-03-19%20at%2016.15.07.png)
 
 The slope is not the causal effect of M - that's often reported but it's not quite right. We're going to do it the principled way which works when we get to more complex models. We do a simulation:
 
-![](images/Screenshot 2025-03-19 at 16.17.01.png)
+![](images/Screenshot%202025-03-19%20at%2016.17.01.png)
 
 we play god on M - we delete the arrows going into M to simulate the causal effect of M on D
 
-![](images/Screenshot 2025-03-19 at 16.18.56.png)
+![](images/Screenshot%202025-03-19%20at%2016.18.56.png)
 
 the guess from the above is that M on D is a lot smaller than A on D
 
 but you still need to to estimate causal effect of A:
 
-![](images/Screenshot 2025-03-19 at 16.21.01.png){width="451"}
+![](images/Screenshot%202025-03-19%20at%2016.21.01.png){width="451"}
 
 ### The Pipe
 
 there was also a Pipe in the above example. let's look at that now.
 
-![](images/Screenshot 2025-03-19 at 16.26.14.png)
+![](images/Screenshot%202025-03-19%20at%2016.26.14.png)
 
 statistically the pipe and the fork look the same but causally they're very different so we need to think about them differently. so if we stratified by Z there would be no association between Y and X again - because all the association is transmitted through the effect of X on Z
 
-![](images/Screenshot 2025-03-19 at 16.29.14.png)
+![](images/Screenshot%202025-03-19%20at%2016.29.14.png)
 
 EVERYTHING THAT Y KNOWS ABOUT X IS ALREADY KNOWN BY Z.
 
@@ -89,17 +89,17 @@ Example of a pipe:
 
 sometimes ppl think if they're doing a controlled experiment you don't have to bother with all this confound stuff but that's WRONG:
 
-![](images/Screenshot 2025-03-19 at 16.31.43.png){width="495"}
+![](images/Screenshot%202025-03-19%20at%2016.31.43.png){width="495"}
 
 Scientific Model:
 
-![](images/Screenshot 2025-03-19 at 16.32.26.png){width="283"}
+![](images/Screenshot%202025-03-19%20at%2016.32.26.png){width="283"}
 
 then we introduce our treatment: plant could be directly affected by the treatment (hurt or help) but for sure hopefully treatment will affect fungus.
 
-![](images/Screenshot 2025-03-19 at 16.32.55.png){width="375"}
+![](images/Screenshot%202025-03-19%20at%2016.32.55.png){width="375"}
 
-![](images/Screenshot 2025-03-19 at 16.33.53.png){width="413"}
+![](images/Screenshot%202025-03-19%20at%2016.33.53.png){width="413"}
 
 If we want to know the total causal effect of T on H, we DON'T want to stratify by F because we want the total causal effect here to know if we should use the treatment or not.
 
@@ -115,7 +115,7 @@ it can often be dangerous to stratify by
 
 The collider is where Z is jointly caused by both x and y. X and Y are NOT associated, they're independent of one another - but bc they both influence Z, once stratified by Z, X and Y look VERY associated.
 
-![](images/Screenshot 2025-03-20 at 13.22.36.png)
+![](images/Screenshot%202025-03-20%20at%2013.22.36.png)
 
 the strong associations could read as causal, so there's a risk of thinking something else is going on, like a fork.
 
@@ -123,7 +123,7 @@ they appear for a variety of reasons:
 
 -   some already arise from selection: suppose there are 200 research grant applications, scored both on newsworthiness and trustworthiness. let's say they're totally unrelated to one another. then we could think about the ones that are funded - if they're sufficiently newsworthy and/or trustworthy they could both be funded. once you stratify by whether they're funded or not there's a strong association between trustworthiness and newsworthiness but in reality the two are not associated:
 
-    ![](images/Screenshot 2025-03-20 at 13.29.47.png)
+    ![](images/Screenshot%202025-03-20%20at%2013.29.47.png)
 
 -   points not showing on graph again
 
@@ -137,13 +137,13 @@ endogenous colliders - colliders can also arise through your analysis via endoge
 
 -   example: does age influence happiness? Possible confound here is marital status. suppose age has zero influence on happiness but that both age and happiness influence marital status (happier ppl more likely to get married) (older you are more likely you are to get married)
 
--   ![](images/Screenshot 2025-03-20 at 13.38.15.png)
+-   ![](images/Screenshot%202025-03-20%20at%2013.38.15.png)
 
 ### The Descendent
 
 descendent is easy - it's a parasite on the other three: how it behaves is dependent on what it's attached to
 
-![](images/Screenshot 2025-03-20 at 13.41.37.png){width="479"}
+![](images/Screenshot%202025-03-20%20at%2013.41.37.png){width="479"}
 
 because Z is the parent of A, A holds information about Z - so if you stratified by A, it would reduce the measured association between X and Y. but A is actually not causally associated with X or Y
 
@@ -154,6 +154,128 @@ descendents are SUPER COMMON - many measurements are proxies of what we actually
 They're both dangerous AND useful.
 
 ## Lecture 6 - Good & Bad Controls
+
+Try to avoid being clever - that's unreliable and opaque! we should instead be as boring as possible - reliant, transparent, logical procedures to derive implications that others can use to verify and challenge our work. We're going to work on developing those tools more in this lecture.
+
+We want a framework to take the confounds and do something with them. We think about a treatment X on a Y outcome and the issue of a common cause U that may or may not be measured but usually isn't. Our best bet if we can is to randomize the treatment to remove its link with U - but that often doesn't work, especially with observational studies. we also can attempt to randomize but it doesn't always work all the way - there can still be a partial influence of U:
+
+![](images/Screenshot 2025-03-26 at 16.11.50.png)
+
+Is there a statistical procedure that we can use to mimic randomization on X?
+
+![](images/Screenshot 2025-03-26 at 16.13.03.png){width="419"}
+
+we're not going to learn this in a detailed mathematical way but this is useful for a lot of causal models so we wanna talk about it. So in a simple example with a simple confound, we can deal with the confound here by stratifying by U if we can measure it because it's a fork:
+
+![](images/Screenshot 2025-03-26 at 16.14.43.png)
+
+to look at the causal effect of X on Y, intervene on X to get "The distribution of Y, stratified by X and U, averaged over the distribution of U"
+
+example:
+
+![](images/Screenshot 2025-03-26 at 16.20.05.png){width="390"}
+
+for DAGs, rules for finding P(Y\|do(X)) are known s do-calculus (not calculus, just the calculations). do-calculus has two perspectives: it's kind of the worst-case scenario, additional assumptions often allow stronger inference. do-calculus is also kind of a best case scenario - if inference is possible by do-calculus, it does not depend on special assumptions.
+
+### Backdoor criterion
+
+The Backdoor criterion is a shortcut to apply some results of do-caculus. it's a rule to find a set of variables to stratify by to yield P(Y\|do(X))
+
+![](images/Screenshot 2025-03-26 at 16.23.58.png){width="280"}
+
+3 steps (with example in photos)
+
+1.  identify all paths connecting the treatment X to the outcome Y
+
+    ![](images/Screenshot 2025-03-26 at 16.25.16.png)
+
+2.  Paths with arrows ENTERING X are backdoor paths
+
+    ![](images/Screenshot 2025-03-26 at 16.26.13.png)
+
+3.  find the adjustment set that block or close all backdoor paths:
+
+![](images/Screenshot 2025-03-26 at 16.26.52.png){width="405"}
+
+To simulate that confounded Y:
+
+```{r}
+library(rethinking)
+N <- 200
+b_XY <- 0
+b_UY <- -1
+b_UZ <- -1
+b_ZX <- 1
+
+set.seed(10)
+U <- rbern(N)
+Z <- rnorm(N,b_UZ*U)
+X <- rnorm(N,b_ZX*Z)
+Y <- rnorm(N,b_XY*X+b_UY*U)
+d <- list(Y=Y, X=X, Z=Z)
+
+#now run linear regressions
+
+#ignore U,Z
+m_YX <- quap(
+  alist(
+    Y ~ dnorm(mu, sigma),
+    mu <- a + b_XY*X,
+    a ~ dnorm(0,1),
+    b_XY ~ dnorm(0,1),
+    sigma ~dexp(1)
+  ), data = d
+)
+
+#stratify by Z
+
+m_YXZ <- quap(
+  alist(
+    Y ~ dnorm(mu, sigma),
+    mu <-  a + b_XY*X + b_Z*Z,
+    a ~ dnorm(0,1),
+    c(b_XY, b_Z) ~dnorm(0,1),
+    sigma ~dexp(1)
+  ), data = d
+) 
+
+post <- extract.samples(m_YX)
+post2 <-  extract.samples(m_YXZ)
+dens(post$b_XY, lwd=3, col=1, xlab = "posterior b_XY", xlim=c(-0.3, 0.3))
+dens(post2$b_XY, lwd=3,col=2, add=TRUE)
+```
+
+![](images/Screenshot 2025-03-26 at 16.41.26.png){width="467"}
+
+More complicated example of a backdoor criterion:
+
+![](images/Screenshot 2025-03-26 at 16.44.42.png)
+
+we're looking for a statistical to delete the arrows into X. you list all the paths connecting treatment X to outcome Y:
+
+![](images/Screenshot 2025-03-26 at 16.46.13.png)
+
+you look at each of these paths and realize that you need to add Z, C, and or or B to the "adjustment set"
+
+![](images/Screenshot 2025-03-26 at 16.49.48.png)
+
+you can use a tool to help you do this: www.daggitty.net
+
+you can draw DAGs on your screen, then have it help you figure out the adjustment set.
+
+![](images/Screenshot 2025-03-26 at 16.52.06.png){width="445"}
+
+analyze this using the backdoor criterion:
+
+![](images/Screenshot 2025-03-26 at 16.55.08.png){width="342"}
+
+![](images/Screenshot 2025-03-26 at 16.55.22.png){width="365"}
+
+![](images/Screenshot 2025-03-26 at 16.54.42.png)
+
+Summarizing backdoor criterion:
+
+do-calc is more than backdoors and adjustment sets. full luzury Bayes uses all variables but in separate sub-models instead of single regression. do-calc is less demanding - finds relebant variables saves us having to make some assumptions, not always a regression.
 
 # Week 3 Reading Notes
 
