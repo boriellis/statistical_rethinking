@@ -159,21 +159,21 @@ Try to avoid being clever - that's unreliable and opaque! we should instead be a
 
 We want a framework to take the confounds and do something with them. We think about a treatment X on a Y outcome and the issue of a common cause U that may or may not be measured but usually isn't. Our best bet if we can is to randomize the treatment to remove its link with U - but that often doesn't work, especially with observational studies. we also can attempt to randomize but it doesn't always work all the way - there can still be a partial influence of U:
 
-![](images/Screenshot 2025-03-26 at 16.11.50.png)
+![](images/Screenshot%202025-03-26%20at%2016.11.50.png)
 
 Is there a statistical procedure that we can use to mimic randomization on X?
 
-![](images/Screenshot 2025-03-26 at 16.13.03.png){width="419"}
+![](images/Screenshot%202025-03-26%20at%2016.13.03.png){width="419"}
 
 we're not going to learn this in a detailed mathematical way but this is useful for a lot of causal models so we wanna talk about it. So in a simple example with a simple confound, we can deal with the confound here by stratifying by U if we can measure it because it's a fork:
 
-![](images/Screenshot 2025-03-26 at 16.14.43.png)
+![](images/Screenshot%202025-03-26%20at%2016.14.43.png)
 
 to look at the causal effect of X on Y, intervene on X to get "The distribution of Y, stratified by X and U, averaged over the distribution of U"
 
 example:
 
-![](images/Screenshot 2025-03-26 at 16.20.05.png){width="390"}
+![](images/Screenshot%202025-03-26%20at%2016.20.05.png){width="390"}
 
 for DAGs, rules for finding P(Y\|do(X)) are known s do-calculus (not calculus, just the calculations). do-calculus has two perspectives: it's kind of the worst-case scenario, additional assumptions often allow stronger inference. do-calculus is also kind of a best case scenario - if inference is possible by do-calculus, it does not depend on special assumptions.
 
@@ -181,21 +181,21 @@ for DAGs, rules for finding P(Y\|do(X)) are known s do-calculus (not calculus, j
 
 The Backdoor criterion is a shortcut to apply some results of do-caculus. it's a rule to find a set of variables to stratify by to yield P(Y\|do(X))
 
-![](images/Screenshot 2025-03-26 at 16.23.58.png){width="280"}
+![](images/Screenshot%202025-03-26%20at%2016.23.58.png){width="280"}
 
 3 steps (with example in photos)
 
 1.  identify all paths connecting the treatment X to the outcome Y
 
-    ![](images/Screenshot 2025-03-26 at 16.25.16.png)
+    ![](images/Screenshot%202025-03-26%20at%2016.25.16.png)
 
 2.  Paths with arrows ENTERING X are backdoor paths
 
-    ![](images/Screenshot 2025-03-26 at 16.26.13.png)
+    ![](images/Screenshot%202025-03-26%20at%2016.26.13.png)
 
 3.  find the adjustment set that block or close all backdoor paths:
 
-![](images/Screenshot 2025-03-26 at 16.26.52.png){width="405"}
+![](images/Screenshot%202025-03-26%20at%2016.26.52.png){width="405"}
 
 To simulate that confounded Y:
 
@@ -245,37 +245,115 @@ dens(post$b_XY, lwd=3, col=1, xlab = "posterior b_XY", xlim=c(-0.3, 0.3))
 dens(post2$b_XY, lwd=3,col=2, add=TRUE)
 ```
 
-![](images/Screenshot 2025-03-26 at 16.41.26.png){width="467"}
+![](images/Screenshot%202025-03-26%20at%2016.41.26.png){width="467"}
 
 More complicated example of a backdoor criterion:
 
-![](images/Screenshot 2025-03-26 at 16.44.42.png)
+![](images/Screenshot%202025-03-26%20at%2016.44.42.png)
 
 we're looking for a statistical to delete the arrows into X. you list all the paths connecting treatment X to outcome Y:
 
-![](images/Screenshot 2025-03-26 at 16.46.13.png)
+![](images/Screenshot%202025-03-26%20at%2016.46.13.png)
 
 you look at each of these paths and realize that you need to add Z, C, and or or B to the "adjustment set"
 
-![](images/Screenshot 2025-03-26 at 16.49.48.png)
+![](images/Screenshot%202025-03-26%20at%2016.49.48.png)
 
 you can use a tool to help you do this: www.daggitty.net
 
 you can draw DAGs on your screen, then have it help you figure out the adjustment set.
 
-![](images/Screenshot 2025-03-26 at 16.52.06.png){width="445"}
+![](images/Screenshot%202025-03-26%20at%2016.52.06.png){width="445"}
 
 analyze this using the backdoor criterion:
 
-![](images/Screenshot 2025-03-26 at 16.55.08.png){width="342"}
+![](images/Screenshot%202025-03-26%20at%2016.55.08.png){width="342"}
 
-![](images/Screenshot 2025-03-26 at 16.55.22.png){width="365"}
+![](images/Screenshot%202025-03-26%20at%2016.55.22.png){width="365"}
 
-![](images/Screenshot 2025-03-26 at 16.54.42.png)
+![](images/Screenshot%202025-03-26%20at%2016.54.42.png)
 
 Summarizing backdoor criterion:
 
 do-calc is more than backdoors and adjustment sets. full luzury Bayes uses all variables but in separate sub-models instead of single regression. do-calc is less demanding - finds relebant variables saves us having to make some assumptions, not always a regression.
+
+### Good & Bad Controls
+
+Control variable is a variable introduced to an analysis so that the causal estimate is possible. you can pick ones that ruin perfectly fine designs.
+
+there are some common bad ways to pick em:
+
+-   don't just add anything in the spreadsheet and see if it's significant!! BAD!!!
+
+-   don't include any variables that are highly collinear - collinearity can arrive through a lot of different causal processes, you need to analyze that to know if it's good to control for them
+
+-   pick any pre-treatment measurement - also bad
+
+DON'T DO THAT!
+
+![](images/Screenshot 2025-03-28 at 10.01.41.png){width="468"}
+
+in the example above, the hobbies of two people influence their health but also might influence if they're friends or not. if we do stratify by the fact that they're friends we're missing something about those unobserved variables (there's colliders in there?)
+
+![](images/Screenshot 2025-03-28 at 10.03.15.png)
+
+the backdoor paths are closed - if we stratify by Z, we open them, that's then an issue:
+
+![](images/Screenshot 2025-03-28 at 10.03.45.png){width="497"}
+
+in this case we don't stratify by Z!
+
+another example:
+
+![](images/Screenshot 2025-03-28 at 10.04.35.png){width="522"}
+
+there are a bunch of things that affect both happiness and lifespan - those things are fine until you try to stratify by happiness - then they're an issue!!
+
+![](images/Screenshot 2025-03-28 at 10.06.18.png)
+
+if you add Z as a control you could TURN ON A CONFOUND!
+
+![](images/Screenshot 2025-03-28 at 10.11.43.png){width="462"}
+
+STATISTICAL SIGNIFICANCE IS NOT A JUSTIFICATION FOR MODEL STRUCTURE! YOU NEED A CAUSAL MODEL TO JUSTIFY YOUR RESULTS!
+
+![](images/Screenshot 2025-03-28 at 10.13.42.png)
+
+another example:
+
+![](images/Screenshot 2025-03-28 at 10.14.43.png){width="357"}
+
+but colliders not always so easy to spot:
+
+![](images/Screenshot 2025-03-28 at 10.15.14.png)
+
+ok when it comes to descendents:
+
+![](images/Screenshot 2025-03-28 at 10.16.50.png){width="386"}
+
+VERY BAD to add descendents as controls. selecting on the outcome is the most powerful way to ruin scientific inference
+
+![](images/Screenshot 2025-03-28 at 10.17.55.png){width="422"}
+
+don't stratify by income because if you do there's a narrower range of occupations and education and it will look like there isn't as much of an effect
+
+another example, now let's look at a parent of X:
+
+![](images/Screenshot 2025-03-28 at 10.19.06.png)
+
+there are no backdoors, but it's still not good to condition on Z - if you stratify by Z there's less variation in X and it will reduce the precision of my estimate of the effect of X on Y![](images/Screenshot 2025-03-28 at 10.21.16.png)
+
+in the above it's centered on the correct value but there's a lot more uncertainty than if you did the correct model which is just y\~x!
+
+Now bias amplification example:
+
+let's add an unobserved counfound btwn x and y ![](images/Screenshot 2025-03-28 at 10.22.40.png)
+
+adding Z amplifies the bias?
+
+![](images/Screenshot 2025-03-28 at 10.23.36.png)
+
+there's already in the black model a bias away from the true value 0 - when you stratify by Z it amplifies it. to look at effect of X on Y you want to know where they both vary. within each level of Z there's less variation in X, and there's relatively more importance of the confound u in each level of Z
 
 # Week 3 Reading Notes
 
