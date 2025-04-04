@@ -291,67 +291,67 @@ there are some common bad ways to pick em:
 
 DON'T DO THAT!
 
-![](images/Screenshot 2025-03-28 at 10.01.41.png){width="468"}
+![](images/Screenshot%202025-03-28%20at%2010.01.41.png){width="468"}
 
 in the example above, the hobbies of two people influence their health but also might influence if they're friends or not. if we do stratify by the fact that they're friends we're missing something about those unobserved variables (there's colliders in there?)
 
-![](images/Screenshot 2025-03-28 at 10.03.15.png)
+![](images/Screenshot%202025-03-28%20at%2010.03.15.png)
 
 the backdoor paths are closed - if we stratify by Z, we open them, that's then an issue:
 
-![](images/Screenshot 2025-03-28 at 10.03.45.png){width="497"}
+![](images/Screenshot%202025-03-28%20at%2010.03.45.png){width="497"}
 
 in this case we don't stratify by Z!
 
 another example:
 
-![](images/Screenshot 2025-03-28 at 10.04.35.png){width="522"}
+![](images/Screenshot%202025-03-28%20at%2010.04.35.png){width="522"}
 
 there are a bunch of things that affect both happiness and lifespan - those things are fine until you try to stratify by happiness - then they're an issue!!
 
-![](images/Screenshot 2025-03-28 at 10.06.18.png)
+![](images/Screenshot%202025-03-28%20at%2010.06.18.png)
 
 if you add Z as a control you could TURN ON A CONFOUND!
 
-![](images/Screenshot 2025-03-28 at 10.11.43.png){width="462"}
+![](images/Screenshot%202025-03-28%20at%2010.11.43.png){width="462"}
 
 STATISTICAL SIGNIFICANCE IS NOT A JUSTIFICATION FOR MODEL STRUCTURE! YOU NEED A CAUSAL MODEL TO JUSTIFY YOUR RESULTS!
 
-![](images/Screenshot 2025-03-28 at 10.13.42.png)
+![](images/Screenshot%202025-03-28%20at%2010.13.42.png)
 
 another example:
 
-![](images/Screenshot 2025-03-28 at 10.14.43.png){width="357"}
+![](images/Screenshot%202025-03-28%20at%2010.14.43.png){width="357"}
 
 but colliders not always so easy to spot:
 
-![](images/Screenshot 2025-03-28 at 10.15.14.png)
+![](images/Screenshot%202025-03-28%20at%2010.15.14.png)
 
 ok when it comes to descendents:
 
-![](images/Screenshot 2025-03-28 at 10.16.50.png){width="386"}
+![](images/Screenshot%202025-03-28%20at%2010.16.50.png){width="386"}
 
 VERY BAD to add descendents as controls. selecting on the outcome is the most powerful way to ruin scientific inference
 
-![](images/Screenshot 2025-03-28 at 10.17.55.png){width="422"}
+![](images/Screenshot%202025-03-28%20at%2010.17.55.png){width="422"}
 
 don't stratify by income because if you do there's a narrower range of occupations and education and it will look like there isn't as much of an effect
 
 another example, now let's look at a parent of X:
 
-![](images/Screenshot 2025-03-28 at 10.19.06.png)
+![](images/Screenshot%202025-03-28%20at%2010.19.06.png)
 
-there are no backdoors, but it's still not good to condition on Z - if you stratify by Z there's less variation in X and it will reduce the precision of my estimate of the effect of X on Y![](images/Screenshot 2025-03-28 at 10.21.16.png)
+there are no backdoors, but it's still not good to condition on Z - if you stratify by Z there's less variation in X and it will reduce the precision of my estimate of the effect of X on Y![](images/Screenshot%202025-03-28%20at%2010.21.16.png)
 
 in the above it's centered on the correct value but there's a lot more uncertainty than if you did the correct model which is just y\~x!
 
 Now bias amplification example:
 
-let's add an unobserved counfound btwn x and y ![](images/Screenshot 2025-03-28 at 10.22.40.png)
+let's add an unobserved counfound btwn x and y ![](images/Screenshot%202025-03-28%20at%2010.22.40.png)
 
 adding Z amplifies the bias?
 
-![](images/Screenshot 2025-03-28 at 10.23.36.png)
+![](images/Screenshot%202025-03-28%20at%2010.23.36.png)
 
 there's already in the black model a bias away from the true value 0 - when you stratify by Z it amplifies it. to look at effect of X on Y you want to know where they both vary. within each level of Z there's less variation in X, and there's relatively more importance of the confound u in each level of Z
 
@@ -360,3 +360,14 @@ there's already in the black model a bias away from the true value 0 - when you 
 ## Chapter 5
 
 ## Chapter 6
+
+# Homework
+
+![](images/Screenshot 2025-04-03 at 16.16.57.png)
+
+```{r}
+library(rethinking)
+data(foxes)
+
+head(foxes)
+```
