@@ -1,0 +1,89 @@
+---
+title: "week4notes"
+format: html
+toc: true
+---
+
+# Week 4 lecture notes
+
+## Lecture 7 - Overfitting - Fitting Over and Under
+
+in life there are typically infinite causes for finite data. the estimator might exist but might not be useful - we need to balance complexity and simplicity
+
+2 main struggles -
+
+-   struggle against causation - how to use causal assumptions to design estimators, contrast alternative models
+
+-   struggle against data - how to make the estimators work
+
+problems of prediction:
+
+-   what function describes a scatter of points well (fitting, compression)?
+
+-   what function EXPLAINS the points? (this is causal influence, what we focused on last week)
+
+-   what would happen if we changed a point? (this is intervention)
+
+-   what is the next observation from the same process? (prediction)
+
+### leave one-out cross-validation 
+
+(a process to get an idea of how good our model is at predicting things - the predictive accuracy of the statistical procedure)
+
+1.  drop one point
+
+2.  fit line to remaining
+
+3.  predict dropped point
+
+4.  repeat (1-3) with next point
+
+5.  score is error on dropped (summed up for all the points)
+
+Bayesian cross-validation - because we're doing bayesian stats, we use the entire posterior distribution, not just a point prediction.
+
+for simple models, more parameters improves fit to sample
+
+but may reduce accuracy of predictions out of sample
+
+most accurate model trades off flexibility with overfitting.
+
+### Regularization
+
+cross-validation can compare between models, but it doesn't necessarily help you pick a good one? regularization, which means picking better priors, is how you want to pick a good model.
+
+overfitting depends upon the priors
+
+skeptical priors have tighter variance, reduce flexibility
+
+regularization - function finds regular features of process. the procedure of designing a model that makes good predictions
+
+good priors are often tighter than you think!
+
+![](images/Screenshot 2025-04-04 at 16.50.36.png)
+
+your goal is not to just compress or encode the sample using the model - it is to make predictions. tighter priors make models that are less good at describing the data in the sample (less flexible!) but better it is as predicting data outside the sample. choosing skeptical priors that let the model learn regular features but not irregular features is called REGULARIZATION.
+
+you can still make priors TOO tight:
+
+![](images/Screenshot 2025-04-04 at 16.53.59.png){width="517"}
+
+this makes it worse for the sample size (if you fed it more data it would get better)
+
+Regularizing priors:
+
+how do you choose the width of the prior?
+
+for causal inference, use science. for pure prediction, you can tune the prior using cross-validation. many tasks are a mix of inference and prediction. No need to be perfect, just better
+
+## Lecture 8 - MCMC
+
+# Week 4 reading notes
+
+## Chapter 7
+
+## Chapter 8
+
+## Chapter 9
+
+# Homework
