@@ -76,6 +76,34 @@ how do you choose the width of the prior?
 
 for causal inference, use science. for pure prediction, you can tune the prior using cross-validation. many tasks are a mix of inference and prediction. No need to be perfect, just better
 
+So I think summarizing the above: the more polynomial terms (wiggles in your line) the better the line is at describing the data you have but the worse it is at predicting new datapoints. The more polynomial terms you have, also, the more the selection of your priors makes a difference - the tighter the priors, the worse it is at describing the data you have, but the better it is at predicting (compared to less tight priors)
+
+### penalty prediction
+
+leave one out cross validation is rad but it makes you fit the same number of models as data points which is a LOT of effort: BUT! you can actually do it just from fitting one model! 2 relatively easy ways. these tools try to estimate the prediction penalty from a single model. they are PSIS and WAIC.
+
+![](images/Screenshot 2025-04-11 at 13.24.21.png)
+
+with a single model, what the above shows is that PSIS and WAIC don't get exactly the same answer as leave-one-out cross-validation but they get the same idea and they're pretty good! for big samples they do the trick without being a nightmare to run for tons of data points
+
+![](images/Screenshot 2025-04-11 at 13.26.09.png)
+
+I think what he's saying in the above is that you need your DAG and your solid causal understanding of the system to justify your model and statistical inference, you can't just get weird with a bunch of models and then run WAIC or PSIS or CV and be like YEAH THIS MODEL IS GOOD! and then let that justify its selection - you're just trying to use those tools to measure and manage overfitting. they're looking at prediction in the absence of intervention, not prediction in the PRESENCE of intervention (which is what would make it causal). People do this and its bAD!
+
+A lot of the time making decisions about what model to use based on how well it predicts data leads you crazy astray because predictive criteria actually perform better when you're doing wacky causal stuff with your model (like including post-treatment variables, handling your confounds wrong, etC)
+
+### dealing with outliers
+
+outliers are still data points! don't wanna just ignore them or drop them! it's the model that's wrong, not the data - dropping the outliers doesn't fix anything, it just ignores the problem - your model is wrong, not the data. quantify the influence of each point using cross-validation (how much does the posterior dist. shift when you drop each observation), then use a mixture model
+
+to quantify their importance, he recommends the PSIS k statistic or the WAIC "penalty term" - these quantify the influence of each point
+
+#### Importance sampling (PSIS)
+
+#### Information Criteria (WAIC) 
+
+you should never use AIC because it's eclipsed by WAIC, which is better and more accurate
+
 ## Lecture 8 - MCMC
 
 # Week 4 reading notes
