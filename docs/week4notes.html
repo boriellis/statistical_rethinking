@@ -51,6 +51,8 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">leave one-out cross-validation</a></li>
   <li><a href="#regularization" id="toc-regularization" class="nav-link" data-scroll-target="#regularization">Regularization</a></li>
+  <li><a href="#penalty-prediction" id="toc-penalty-prediction" class="nav-link" data-scroll-target="#penalty-prediction">penalty prediction</a></li>
+  <li><a href="#dealing-with-outliers" id="toc-dealing-with-outliers" class="nav-link" data-scroll-target="#dealing-with-outliers">dealing with outliers</a></li>
   </ul></li>
   <li><a href="#lecture-8---mcmc" id="toc-lecture-8---mcmc" class="nav-link" data-scroll-target="#lecture-8---mcmc">Lecture 8 - MCMC</a></li>
   </ul></li>
@@ -132,6 +134,28 @@ ul.task-list li input[type="checkbox"] {
 <p>Regularizing priors:</p>
 <p>how do you choose the width of the prior?</p>
 <p>for causal inference, use science. for pure prediction, you can tune the prior using cross-validation. many tasks are a mix of inference and prediction. No need to be perfect, just better</p>
+<p>So I think summarizing the above: the more polynomial terms (wiggles in your line) the better the line is at describing the data you have but the worse it is at predicting new datapoints. The more polynomial terms you have, also, the more the selection of your priors makes a difference - the tighter the priors, the worse it is at describing the data you have, but the better it is at predicting (compared to less tight priors)</p>
+</section>
+<section id="penalty-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="penalty-prediction">penalty prediction</h3>
+<p>leave one out cross validation is rad but it makes you fit the same number of models as data points which is a LOT of effort: BUT! you can actually do it just from fitting one model! 2 relatively easy ways. these tools try to estimate the prediction penalty from a single model. they are PSIS and WAIC.</p>
+<p><img src="images/Screenshot%202025-04-11%20at%2013.24.21.png" class="img-fluid"></p>
+<p>with a single model, what the above shows is that PSIS and WAIC don’t get exactly the same answer as leave-one-out cross-validation but they get the same idea and they’re pretty good! for big samples they do the trick without being a nightmare to run for tons of data points</p>
+<p><img src="images/Screenshot%202025-04-11%20at%2013.26.09.png" class="img-fluid"></p>
+<p>I think what he’s saying in the above is that you need your DAG and your solid causal understanding of the system to justify your model and statistical inference, you can’t just get weird with a bunch of models and then run WAIC or PSIS or CV and be like YEAH THIS MODEL IS GOOD! and then let that justify its selection - you’re just trying to use those tools to measure and manage overfitting. they’re looking at prediction in the absence of intervention, not prediction in the PRESENCE of intervention (which is what would make it causal). People do this and its bAD!</p>
+<p>A lot of the time making decisions about what model to use based on how well it predicts data leads you crazy astray because predictive criteria actually perform better when you’re doing wacky causal stuff with your model (like including post-treatment variables, handling your confounds wrong, etC)</p>
+</section>
+<section id="dealing-with-outliers" class="level3">
+<h3 class="anchored" data-anchor-id="dealing-with-outliers">dealing with outliers</h3>
+<p>outliers are still data points! don’t wanna just ignore them or drop them! it’s the model that’s wrong, not the data - dropping the outliers doesn’t fix anything, it just ignores the problem - your model is wrong, not the data. quantify the influence of each point using cross-validation (how much does the posterior dist. shift when you drop each observation), then use a mixture model</p>
+<p>to quantify their importance, he recommends the PSIS k statistic or the WAIC “penalty term” - these quantify the influence of each point</p>
+<section id="importance-sampling-psis" class="level4">
+<h4 class="anchored" data-anchor-id="importance-sampling-psis">Importance sampling (PSIS)</h4>
+</section>
+<section id="information-criteria-waic" class="level4">
+<h4 class="anchored" data-anchor-id="information-criteria-waic">Information Criteria (WAIC)</h4>
+<p>you should never use AIC because it’s eclipsed by WAIC, which is better and more accurate</p>
+</section>
 </section>
 </section>
 <section id="lecture-8---mcmc" class="level2">
