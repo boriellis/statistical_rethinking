@@ -343,6 +343,49 @@ Attaching package: 'rethinking'</code></pre>
 <p>Summarizing backdoor criterion:</p>
 <p>do-calc is more than backdoors and adjustment sets. full luzury Bayes uses all variables but in separate sub-models instead of single regression. do-calc is less demanding - finds relebant variables saves us having to make some assumptions, not always a regression.</p>
 </section>
+<section id="good-bad-controls" class="level3">
+<h3 class="anchored" data-anchor-id="good-bad-controls">Good &amp; Bad Controls</h3>
+<p>Control variable is a variable introduced to an analysis so that the causal estimate is possible. you can pick ones that ruin perfectly fine designs.</p>
+<p>there are some common bad ways to pick em:</p>
+<ul>
+<li><p>don’t just add anything in the spreadsheet and see if it’s significant!! BAD!!!</p></li>
+<li><p>don’t include any variables that are highly collinear - collinearity can arrive through a lot of different causal processes, you need to analyze that to know if it’s good to control for them</p></li>
+<li><p>pick any pre-treatment measurement - also bad</p></li>
+</ul>
+<p>DON’T DO THAT!</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.01.41.png" class="img-fluid" width="468"></p>
+<p>in the example above, the hobbies of two people influence their health but also might influence if they’re friends or not. if we do stratify by the fact that they’re friends we’re missing something about those unobserved variables (there’s colliders in there?)</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.03.15.png" class="img-fluid"></p>
+<p>the backdoor paths are closed - if we stratify by Z, we open them, that’s then an issue:</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.03.45.png" class="img-fluid" width="497"></p>
+<p>in this case we don’t stratify by Z!</p>
+<p>another example:</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.04.35.png" class="img-fluid" width="522"></p>
+<p>there are a bunch of things that affect both happiness and lifespan - those things are fine until you try to stratify by happiness - then they’re an issue!!</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.06.18.png" class="img-fluid"></p>
+<p>if you add Z as a control you could TURN ON A CONFOUND!</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.11.43.png" class="img-fluid" width="462"></p>
+<p>STATISTICAL SIGNIFICANCE IS NOT A JUSTIFICATION FOR MODEL STRUCTURE! YOU NEED A CAUSAL MODEL TO JUSTIFY YOUR RESULTS!</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.13.42.png" class="img-fluid"></p>
+<p>another example:</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.14.43.png" class="img-fluid" width="357"></p>
+<p>but colliders not always so easy to spot:</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.15.14.png" class="img-fluid"></p>
+<p>ok when it comes to descendents:</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.16.50.png" class="img-fluid" width="386"></p>
+<p>VERY BAD to add descendents as controls. selecting on the outcome is the most powerful way to ruin scientific inference</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.17.55.png" class="img-fluid" width="422"></p>
+<p>don’t stratify by income because if you do there’s a narrower range of occupations and education and it will look like there isn’t as much of an effect</p>
+<p>another example, now let’s look at a parent of X:</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.19.06.png" class="img-fluid"></p>
+<p>there are no backdoors, but it’s still not good to condition on Z - if you stratify by Z there’s less variation in X and it will reduce the precision of my estimate of the effect of X on Y<img src="images/Screenshot%202025-03-28%20at%2010.21.16.png" class="img-fluid"></p>
+<p>in the above it’s centered on the correct value but there’s a lot more uncertainty than if you did the correct model which is just y~x!</p>
+<p>Now bias amplification example:</p>
+<p>let’s add an unobserved counfound btwn x and y <img src="images/Screenshot%202025-03-28%20at%2010.22.40.png" class="img-fluid"></p>
+<p>adding Z amplifies the bias?</p>
+<p><img src="images/Screenshot%202025-03-28%20at%2010.23.36.png" class="img-fluid"></p>
+<p>there’s already in the black model a bias away from the true value 0 - when you stratify by Z it amplifies it. to look at effect of X on Y you want to know where they both vary. within each level of Z there’s less variation in X, and there’s relatively more importance of the confound u in each level of Z</p>
+</section>
 </section>
 </section>
 <section id="week-3-reading-notes" class="level1">
@@ -353,6 +396,25 @@ Attaching package: 'rethinking'</code></pre>
 <section id="chapter-6" class="level2">
 <h2 class="anchored" data-anchor-id="chapter-6">Chapter 6</h2>
 </section>
+</section>
+<section id="homework" class="level1">
+<h1>Homework</h1>
+<p><img src="images/Screenshot%202025-04-03%20at%2016.16.57.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rethinking)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(foxes)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(foxes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  group avgfood groupsize area weight
+1     1    0.37         2 1.09   5.02
+2     1    0.37         2 1.09   2.84
+3     2    0.53         2 2.05   5.33
+4     2    0.53         2 2.05   6.07
+5     3    0.49         2 2.12   5.85
+6     3    0.49         2 2.12   3.25</code></pre>
+</div>
+</div>
 </section>
 
 </main>

@@ -363,7 +363,7 @@ there's already in the black model a bias away from the true value 0 - when you 
 
 # Homework
 
-![](images/Screenshot 2025-04-03 at 16.16.57.png)
+![](images/Screenshot%202025-04-03%20at%2016.16.57.png)
 
 ```{r}
 library(rethinking)
