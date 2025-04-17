@@ -166,6 +166,107 @@ used in many machine learning approaches - backpropogation is a special case.
 
 the library we're gonna use is called Stan - this is just named after Stanislaw Ulam
 
+### New Jersey Wine example
+
+![](images/Screenshot 2025-04-17 at 08.17.33.png)
+
+he said we don't NEED to stratify by judge here (no backdoors no confounds)
+
+![](images/Screenshot 2025-04-17 at 08.18.21.png)
+
+```{r}
+library(rethinking)
+data(Wines2012)
+d <- Wines2012
+
+dat <- list(
+  S= standardize(d$score),
+  J=as.numeric(d$judge),
+  W=as.numeric(d$wine),
+  X=ifelse(d$wine.amer==1,1,2),
+  Z= ifelse(d$judge.amer==1,1,2)
+)
+
+mQ <- ulam(
+  alist(
+    S ~ dnorm(mu,sigma),
+    mu <- Q[W],
+    Q[W] ~dnorm(0,1),
+    sigma ~ dexp(1)
+  ), data = dat, chains =4, cores = 4)
+
+precis(mQ,2)
+```
+
+Drawing the Markov Owl
+
+complex machinery but lots of diagnostics
+
+1.  trace plots
+
+    ![](images/Screenshot 2025-04-17 at 08.26.49.png){width="519"}
+
+    these are just tracing what the chain is up to for each of the Q values we ran in the model just now
+
+    everything in the grey chunk is it warming up, the white regions are the samples that we're actually drawing from the posterior distribution.
+
+    we fit four chains - need more than one chain to check convergence, which is when each change explores the correct distribution and they all explore the SAME distribution. ![](images/Screenshot 2025-04-17 at 08.30.38.png){width="461"}
+
+    \^that's all the four chains layered on top of each other, THIS below is a bad chain - they're wandering around, they're not layering on top of each other, blah :(
+
+    ![](images/Screenshot 2025-04-17 at 08.31.05.png){width="445"}
+
+2.  trace rank plots
+
+    ![](images/Screenshot 2025-04-17 at 08.33.19.png){width="400"}
+
+    the above looks good, this would be bad:
+
+    ![](images/Screenshot 2025-04-17 at 08.33.58.png){width="323"}
+
+3.  R-hat convergence measure
+
+    chain convergence diagnostic - it's like a variance ratio -
+
+    if chains do converge, the beginning and the end of the chain are in the same region, and independent chains should explore the same region. R-hat is a ratio of variances - as total variance shrinks to average variance within chains, R-hat approaches 1. this is NOT a test, no guarantees from a value of R that you are getting convergence, but it helps.
+
+4.  n_eff (number of effective samples)
+
+    "how long would the chain be if each sample was independent of the one before it?"
+
+    when samples are autocorrelated, you have fewer EFFECTIVE samples
+
+5.  divergent transitions![](images/Screenshot 2025-04-17 at 08.56.28.png)
+
+    now goin back to make the model more sophisticated:
+
+![](images/Screenshot 2025-04-17 at 08.44.44.png)
+
+```{r}
+mQO <- ulam(
+  alist(
+    S~dnorm(mu,sigma),
+    mu <- Q[W] + O[X],
+    Q[W] ~ dnorm(0,1),
+    O[X] ~dnorm(0,1),
+    sigma ~dexp(1)
+  ), data = dat, chains =4, cores = 4
+)
+plot(precis(mQo,2))
+```
+
+this code not working, but should generate this:
+
+![](images/Screenshot 2025-04-17 at 08.48.41.png){width="408"}
+
+now adding in two more parameters:
+
+![](images/Screenshot 2025-04-17 at 08.49.09.png)
+
+![](images/Screenshot 2025-04-17 at 08.50.05.png)
+
+![](images/Screenshot 2025-04-17 at 08.52.26.png)
+
 # Week 4 reading notes
 
 ## Chapter 7
