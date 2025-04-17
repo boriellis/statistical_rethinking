@@ -106,6 +106,66 @@ you should never use AIC because it's eclipsed by WAIC, which is better and more
 
 ## Lecture 8 - MCMC
 
+randomness is used by scientists to do calculations
+
+back to the marriage/divorce rate example from the south:
+
+we haven't actually measured any of the things in that DAG, only their descendents by sampling:
+
+![](images/Screenshot 2025-04-16 at 16.22.34.png){width="509"}
+
+there's other stuff going on in the background too, like the fact that the population in different states effects how good we are at sampling, etc.
+
+Another problem example - suppose you have some students in a class, and you want to know if the class is working to improve their knowledge. we can't actually assess their knowledge, just assess it using things like test scores. the test itself also has an influence on the score, and there's differences between peple that will influence their score and the knowledge:
+
+![](images/Screenshot 2025-04-16 at 16.25.13.png){width="449"}
+
+TODAY! we're going to compute the posterior using MCMC. we've talked about several options for that so far:
+
+1.  analytical approach (often impossible - only w simplest problems, still awkward)
+
+2.  grid approximation (always possible but MASSIVELY intensive, rarely practical for computing time)
+
+3.  quadratic approximation (this is what we've been using so far, similar to maximum liklhood in frequentist stats, but while it's useful it makes some strong assumptions so has limited applications)
+
+4.  Markov chain Monte Carlo (intensive, but widely applicable)
+
+### King Markov and his people
+
+![](images/Screenshot 2025-04-16 at 16.39.43.png){width="331"}
+
+![](images/Screenshot 2025-04-16 at 16.40.04.png){width="391"}
+
+![](images/Screenshot 2025-04-16 at 16.40.27.png){width="440"}
+
+the chain is a sewuence of draws from a distribution
+
+markov chain - history doesn't matter, just where you are now
+
+monte carlo - refers to the random aspect (from gambling)
+
+![](images/Screenshot 2025-04-16 at 16.41.11.png){width="509"}
+
+we don't use the metropolis algorithm much but its a simple MCMC algorithm
+
+today, MCMC is diverse, the metropolis algorithm has yielded to newer, more efficient algorithms. many innovations, best methods are now gradients - we'll use one called the "hamilton monte carlo":
+
+take a quadratic formula, take its logarithm, multiple it by -1, and you get a bucket:
+
+![](images/Screenshot 2025-04-16 at 16.48.46.png){width="490"}
+
+![](images/Screenshot 2025-04-16 at 16.49.58.png){width="436"}
+
+basically to do hamiltonian monte carlo, we're going to release a marble into the bowl and let it roll according to the physics. we'll do that a bunch of times and record eaxh of the stopping points, then flick it again and record the next
+
+the step size of the path of the marble matter - big steps are a bit inefficient bc for some reason they make a lot of uturns and return to where they start. smaller steps take a longer time to explore the space and get a good overall picture of the shape of the bowl
+
+we're just gonna use the math library that does all the caculus for us - what we need is the gradients (what's uphill what's downhill). we can write them ourselves using calculus, OR - we can use auto-diff (automatic differentiation) which will find the symbolic derivative of our model code.
+
+used in many machine learning approaches - backpropogation is a special case.
+
+the library we're gonna use is called Stan - this is just named after Stanislaw Ulam
+
 # Week 4 reading notes
 
 ## Chapter 7
