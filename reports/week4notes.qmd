@@ -112,13 +112,13 @@ back to the marriage/divorce rate example from the south:
 
 we haven't actually measured any of the things in that DAG, only their descendents by sampling:
 
-![](images/Screenshot 2025-04-16 at 16.22.34.png){width="509"}
+![](images/Screenshot%202025-04-16%20at%2016.22.34.png){width="509"}
 
 there's other stuff going on in the background too, like the fact that the population in different states effects how good we are at sampling, etc.
 
 Another problem example - suppose you have some students in a class, and you want to know if the class is working to improve their knowledge. we can't actually assess their knowledge, just assess it using things like test scores. the test itself also has an influence on the score, and there's differences between peple that will influence their score and the knowledge:
 
-![](images/Screenshot 2025-04-16 at 16.25.13.png){width="449"}
+![](images/Screenshot%202025-04-16%20at%2016.25.13.png){width="449"}
 
 TODAY! we're going to compute the posterior using MCMC. we've talked about several options for that so far:
 
@@ -132,11 +132,11 @@ TODAY! we're going to compute the posterior using MCMC. we've talked about sever
 
 ### King Markov and his people
 
-![](images/Screenshot 2025-04-16 at 16.39.43.png){width="331"}
+![](images/Screenshot%202025-04-16%20at%2016.39.43.png){width="331"}
 
-![](images/Screenshot 2025-04-16 at 16.40.04.png){width="391"}
+![](images/Screenshot%202025-04-16%20at%2016.40.04.png){width="391"}
 
-![](images/Screenshot 2025-04-16 at 16.40.27.png){width="440"}
+![](images/Screenshot%202025-04-16%20at%2016.40.27.png){width="440"}
 
 the chain is a sewuence of draws from a distribution
 
@@ -144,7 +144,7 @@ markov chain - history doesn't matter, just where you are now
 
 monte carlo - refers to the random aspect (from gambling)
 
-![](images/Screenshot 2025-04-16 at 16.41.11.png){width="509"}
+![](images/Screenshot%202025-04-16%20at%2016.41.11.png){width="509"}
 
 we don't use the metropolis algorithm much but its a simple MCMC algorithm
 
@@ -152,9 +152,9 @@ today, MCMC is diverse, the metropolis algorithm has yielded to newer, more effi
 
 take a quadratic formula, take its logarithm, multiple it by -1, and you get a bucket:
 
-![](images/Screenshot 2025-04-16 at 16.48.46.png){width="490"}
+![](images/Screenshot%202025-04-16%20at%2016.48.46.png){width="490"}
 
-![](images/Screenshot 2025-04-16 at 16.49.58.png){width="436"}
+![](images/Screenshot%202025-04-16%20at%2016.49.58.png){width="436"}
 
 basically to do hamiltonian monte carlo, we're going to release a marble into the bowl and let it roll according to the physics. we'll do that a bunch of times and record eaxh of the stopping points, then flick it again and record the next
 
@@ -168,11 +168,11 @@ the library we're gonna use is called Stan - this is just named after Stanislaw 
 
 ### New Jersey Wine example
 
-![](images/Screenshot 2025-04-17 at 08.17.33.png)
+![](images/Screenshot%202025-04-17%20at%2008.17.33.png)
 
 he said we don't NEED to stratify by judge here (no backdoors no confounds)
 
-![](images/Screenshot 2025-04-17 at 08.18.21.png)
+![](images/Screenshot%202025-04-17%20at%2008.18.21.png)
 
 ```{r}
 library(rethinking)
@@ -204,25 +204,25 @@ complex machinery but lots of diagnostics
 
 1.  trace plots
 
-    ![](images/Screenshot 2025-04-17 at 08.26.49.png){width="519"}
+    ![](images/Screenshot%202025-04-17%20at%2008.26.49.png){width="519"}
 
     these are just tracing what the chain is up to for each of the Q values we ran in the model just now
 
     everything in the grey chunk is it warming up, the white regions are the samples that we're actually drawing from the posterior distribution.
 
-    we fit four chains - need more than one chain to check convergence, which is when each change explores the correct distribution and they all explore the SAME distribution. ![](images/Screenshot 2025-04-17 at 08.30.38.png){width="461"}
+    we fit four chains - need more than one chain to check convergence, which is when each change explores the correct distribution and they all explore the SAME distribution. ![](images/Screenshot%202025-04-17%20at%2008.30.38.png){width="461"}
 
     \^that's all the four chains layered on top of each other, THIS below is a bad chain - they're wandering around, they're not layering on top of each other, blah :(
 
-    ![](images/Screenshot 2025-04-17 at 08.31.05.png){width="445"}
+    ![](images/Screenshot%202025-04-17%20at%2008.31.05.png){width="445"}
 
 2.  trace rank plots
 
-    ![](images/Screenshot 2025-04-17 at 08.33.19.png){width="400"}
+    ![](images/Screenshot%202025-04-17%20at%2008.33.19.png){width="400"}
 
     the above looks good, this would be bad:
 
-    ![](images/Screenshot 2025-04-17 at 08.33.58.png){width="323"}
+    ![](images/Screenshot%202025-04-17%20at%2008.33.58.png){width="323"}
 
 3.  R-hat convergence measure
 
@@ -236,11 +236,11 @@ complex machinery but lots of diagnostics
 
     when samples are autocorrelated, you have fewer EFFECTIVE samples
 
-5.  divergent transitions![](images/Screenshot 2025-04-17 at 08.56.28.png)
+5.  divergent transitions![](images/Screenshot%202025-04-17%20at%2008.56.28.png)
 
     now goin back to make the model more sophisticated:
 
-![](images/Screenshot 2025-04-17 at 08.44.44.png)
+![](images/Screenshot%202025-04-17%20at%2008.44.44.png)
 
 ```{r}
 mQO <- ulam(
@@ -257,15 +257,15 @@ plot(precis(mQo,2))
 
 this code not working, but should generate this:
 
-![](images/Screenshot 2025-04-17 at 08.48.41.png){width="408"}
+![](images/Screenshot%202025-04-17%20at%2008.48.41.png){width="408"}
 
 now adding in two more parameters:
 
-![](images/Screenshot 2025-04-17 at 08.49.09.png)
+![](images/Screenshot%202025-04-17%20at%2008.49.09.png)
 
-![](images/Screenshot 2025-04-17 at 08.50.05.png)
+![](images/Screenshot%202025-04-17%20at%2008.50.05.png)
 
-![](images/Screenshot 2025-04-17 at 08.52.26.png)
+![](images/Screenshot%202025-04-17%20at%2008.52.26.png)
 
 # Week 4 reading notes
 
