@@ -1,0 +1,60 @@
+---
+title: "wwek5notes"
+format: html
+toc: true
+---
+
+# Week 5 Lecture Notes
+
+## Lecture 09 - Modeling Events
+
+### UC berkeley admissions
+
+4526 grad school applications for 1973 UC Berkeley. stratified by department and gender of applicant. We want to find out if there was gender discrimination by admission officers?
+
+Modeling events: events are discrete, unordered outcomes. observations are counts. the unknowns are probabilities (/odds). everything interacts all the time. this is a thing known as "log odds"
+
+For the admissions outcome:
+
+#### Estimand
+
+was there gender discrimination in graduate admissions?
+
+![](images/Screenshot 2025-04-24 at 17.22.57.png){width="552"}
+
+department admission rates will vary, so that's in there too.
+
+It's also not the applicant's actual gender that matters, but it would be the perceived gender of the applicant by the referee. we could therefore blind the gender of the applicant from the referee and that could help:
+
+![](images/Screenshot 2025-04-24 at 17.24.11.png){width="406"}
+
+In the first model above, what path is "discrimination"? Direct discrimination (G-\>A) would be what's called status-based or taste-based discrimination where referees are biased for or against particular genders. (G-\>D-\>A) is indirect (structural) discrimination where gender might influence interests, etc., which influences department, which influences admission rate. Total discrimination is both paths combined.
+
+![](images/Screenshot 2025-04-24 at 17.28.11.png)
+
+we could estimate the total cause of discrimination under relatively minor assumptions, but it's often not what we want - we often care about the particular paths, and those are harder to estimate.
+
+THERE'S ALSO UNOBSERVED CONFOUNDS THAT WE CAN'T FORGET ABOUT - WE'LL COME BACK IN A FUTURE LECTURE.
+
+#### Scientific model
+
+Generative model ![](images/Screenshot 2025-04-24 at 17.30.41.png)
+
+```{r}
+library(rethinking)
+N <- 1000
+G <- sample (1:2, size = N, replace = TRUE)
+d <-  rbern(N, ifelse(G==1, 0.3, 0.8)) + 1
+accept_rate <- matrix(c(0.1,0.3,0.1,0.3), nrow=2)
+A <- rbern(N, accept_rate[D,G])
+```
+
+![](images/Screenshot 2025-04-24 at 17.35.27.png)
+
+then he changes the code to include direct discrimination and we get the same pattern, which is the fundamental issue. from here on out we're going to make a model to piece that out better.
+
+Before we do that,
+
+#### statistical model
+
+#### analyze the data
