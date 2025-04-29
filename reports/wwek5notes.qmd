@@ -20,17 +20,17 @@ For the admissions outcome:
 
 was there gender discrimination in graduate admissions?
 
-![](images/Screenshot 2025-04-24 at 17.22.57.png){width="552"}
+![](images/Screenshot%202025-04-24%20at%2017.22.57.png){width="552"}
 
 department admission rates will vary, so that's in there too.
 
 It's also not the applicant's actual gender that matters, but it would be the perceived gender of the applicant by the referee. we could therefore blind the gender of the applicant from the referee and that could help:
 
-![](images/Screenshot 2025-04-24 at 17.24.11.png){width="406"}
+![](images/Screenshot%202025-04-24%20at%2017.24.11.png){width="406"}
 
 In the first model above, what path is "discrimination"? Direct discrimination (G-\>A) would be what's called status-based or taste-based discrimination where referees are biased for or against particular genders. (G-\>D-\>A) is indirect (structural) discrimination where gender might influence interests, etc., which influences department, which influences admission rate. Total discrimination is both paths combined.
 
-![](images/Screenshot 2025-04-24 at 17.28.11.png)
+![](images/Screenshot%202025-04-24%20at%2017.28.11.png)
 
 we could estimate the total cause of discrimination under relatively minor assumptions, but it's often not what we want - we often care about the particular paths, and those are harder to estimate.
 
@@ -38,7 +38,7 @@ THERE'S ALSO UNOBSERVED CONFOUNDS THAT WE CAN'T FORGET ABOUT - WE'LL COME BACK I
 
 #### Scientific model
 
-Generative model ![](images/Screenshot 2025-04-24 at 17.30.41.png)
+Generative model ![](images/Screenshot%202025-04-24%20at%2017.30.41.png)
 
 ```{r}
 library(rethinking)
@@ -49,12 +49,85 @@ accept_rate <- matrix(c(0.1,0.3,0.1,0.3), nrow=2)
 A <- rbern(N, accept_rate[D,G])
 ```
 
-![](images/Screenshot 2025-04-24 at 17.35.27.png)
+![](images/Screenshot%202025-04-24%20at%2017.35.27.png)
 
 then he changes the code to include direct discrimination and we get the same pattern, which is the fundamental issue. from here on out we're going to make a model to piece that out better.
 
 Before we do that,
 
 #### statistical model
+
+we observe counts of events, and from that, we estimate probability (or log-odds) of events. this is like the globe tossing model but we need the "proportionof water" stratified by other variables.
+
+##### Generalized linear models: 
+
+linear models are where the expected value is additive combination of parameters.
+
+generalized linear models are where the expected value is some function of an additive combination of parameters
+
+In theory, my interpretation of what's happening below is that GLMs are like linear models but with a link function. the link function exists to constrain the curve to the range that makes sense for our data - so like, if we had a linear model it would extend outside the range from 0-1, but if we are looking for a probability we would want it to stay within, so we use a link function to get there and that makes it a GLM?
+
+![](images/Screenshot 2025-04-29 at 08.44.28.png)
+
+![](images/Screenshot 2025-04-29 at 08.44.45.png)
+
+Distributions and link functions:
+
+distribuions are relative number of ways to observe data, given assumptions about rates, probabilities, slopes, etc. distributions are matched to constraints on observed variables. link functions are matched to distributions - so we really don't have to worry much about picking them, once we have a distribution for our data the link we should use is pretty obvious.
+
+![](images/Screenshot 2025-04-29 at 08.54.11.png)
+
+Bernoulli/binomial models most often use the logit link (log odds) (the log the probability happens divided by the log it doesn't). this lets us attach linear models to discrete events which is very convenient.
+
+now we need priors to go with our funky log scale. the logit link compresses parameter distributions - anything above +4 almost always, anything below -4 almost never
+
+![](images/Screenshot 2025-04-29 at 09.12.02.png){width="493"}
+
+##### now let's build the statistical model![](images/Screenshot 2025-04-29 at 09.13.33.png)
+
+```{r}
+library(rethinking)
+N <- 1000 
+G <- sample(1:2, size = N, replace = TRUE)
+D <- rbern(N, ifelse(G==1, 0.3, 0.8)) +1
+accept_rate <-  matrix(c(0.05,0.2,0.1,0.3), nrow=2)
+A <-rbern(N, accept_rate[D,G])
+```
+
+in the above code, the matrix is because we need gender by department
+
+![](images/Screenshot 2025-04-29 at 09.15.51.png)
+
+```{r}
+dat_sim <-list (A=A, D=D, G=G)
+
+m1 <- ulam(
+  alist(
+    A ~bernoulli(p),
+    logit(p) <- a[G],
+    a[G] ~ normal(0,1)
+  ), data=dat_sim, chains=4, cores=4
+)
+
+m2 <- ulam(
+  alist(
+    A ~bernoulli(p),
+    logit(p) <- a[G,D],
+    matrix[G,D]:a ~ normal(0,1)
+  ), data=dat_sim, chains=4, cores=4
+)
+
+
+```
+
+the code above is still pissed at cmdstan for some reason
+
+it should look like below:
+
+![](images/Screenshot 2025-04-29 at 09.20.29.png)
+
+hard to interpret the precis on the log odd scale buyt you can see what things are smaller than other things: but you can apply the inverse link function to the coefficients and get them back on the probability scale to interpret them:
+
+![](images/Screenshot 2025-04-29 at 09.21.23.png)
 
 #### analyze the data
