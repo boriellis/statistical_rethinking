@@ -1,5 +1,5 @@
 ---
-title: "wwek5notes"
+title: "week5notes"
 format: html
 toc: true
 ---
@@ -59,7 +59,7 @@ Before we do that,
 
 we observe counts of events, and from that, we estimate probability (or log-odds) of events. this is like the globe tossing model but we need the "proportionof water" stratified by other variables.
 
-##### Generalized linear models: 
+##### Generalized linear models:
 
 linear models are where the expected value is additive combination of parameters.
 
@@ -67,23 +67,23 @@ generalized linear models are where the expected value is some function of an ad
 
 In theory, my interpretation of what's happening below is that GLMs are like linear models but with a link function. the link function exists to constrain the curve to the range that makes sense for our data - so like, if we had a linear model it would extend outside the range from 0-1, but if we are looking for a probability we would want it to stay within, so we use a link function to get there and that makes it a GLM?
 
-![](images/Screenshot 2025-04-29 at 08.44.28.png)
+![](images/Screenshot%202025-04-29%20at%2008.44.28.png)
 
-![](images/Screenshot 2025-04-29 at 08.44.45.png)
+![](images/Screenshot%202025-04-29%20at%2008.44.45.png)
 
 Distributions and link functions:
 
 distribuions are relative number of ways to observe data, given assumptions about rates, probabilities, slopes, etc. distributions are matched to constraints on observed variables. link functions are matched to distributions - so we really don't have to worry much about picking them, once we have a distribution for our data the link we should use is pretty obvious.
 
-![](images/Screenshot 2025-04-29 at 08.54.11.png)
+![](images/Screenshot%202025-04-29%20at%2008.54.11.png)
 
 Bernoulli/binomial models most often use the logit link (log odds) (the log the probability happens divided by the log it doesn't). this lets us attach linear models to discrete events which is very convenient.
 
 now we need priors to go with our funky log scale. the logit link compresses parameter distributions - anything above +4 almost always, anything below -4 almost never
 
-![](images/Screenshot 2025-04-29 at 09.12.02.png){width="493"}
+![](images/Screenshot%202025-04-29%20at%2009.12.02.png){width="493"}
 
-##### now let's build the statistical model![](images/Screenshot 2025-04-29 at 09.13.33.png)
+##### now let's build the statistical model![](images/Screenshot%202025-04-29%20at%2009.13.33.png)
 
 ```{r}
 library(rethinking)
@@ -96,7 +96,7 @@ A <-rbern(N, accept_rate[D,G])
 
 in the above code, the matrix is because we need gender by department
 
-![](images/Screenshot 2025-04-29 at 09.15.51.png)
+![](images/Screenshot%202025-04-29%20at%2009.15.51.png)
 
 ```{r}
 dat_sim <-list (A=A, D=D, G=G)
@@ -124,10 +124,10 @@ the code above is still pissed at cmdstan for some reason
 
 it should look like below:
 
-![](images/Screenshot 2025-04-29 at 09.20.29.png)
+![](images/Screenshot%202025-04-29%20at%2009.20.29.png)
 
 hard to interpret the precis on the log odd scale buyt you can see what things are smaller than other things: but you can apply the inverse link function to the coefficients and get them back on the probability scale to interpret them:
 
-![](images/Screenshot 2025-04-29 at 09.21.23.png)
+![](images/Screenshot%202025-04-29%20at%2009.21.23.png)
 
 #### analyze the data
