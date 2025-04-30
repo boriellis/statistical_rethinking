@@ -131,3 +131,55 @@ hard to interpret the precis on the log odd scale buyt you can see what things a
 ![](images/Screenshot%202025-04-29%20at%2009.21.23.png)
 
 #### analyze the data
+
+4526 grad school applications for 1973 berkeley - stratified by department and gender of applicant. we're looking for evidence of gender discrimination
+
+we'll use the same model as before - the data come to us as counts, not as binary 0,1 data - we're going to do binomial regression which is for a count of yes/no data. we'll just change out the word bernoulli for binomial in the analysis. just the aggregated form of long form data:
+
+![](images/Screenshot 2025-04-30 at 16.25.06.png)
+
+![](images/Screenshot 2025-04-30 at 16.25.31.png)
+
+![](images/Screenshot 2025-04-30 at 16.25.54.png)
+
+```{r}
+library(rethinking)
+data(UCBadmit)
+d <-  UCBadmit
+
+dat <- list(
+  A = d$admit,
+  N = d$applications,
+  G = ifelse(d$applicant.gender == "female", 1,2),
+  D = as.integer(d$dept)
+)
+
+#total effect gender
+mG <- ulam(
+  alist(
+    A ~binomial(N,p),
+    a[G] ~ normal(0,1)
+  ), data = dat, chains = 4, cores = 4
+)
+```
+
+total effect code below: men were advantaged
+
+```{r}
+post1 <-  extract.samples(mG)
+PrA_G1 <- inv_logit(post1$a[,1])
+PrA_G2 <-  inv_logit(post1$a[,2])
+diff_prob <- PrA_G1 - PrA_G2
+dens(digg_prob, lwd = 4, col = 2, xlab = "Gender contrast(probability")
+```
+
+direct effects below:
+
+```{r}
+post2 <-extract.samples(mGD)
+PrA <-  inv_logit(post2$a)
+diff_prob_D <-sapply(1:6, function(i)
+  Pr[,1,i] - PrA[,2,i])
+
+plot()
+```
