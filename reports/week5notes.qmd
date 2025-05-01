@@ -136,11 +136,11 @@ hard to interpret the precis on the log odd scale buyt you can see what things a
 
 we'll use the same model as before - the data come to us as counts, not as binary 0,1 data - we're going to do binomial regression which is for a count of yes/no data. we'll just change out the word bernoulli for binomial in the analysis. just the aggregated form of long form data:
 
-![](images/Screenshot 2025-04-30 at 16.25.06.png)
+![](images/Screenshot%202025-04-30%20at%2016.25.06.png)
 
-![](images/Screenshot 2025-04-30 at 16.25.31.png)
+![](images/Screenshot%202025-04-30%20at%2016.25.31.png)
 
-![](images/Screenshot 2025-04-30 at 16.25.54.png)
+![](images/Screenshot%202025-04-30%20at%2016.25.54.png)
 
 ```{r}
 library(rethinking)
@@ -181,5 +181,20 @@ PrA <-  inv_logit(post2$a)
 diff_prob_D <-sapply(1:6, function(i)
   Pr[,1,i] - PrA[,2,i])
 
-plot()
+plot(NULL, xlim= c(-0.2, 0.3), ylim = c(0, 25), xlab = "Gender contrast (probability)", ylab = "Density")
+for(i in 1:6) dens(diff_prob_D_[,i], lwd=4, col =1+u, add = TRUE)
 ```
+
+What is the average direct effect of gender across departments?
+
+depends upon distribution of applications, probability woman/man applies to each department
+
+he then gets into dealing with the direct effect of gender and lost me a bit. has to do with perceived gender in departments - the interventions are going to the same departments, but the counterfactual is that we switch the perceived gender of the applications
+
+![](images/Screenshot 2025-04-30 at 17.04.59.png)
+
+![](images/Screenshot 2025-04-30 at 17.08.28.png)
+
+the above is post-stratification: description, prediction, and causal inference often require this. it is the re-weighting of estimates for the target population. at a different university, distribution of applications will differ, so predicted consequence of intervention different.
+
+We still don't have evidence for discrimination at this point. big structural effects (women disadvantaged) but different departments have radically different baseline admission rates and because gender has big effect on what department is applied to so - 1) distribution of applications can be a consequence of discrimination but data do not speak to this. 2) confounds are also likely. that's what we'll get into in the next lecture!
