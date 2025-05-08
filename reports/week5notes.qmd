@@ -191,9 +191,9 @@ depends upon distribution of applications, probability woman/man applies to each
 
 he then gets into dealing with the direct effect of gender and lost me a bit. has to do with perceived gender in departments - the interventions are going to the same departments, but the counterfactual is that we switch the perceived gender of the applications
 
-![](images/Screenshot 2025-04-30 at 17.04.59.png)
+![](images/Screenshot%202025-04-30%20at%2017.04.59.png)
 
-![](images/Screenshot 2025-04-30 at 17.08.28.png)
+![](images/Screenshot%202025-04-30%20at%2017.08.28.png)
 
 the above is post-stratification: description, prediction, and causal inference often require this. it is the re-weighting of estimates for the target population. at a different university, distribution of applications will differ, so predicted consequence of intervention different.
 
