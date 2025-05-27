@@ -198,3 +198,67 @@ he then gets into dealing with the direct effect of gender and lost me a bit. ha
 the above is post-stratification: description, prediction, and causal inference often require this. it is the re-weighting of estimates for the target population. at a different university, distribution of applications will differ, so predicted consequence of intervention different.
 
 We still don't have evidence for discrimination at this point. big structural effects (women disadvantaged) but different departments have radically different baseline admission rates and because gender has big effect on what department is applied to so - 1) distribution of applications can be a consequence of discrimination but data do not speak to this. 2) confounds are also likely. that's what we'll get into in the next lecture!
+
+## Lecture 10
+
+### Generalized Linear Models
+
+Again, GLMs are where the expected value is some function of an additive combination of parameters. Uniform changes in predictor don't produce uniform changes in the prediction. All predictor variables interact and moderate one another.
+
+Returning to the confounded admissions sample from lecture 9, we're now going to focus on the confounds in the example. The most common one we might think of in this example is the ability of the applicant (u)
+
+![](images/Screenshot 2025-05-22 at 16.00.16.png)
+
+```{r}
+library(rethinking)
+set.seed(12)
+N <- 2000
+G <- sample(1:2, size = N, replace = TRUE)
+u <- rbern(N,0.1)
+D <- rbern(N, ifelse(G==1, u*1, 0.75)) +1
+p_u0 <- matrix(c(0.1,0.1,0.1,0.3), nrow = 2)
+p_u1 <- matrix(c(0.3,0.3,0.5,0.5), nrow = 2)
+p_u <- list(p_u0, p_u1)
+p <- sapply(1:N, function(i) p_u[[1+u[i]]][D[i],G[i]])
+A <- rbern(N,p)
+```
+
+![](images/Screenshot 2025-05-22 at 16.05.13.png)
+
+in the above, for the total effect of gender, we do not stratify for anything but gender. The second model does stratify by department to separate the direct and indirect effects - you can see that it's harder to intepret the results because it's confounded, but you can make a plot to rescale it:
+
+![](images/Screenshot 2025-05-22 at 16.10.04.png)
+
+posterior probability distribution of the probability of admissions is above.
+
+the above situation is apparently an example of collider bias. Stratifying by department opens a non-causal path through u. so you can estimate the total causal effect of Gender, but that isn't what we want (because the interventions are different from the different direct causes) - we can't estimate the DIRECT effect of gender or department from this sample.
+
+more intuitive explanation - high ability of the one gender apply to the discriminatory department anyway, so that gender is on average higher ability in that department than the other gender. So, the high ability of the people of that gender compensates for the discrimination and masks the evidence.
+
+Now, talking about these two papers published last year that come to different conclusions about gender discrimination in the academy:
+
+![](images/Screenshot 2025-05-22 at 16.16.12.png)
+
+both are looking at the same population. the paper on the left found an ADVANTAGE for women, the paper on the right found a disadvantage in citation bias form. why? how?
+
+Citation networks - networks in citation between members of the national academy of science. Women are associated with a lower lifetime citation rate. The paper on the left looked at election to the NAS, and found that women were associated with 3-15 times higher election rate, while controlling for citation rate. huhhh?
+
+he thinks:
+
+![](images/Screenshot 2025-05-22 at 16.19.06.png){width="377"}
+
+very likely that there are differences in "quality" between members of the NAS. but what we're measuring are proxies for quality, like whether or not they're members or how many citations they have.
+
+![](images/Screenshot 2025-05-22 at 16.20.46.png){width="484"}
+
+the thought above is that if men are less likely to be elected, then they must have a higher quality (proxy, citation number) to compensate. If you control for citations, and examine elections to NAS, then G is the "treatment" and C is a post-treatment variable! if women are less likely to be cited because there really is bias, then women are more likely to be elected because they have higher quality than indicated by the citations.
+
+summary of this! we don't want to just produce hyped papers with vague estimands and unwise adjustment sets. we don't want policy to be designed through collider bias! we can do better than that! we honestly can't get at direct effects with this example, and that frequently is the case. it sounds like his conclusion for this (in a discrimination context) is that the best metric for whether it happens or not is the lived experiences of the people who experience it, but that's hard to study quantitatively. ideally we should make clear what our causal assumptions are and also supplement with qualitative data as we're able.
+
+SENSITIVITY ANALYSIS: this is an analysis that is aimed to understand the implications of things we can't measure. Do do this, we assume a confound exists, and model its consequences for different strengths/kinds of influences. we ask how strong the confound has to be to change the conclusions. examples of how that would work in this example is below:
+
+![](images/Screenshot 2025-05-22 at 16.35.38.png)
+
+![](images/Screenshot 2025-05-22 at 16.37.49.png)
+
+summarizing sensitivity analysis: really important to do. most often in observational studies we can't eliminate possibility of confounding so better to admit it and do sensitivity analysis - vary confound strength over a range and be clear about how your results change. this is the honest and ethical thing to do.
