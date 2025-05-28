@@ -262,3 +262,47 @@ SENSITIVITY ANALYSIS: this is an analysis that is aimed to understand the implic
 ![](images/Screenshot 2025-05-22 at 16.37.49.png)
 
 summarizing sensitivity analysis: really important to do. most often in observational studies we can't eliminate possibility of confounding so better to admit it and do sensitivity analysis - vary confound strength over a range and be clear about how your results change. this is the honest and ethical thing to do.
+
+### Dataset on diversity of unique tool types in oceanic society
+
+how is technological complexity related to population size and social structure?
+
+data(Kline)
+
+the typical hypothesis is that population size and contact influence innovations which impact tools:![](images/Screenshot 2025-05-27 at 16.47.14.png)
+
+DAG for this:
+
+![](images/Screenshot 2025-05-27 at 16.47.43.png){width="485"}
+
+The adjustment set for P is L, we'll also stratify by C to study the interaction
+
+tools we use now: tool number is not binomial, there's no maximum. Poisson distribution here, which has a very high maximum and a low probability of each success (many possible technologies, very few realized in any one place)
+
+![](images/Screenshot 2025-05-27 at 16.52.41.png)
+
+![](images/Screenshot 2025-05-27 at 16.54.14.png)
+
+above: first he loads the data, then models the relationship between tools and the logarithm of population size because the background theory expects diminishing returns from increasing population size.
+
+then he codes the contact variable, puts it in a list in dat, then runs two models - the intercept only, and the interaction model (alpha and beta bracketed with contact variable for the number of tools and population size to vary by contact rate).
+
+![PSIS is how much worse the model is expected to do out of sample. the model with more parameters has fewer effective parameters. WHY? the penalty measures how much of a difference it makes to the posterior distribution when you drop an individual society. ](images/Screenshot 2025-05-27 at 16.56.23.png)
+
+![](images/Screenshot 2025-05-27 at 17.09.26.png)
+
+I've lost the plot here. we're gonna try to do this model:
+
+![](images/Screenshot 2025-05-27 at 16.47.14.png){width="446"}
+
+![](images/Screenshot 2025-05-27 at 17.19.50.png)
+
+![](images/Screenshot 2025-05-27 at 17.21.05.png)
+
+this one is much better:
+
+![](images/Screenshot 2025-05-27 at 17.20.45.png)
+
+In this lecture:
+
+hes tried to present some contexts to transport us into the world of count GLMs. there are ceiling and floor effects (they're "bounded") - as you approach the floor or ceiling of any outcome space the effects get funky?
