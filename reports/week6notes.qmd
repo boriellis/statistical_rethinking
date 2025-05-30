@@ -1,0 +1,39 @@
+---
+title: "week6notes"
+format: html
+---
+
+# Week 6 Notes
+
+## Lecture 11 - ordered categories
+
+Trolley problem example
+
+![](images/Screenshot 2025-05-29 at 16.22.44.png)
+
+we're going to look at this problem with the trolley dataset, which has responses from 331 individuals to 30 trolley problems across the action/intention/impact types. responses are how appropriate the action is from 1 to 7. this is not a count variable and it's not metric - it's bounded 1-7.
+
+```{r}
+library(rethinking)
+data("Trolley")
+```
+
+![](images/Screenshot 2025-05-29 at 16.25.10.png)
+
+estimand is how the action, intention, and contact influence response to a trolley story? so we need to know how the influences of each are associated with other variables:
+
+![](images/Screenshot 2025-05-29 at 16.27.09.png)
+
+we're working with ordered categories - categories are discrete types ("type of animal"), but ordered categories are discrete types where the order matters ("good, bad, awful")
+
+the weird thing about these are that there are anchor points in the data - like the midpoint, and that the distance between the points is not necessarily constant (people don't like to use extreme values)
+
+the machinery of these is SUPER weird I'd have to go back to the slides if I tried to deal with this
+
+to make this into a GLM - we need to make it a function of variables by stratifying the cutpoints and adding an offset to each cutpoint by a value of the linear model (phi sub i? help)
+
+![](images/Screenshot 2025-05-29 at 16.55.14.png)
+
+model in ulam code:
+
+![](images/Screenshot 2025-05-29 at 16.55.57.png)
