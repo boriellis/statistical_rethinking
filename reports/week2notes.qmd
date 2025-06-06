@@ -614,9 +614,11 @@ summary thoughts from this chunk:
 
 ### Curves from lines
 
-H -\> W obviously not linear. linear models can easily fit curves, but this is not mechanistic.
+many natural processes over a big enough scale they're non-linear - like logistic growth.
 
-2 popular strtegies to make linear models fit curves:
+linear models can easily fit curves, but this is not mechanistic (but linear regression isn't - it's a geocentric model, we just have to use it wisely).
+
+there are two popular strategies to make linear models fit curves:
 
 1\) polynomials: awful, don't do it
 
@@ -640,7 +642,7 @@ so if we flip the weight of basis function 1 (red) to -1, it would change the cu
 
 ![](images/Screenshot%202025-03-10%20at%2017.01.10.png){width="568"}
 
-so for height as a function of age, it isn't linear, we want a function that could get it approximately right. We'll fit a spline as an example but a biological model would be a lot better.
+so for height as a function of age, it isn't linear, we want a function that could get it approximately right. We'll fit a spline as an example but a biological model would be a lot better. in reality, height is a function of age, it is a causal effect, but there's no intervention that you can do on it. association between age and height is due to accumulated growth. age is a proxy and it can be extremely useful to think of it as a cause.
 
 Summary of that:
 
