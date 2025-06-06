@@ -310,13 +310,15 @@ lines(height_seq, W_PI[2,], lty = 2, lwd = 2)
 
 ## Lecture 4 - Categories and Curves
 
-In this lecture, for a single generative model we're going to have a generative model with mulitple estimands for the first time. This means multiple estimators. We also are going to process results differently - the result we want is not going to show up in a summary table so we're going to need to do some post-processing.
+In this lecture, for a single generative model we're going to have a generative model with multiple estimands for the first time. This means multiple estimators. We also are going to process results differently - the result we want is not going to show up in a summary table so we're going to need to do some post-processing.
 
 the new statistical tools in this lecture are categorical models and curves - this are tools we need to build causal estimators.
 
 ### Categories
 
-How to cope with causes that are not continuous - discrete, unordered types of data. In linear models that normally means you fit a different line for each of the categories:
+How do we cope with causes that are not continuous? Like when you have discrete, unordered types of data?
+
+In linear models that normally means you fit a different line for each of the categories - we "stratify" by category. here's an example:
 
 In the Howell height and weight data, there are also columns for age and sex. if we wanted to add sex in, we'd start by adding it to the DAG:
 
@@ -332,7 +334,7 @@ the influence of sex on weight is both direct and indirect, because it also infl
 
 (height is a function of sex, weight is a function of height and sex)
 
-there are also unobserved causes that influence each variable - we normally don't draw them in and can ignore them UNLESS they're SHARED (confounding variables) - for example, if temperature in reptiles influences both sex and weight, that would be an issue. we'll come back to that later but for our human example we are ignoring confounds.
+there are also unobserved causes that influence each variable - we normally don't draw them in and can ignore them UNLESS they're SHARED (confounding variables) - for example, if temperature in reptiles influences both sex and weight, that would be an issue. we'll come back to that later but for our human example we are ignoring confounds - UNOBSERVED CAUSES CAN BE IGNORED UNLESS SHARED BETWEEN VARIABLES
 
 here's a simple version of a function that we can use to simulate height and weight with inputs of sex data
 
@@ -342,12 +344,12 @@ library(rethinking)
 sim_HW <- function(S,b,a) { #sex, b is beta, proportionality of height that is weight, and a, which is direct effect of sex 
   N <- length(S) 
   H <- ifelse(S==1, 150, 160) +rnorm(N,0,5) #if female, on avg, height 150cm, if male, 160, add some gaussian variation
-  W <-a[S] +b[S]*H + rnorm(N,0,5) #same as prev lecture - but adding, men and women could have different proportionality with height (for each S, diff height and weight line)
+  W <-a[S] +b[S]*H + rnorm(N,0,5) #same as prev lecture - but adding, men and women could have different proportionality of weight with height (for each S, diff height and weight line)
   data.frame(S,H,W)
 }
 
 S <-  rbern(100) +1 #100 individuals randomly males or females
-dat <- sim_HW(S, b=c(0.5, 0.6), a = c(0,0)) #simulate height and weight w no direct effect of sex on bodyweight and there's slightly different slopes
+dat <- sim_HW(S, b=c(0.5, 0.6), a = c(0,0)) #simulate height and weight w no direct effect of sex on bodyweight (a=0) and there's slightly different slopes
 head(dat)
 
 ```
@@ -358,7 +360,7 @@ different causal questions need different statistical models:
 
 -   Q: causal effect of H on W?
 
--   Q: causal effect of S on W?
+-   Q: total causal effect of S on W?
 
 -   Q: direct causal effect of S on W?
 
@@ -366,27 +368,33 @@ We'll do all:
 
 ![](images/Screenshot%202025-03-05%20at%2015.59.30.png){width="485"}
 
+stratifying by the sex variable allows a different association between weight and height for each sex in the dataset.
+
 Drawing categorical owls:
 
-several wasys to code categorical variables:
+several ways to code categorical variables:
 
 1\) indicator variables (0/1)
 
 2\) index variables: 1,2,3,4. this are like ID numbers.
 
-We'll use index variables: they extend to many categories with no change in code, they're better for specifying priors, and extend well to multi-level models.
+We'll use index variables: they act like postal addresses for each category in the data. they extend to many categories with no change in code, they're better for specifying priors, and extend well to multi-level models.
 
 ![](images/Screenshot%202025-03-05%20at%2016.02.48.png){width="385"}
 
 ![](images/Screenshot%202025-03-05%20at%2016.04.27.png){width="381"}
 
-I got a little lost as he explained index variables
+I think the index variable is literally just a line in the dataset (a data point) and so when you're indexing with it you can call information about a column for that index.
+
+We need to specify our priors - you often want to assign things the same prior (so in this case, each sex has same distribution for weight prior). if you use index variables you just assign every data point to the same prior. if you use indicator variables one becomes the default and the other is the alternate, which thinks is often a little clunkier.
 
 ### Testing with categories
 
 #### Total causal effect of sex
 
-What is the total causal effect of sex? it is something we measure from simulation in this because there's direct and indirect influence. We can simulate this because we have a generative model that we can do experiments on. so we would intervene on a single variable - we could construct two samples, one where everyone is male and one where everyone is female and then calculate the avg difference in body weight to get the total causal effect of sex on body weight (includes direct and indirect). that's shown below:
+What is the total causal effect of sex? it is something we measure from simulation in this because there's direct and indirect influence. We can simulate this because we have a generative model that we can do experiments on. so we would intervene on a single variable.
+
+we could construct two samples, one where everyone is male and one where everyone is female and then calculate the avg difference in body weight to get the total causal effect of sex on body weight (includes direct and indirect). that's shown below:
 
 ![](images/Screenshot%202025-03-05%20at%2016.12.10.png){width="296"}
 
@@ -403,7 +411,7 @@ simM <- sim_HW(S, b=c(0.5,0.6), a = c(0,0))
 mean(simM$W - simF$W)
 ```
 
-now run the estimating model and synthetic sample. the estimator is the model that we developed with the indicator variable. We're doing an observational study where sex is a random variable, we observe their height and weight and estimate the causal effect of sex through both direct and indirect maths.
+now run the estimating model and synthetic sample. the estimator is the model that we developed with the indicator variable. We're doing an observational study where sex is a random variable, we observe their height and weight and estimate the causal effect of sex through both direct and indirect paths.
 
 ```{r}
 #observe sample
@@ -425,6 +433,8 @@ precis(m_SW, depth = 2)
 output at the bottom has 2 a variables, one for men one for women, there's a different average weight for each, the difference between these two is the combined direct and indirect effect of sex on weight.
 
 ##### Analyze the real sample:
+
+code identical to above:
 
 ```{r}
 data(Howell1)
@@ -468,7 +478,7 @@ dens(W2, lwd = 3, col = 4, add = TRUE)
 
 we still now want to compute the posterior distribution of the difference between category 1 and 2 -
 
-we need to always compute the contrast, or difference between the categories. it is never legitimate to compare overlap, only difference. so, we can here compute the causal difference in **means**:
+we need to always compute the contrast, or difference between the categories. it is never legitimate to compare overlap, only DIFFERENCE. so, we can here compute the causal difference in **means**:
 
 ```{r}
 #causal contrast in means
@@ -476,6 +486,8 @@ mu_contrast <- post$a[,2] - post$a[,1]
 
 dens(mu_contrast, xlim = c(3,10), lwd = 3, col = 1, xlab = "posterior mean weight contrast (kg)")
 ```
+
+Overlap is never enough to say that something is the same!
 
 That's the posterior distribution of difference between women and men in this sample of body weight - so difference is somewhere between 5 and 9
 
@@ -495,7 +507,10 @@ dens(W_contrast, xlim = c(-25,35), lwd=3,
 sum(W_contrast >0)/1000
 #proportion below zero
 sum(W_contrast <0) /1000
+
 ```
+
+![](images/Screenshot 2025-06-05 at 16.49.04.png){width="494"}
 
 so the proportion of men that are heavier than women is 82%, or the amount of the distribution that's above zero.
 
