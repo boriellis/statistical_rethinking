@@ -1,0 +1,30 @@
+---
+title: "week7notes"
+format: html
+---
+
+# Week 7 Notes
+
+## Birthday 28 - Soaring Into Another Year (No Trolley Problems Here)
+
+![](images/aspen-bday.png)
+
+todays stats lesson is on how trying to figure out how much aspen lore is known and not known. we know that aspen has hunted many minks in defence of birds.
+but we do not know what other mammals she has or has not hunted. we also know other lores such as she is a great friend and really smart person that knows
+alot of word. and also knows alot about birds and wind farms. and also is really damn good at making indian food. 
+
+how did such a person come to be? i dont think stats has the answers tbh. 
+
+in any case, of the little stats i do know, i can say that the unknown aspen lore is likely just as awesome as the known.
+and that future lore that has not yet been written will likely be very significantly great (p <= 0.005), because how could 
+it not?
+
+okay thats enuf stats for today. stats is hard, i should find a book or course or something to teach me how to rethink stuff statsitically.
+
+happy birthday aspen! 
+
+love,
+cade
+
+
+
