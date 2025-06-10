@@ -652,6 +652,10 @@ Summary of that:
 
 -   but in cases where you have more scientific information it would be nice to be able to include that in the model. So splitting it up so that you can do answers just about the chunks of data where you're expecting patterns can be better - like in the case of allison's senescence data, she ended up doing "piecewise segmented regression" because she was asking specifically about the chunk where things were senescing instead of just trying to demonstrate what was happening over the whole curve.
 
+### BONUS - full luxury bayes
+
+we used two models for the two estimands for the sex and height on weight example. there's another option where you can do it all in one model of the entire causal system - this is equally good, requires a similar amount of effort but less models, you then just use the joint posterior to compute each estimand
+
 # Week 2 Reading Notes - Chapter 4
 
 We're introducing the bayesian way to do LINEAR REGRESSION in this chapter.
