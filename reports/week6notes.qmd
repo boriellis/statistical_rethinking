@@ -9,7 +9,7 @@ format: html
 
 Trolley problem example
 
-![](images/Screenshot 2025-05-29 at 16.22.44.png)
+![](images/Screenshot%202025-05-29%20at%2016.22.44.png)
 
 we're going to look at this problem with the trolley dataset, which has responses from 331 individuals to 30 trolley problems across the action/intention/impact types. responses are how appropriate the action is from 1 to 7. this is not a count variable and it's not metric - it's bounded 1-7.
 
@@ -18,11 +18,11 @@ library(rethinking)
 data("Trolley")
 ```
 
-![](images/Screenshot 2025-05-29 at 16.25.10.png)
+![](images/Screenshot%202025-05-29%20at%2016.25.10.png)
 
 estimand is how the action, intention, and contact influence response to a trolley story? so we need to know how the influences of each are associated with other variables:
 
-![](images/Screenshot 2025-05-29 at 16.27.09.png)
+![](images/Screenshot%202025-05-29%20at%2016.27.09.png)
 
 we're working with ordered categories - categories are discrete types ("type of animal"), but ordered categories are discrete types where the order matters ("good, bad, awful")
 
@@ -32,8 +32,8 @@ the machinery of these is SUPER weird I'd have to go back to the slides if I tri
 
 to make this into a GLM - we need to make it a function of variables by stratifying the cutpoints and adding an offset to each cutpoint by a value of the linear model (phi sub i? help)
 
-![](images/Screenshot 2025-05-29 at 16.55.14.png)
+![](images/Screenshot%202025-05-29%20at%2016.55.14.png)
 
 model in ulam code:
 
-![](images/Screenshot 2025-05-29 at 16.55.57.png)
+![](images/Screenshot%202025-05-29%20at%2016.55.57.png)

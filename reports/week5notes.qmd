@@ -207,7 +207,7 @@ Again, GLMs are where the expected value is some function of an additive combina
 
 Returning to the confounded admissions sample from lecture 9, we're now going to focus on the confounds in the example. The most common one we might think of in this example is the ability of the applicant (u)
 
-![](images/Screenshot 2025-05-22 at 16.00.16.png)
+![](images/Screenshot%202025-05-22%20at%2016.00.16.png)
 
 ```{r}
 library(rethinking)
@@ -223,11 +223,11 @@ p <- sapply(1:N, function(i) p_u[[1+u[i]]][D[i],G[i]])
 A <- rbern(N,p)
 ```
 
-![](images/Screenshot 2025-05-22 at 16.05.13.png)
+![](images/Screenshot%202025-05-22%20at%2016.05.13.png)
 
 in the above, for the total effect of gender, we do not stratify for anything but gender. The second model does stratify by department to separate the direct and indirect effects - you can see that it's harder to intepret the results because it's confounded, but you can make a plot to rescale it:
 
-![](images/Screenshot 2025-05-22 at 16.10.04.png)
+![](images/Screenshot%202025-05-22%20at%2016.10.04.png)
 
 posterior probability distribution of the probability of admissions is above.
 
@@ -237,7 +237,7 @@ more intuitive explanation - high ability of the one gender apply to the discrim
 
 Now, talking about these two papers published last year that come to different conclusions about gender discrimination in the academy:
 
-![](images/Screenshot 2025-05-22 at 16.16.12.png)
+![](images/Screenshot%202025-05-22%20at%2016.16.12.png)
 
 both are looking at the same population. the paper on the left found an ADVANTAGE for women, the paper on the right found a disadvantage in citation bias form. why? how?
 
@@ -245,11 +245,11 @@ Citation networks - networks in citation between members of the national academy
 
 he thinks:
 
-![](images/Screenshot 2025-05-22 at 16.19.06.png){width="377"}
+![](images/Screenshot%202025-05-22%20at%2016.19.06.png){width="377"}
 
 very likely that there are differences in "quality" between members of the NAS. but what we're measuring are proxies for quality, like whether or not they're members or how many citations they have.
 
-![](images/Screenshot 2025-05-22 at 16.20.46.png){width="484"}
+![](images/Screenshot%202025-05-22%20at%2016.20.46.png){width="484"}
 
 the thought above is that if men are less likely to be elected, then they must have a higher quality (proxy, citation number) to compensate. If you control for citations, and examine elections to NAS, then G is the "treatment" and C is a post-treatment variable! if women are less likely to be cited because there really is bias, then women are more likely to be elected because they have higher quality than indicated by the citations.
 
@@ -257,9 +257,9 @@ summary of this! we don't want to just produce hyped papers with vague estimands
 
 SENSITIVITY ANALYSIS: this is an analysis that is aimed to understand the implications of things we can't measure. Do do this, we assume a confound exists, and model its consequences for different strengths/kinds of influences. we ask how strong the confound has to be to change the conclusions. examples of how that would work in this example is below:
 
-![](images/Screenshot 2025-05-22 at 16.35.38.png)
+![](images/Screenshot%202025-05-22%20at%2016.35.38.png)
 
-![](images/Screenshot 2025-05-22 at 16.37.49.png)
+![](images/Screenshot%202025-05-22%20at%2016.37.49.png)
 
 summarizing sensitivity analysis: really important to do. most often in observational studies we can't eliminate possibility of confounding so better to admit it and do sensitivity analysis - vary confound strength over a range and be clear about how your results change. this is the honest and ethical thing to do.
 
@@ -269,39 +269,39 @@ how is technological complexity related to population size and social structure?
 
 data(Kline)
 
-the typical hypothesis is that population size and contact influence innovations which impact tools:![](images/Screenshot 2025-05-27 at 16.47.14.png)
+the typical hypothesis is that population size and contact influence innovations which impact tools:![](images/Screenshot%202025-05-27%20at%2016.47.14.png)
 
 DAG for this:
 
-![](images/Screenshot 2025-05-27 at 16.47.43.png){width="485"}
+![](images/Screenshot%202025-05-27%20at%2016.47.43.png){width="485"}
 
 The adjustment set for P is L, we'll also stratify by C to study the interaction
 
 tools we use now: tool number is not binomial, there's no maximum. Poisson distribution here, which has a very high maximum and a low probability of each success (many possible technologies, very few realized in any one place)
 
-![](images/Screenshot 2025-05-27 at 16.52.41.png)
+![](images/Screenshot%202025-05-27%20at%2016.52.41.png)
 
-![](images/Screenshot 2025-05-27 at 16.54.14.png)
+![](images/Screenshot%202025-05-27%20at%2016.54.14.png)
 
 above: first he loads the data, then models the relationship between tools and the logarithm of population size because the background theory expects diminishing returns from increasing population size.
 
 then he codes the contact variable, puts it in a list in dat, then runs two models - the intercept only, and the interaction model (alpha and beta bracketed with contact variable for the number of tools and population size to vary by contact rate).
 
-![PSIS is how much worse the model is expected to do out of sample. the model with more parameters has fewer effective parameters. WHY? the penalty measures how much of a difference it makes to the posterior distribution when you drop an individual society. ](images/Screenshot 2025-05-27 at 16.56.23.png)
+![PSIS is how much worse the model is expected to do out of sample. the model with more parameters has fewer effective parameters. WHY? the penalty measures how much of a difference it makes to the posterior distribution when you drop an individual society.](images/Screenshot%202025-05-27%20at%2016.56.23.png)
 
-![](images/Screenshot 2025-05-27 at 17.09.26.png)
+![](images/Screenshot%202025-05-27%20at%2017.09.26.png)
 
 I've lost the plot here. we're gonna try to do this model:
 
-![](images/Screenshot 2025-05-27 at 16.47.14.png){width="446"}
+![](images/Screenshot%202025-05-27%20at%2016.47.14.png){width="446"}
 
-![](images/Screenshot 2025-05-27 at 17.19.50.png)
+![](images/Screenshot%202025-05-27%20at%2017.19.50.png)
 
-![](images/Screenshot 2025-05-27 at 17.21.05.png)
+![](images/Screenshot%202025-05-27%20at%2017.21.05.png)
 
 this one is much better:
 
-![](images/Screenshot 2025-05-27 at 17.20.45.png)
+![](images/Screenshot%202025-05-27%20at%2017.20.45.png)
 
 In this lecture:
 

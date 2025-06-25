@@ -510,7 +510,7 @@ sum(W_contrast <0) /1000
 
 ```
 
-![](images/Screenshot 2025-06-05 at 16.49.04.png){width="494"}
+![](images/Screenshot%202025-06-05%20at%2016.49.04.png){width="494"}
 
 so the proportion of men that are heavier than women is 82%, or the amount of the distribution that's above zero.
 
